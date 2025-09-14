@@ -3,6 +3,7 @@ import {TableCell} from "../../../components/ui/table";
 import {InstitutionVM} from "../../../models/institution.model.ts";
 import {InstitutionActif} from "../types.ts";
 import {supprimerInstitution} from "../../../services/institution.service.ts";
+import EditerInstitutionModal from "./EditerInstitutionModal.tsx";
 
 interface Props {
   institution: InstitutionVM;
@@ -124,18 +125,17 @@ export default function LigneActionInstitutionTable(
 
         {/* 👉 Modal */}
         {showModal && (
-            null
-            // <ModifierCentreModal
-            //     isOpen={showModal}
-            //     onClose={() => setShowModal(false)}
-            //     setLoaderStatus={setLoaderStatus}
-            //     setElementAdded={(updatedCentre) => {
-            //       setCentres(prev =>
-            //           prev.map(c => (c.id === updatedCentre.id ? updatedCentre : c))
-            //       );
-            //     }}
-            //     centre={centre}
-            // />
+            <EditerInstitutionModal
+                id={institution.id}
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                setLoaderStatus={setLoaderStatus}
+                setElementAdded={(updatedInstitution) => {
+                  setInstitutions(prev =>
+                      prev.map(i => (i.id === updatedInstitution?.id ? updatedInstitution : i))
+                  );
+                }}
+            />
         )}
       </TableCell>
   )

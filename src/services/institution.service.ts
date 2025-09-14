@@ -13,9 +13,9 @@ export const editeInstitutions = async (institution: EditerInstitutionCommande):
 };
 
 export const supprimerInstitution = async (id: number): Promise<ApiError | InstitutionVM> => {
-  return await apiInstitutions.delete<InstitutionVM>(ENDPOINTS.centres.delete(id));
+  return await apiInstitutions.delete<InstitutionVM>(ENDPOINTS.institutions.delete(id));
 };
 
 export const recupererInstitution = async (id: number): Promise<ApiError | InstitutionVM> => {
-  return await apiInstitutions.get<InstitutionVM>(ENDPOINTS.centres.get(id));
+  return await apiInstitutions.get<InstitutionVM>(ENDPOINTS.institutions.get(id));
 };

@@ -2,10 +2,10 @@ import {useEffect, useState} from "react";
 import {fetchInstitutions} from "../../services/institution.service.ts";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb.tsx";
 import ComponentCard from "../../components/common/ComponentCard.tsx";
-import ListeCentresTable from "./components/ListeInstitutionsTable.tsx";
 import LoaderBanner from "../../components/common/LoaderBanner.tsx";
 import {InstitutionVM} from "../../models/institution.model.ts";
 import ListeInstitutionsTable from "./components/ListeInstitutionsTable.tsx";
+import EditerInstitutionModal from "./components/EditerInstitutionModal.tsx";
 
 export default function Institutions() {
 
@@ -80,6 +80,24 @@ export default function Institutions() {
                 Ajouter
               </button>
             </div>
+
+            <EditerInstitutionModal
+                id={null}
+                isOpen={isAddModalOpen}
+                onClose={async () => {
+                  setIsAddModalOpen(false);
+                  if (elementAdded) {
+                    try {
+                      await reloadData();
+                      setElementAdded(false)
+                    } catch (err) {
+                      console.error(err);
+                    }
+                  }
+                }}
+                setLoaderStatus={handleLoaderStatus}
+                setElementAdded={handleElementAdd}
+            />
 
             <ListeInstitutionsTable
                 institutions={institutions}

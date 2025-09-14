@@ -1,11 +1,11 @@
 export class EditerInstitutionCommande {
 
-  id!: number;
-  departement: string;
-  centreEtatCivil: string;
-  etatCivil: string;
-  tribunal: string;
-  ville!: string;
-  officier!: string;
-  titreOfficier!: string
+  id: number | null;
+  departement: string | null;
+  centreEtatCivil: string | null;
+  etatCivil: string | null;
+  tribunal: string | null;
+  ville!: string | null;
+  officier!: string | null;
+  titreOfficier!: string | null
 }
