@@ -1,23 +1,24 @@
 import {useEffect, useRef, useState} from "react"
 import {TableCell} from "../../../components/ui/table";
-import {Centre} from "../types.ts";
-import {supprimerCentre} from "../../../services/centre.service.ts";
-import ModifierCentreModal from "./ModifierCentreModal.tsx";
+import {InstitutionVM} from "../../../models/institution.model.ts";
+import {InstitutionActif} from "../types.ts";
+import {supprimerInstitution} from "../../../services/institution.service.ts";
+import EditerInstitutionModal from "./EditerInstitutionModal.tsx";
 
-interface LigneActionCentreTableProps {
-  centre: Centre;
-  setCentres: (centres: any) => void;
+interface Props {
+  institution: InstitutionVM;
+  setInstitutions: (institutions: any) => void;
   setLoaderStatus: (status: "idle" | "loading" | "success" | "error", message?: string) => void;
-  setCentreActif: (centre: Centre) => void
+  setInstitutionActif: (institution: InstitutionActif) => void
 }
 
-export default function LigneActionCentreTable(
+export default function LigneActionInstitutionTable(
     {
-      centre,
-      setCentres,
+      institution,
+      setInstitutions,
       setLoaderStatus,
-      setCentreActif
-    }: LigneActionCentreTableProps) {
+      setInstitutionActif
+    }: Props) {
 
   const [open, setOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -39,12 +40,12 @@ export default function LigneActionCentreTable(
   const handleDelete = async () => {
     try {
       setLoaderStatus("loading", "Suppression en cours...");
-      const reponse = await supprimerCentre(centre.id)
+      const reponse = await supprimerInstitution(institution.id)
 
       if ("message" in reponse) {
         setLoaderStatus("error", reponse.message || "Erreur lors de la suppression");
       } else {
-        setCentres(prev => prev.filter(c => c.id !== centre.id));
+        setInstitutions(prev => prev.filter(c => c.id !== institution.id));
         setLoaderStatus("success", "Suppression terminée");
       }
     } catch (err: any) {
@@ -52,12 +53,18 @@ export default function LigneActionCentreTable(
     }
   };
 
-  function handleActiverCentre() {
+  function handleActiverInstitution() {
     try {
       setLoaderStatus("loading", "Activation...");
-      localStorage.setItem("eExtraitCentreActif", JSON.stringify(centre));
-      setLoaderStatus("success", "Centre activé");
-      setCentreActif(centre);
+
+      const institutionActif = {
+        id: institution.id,
+        nom: institution.departement
+      } as InstitutionActif;
+
+      localStorage.setItem("eExtraitInstitutionActif", JSON.stringify(institutionActif));
+      setLoaderStatus("success", "Institution activé");
+      setInstitutionActif(institutionActif);
     } catch (err: any) {
       console.log(err)
       setLoaderStatus("error", err.message || "Erreur");
@@ -85,7 +92,7 @@ export default function LigneActionCentreTable(
                 <li>
                   <button
                       onClick={() => {
-                        handleActiverCentre()
+                        handleActiverInstitution()
                         setOpen(false);
                       }}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -118,16 +125,16 @@ export default function LigneActionCentreTable(
 
         {/* 👉 Modal */}
         {showModal && (
-            <ModifierCentreModal
+            <EditerInstitutionModal
+                id={institution.id}
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
                 setLoaderStatus={setLoaderStatus}
-                setElementAdded={(updatedCentre) => {
-                  setCentres(prev =>
-                      prev.map(c => (c.id === updatedCentre.id ? updatedCentre : c))
+                setElementAdded={(updatedInstitution) => {
+                  setInstitutions(prev =>
+                      prev.map(i => (i.id === updatedInstitution?.id ? updatedInstitution : i))
                   );
                 }}
-                centre={centre}
             />
         )}
       </TableCell>
