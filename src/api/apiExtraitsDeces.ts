@@ -46,7 +46,8 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T | 
   }
 }
 
-export const apiInstitutions = {
+export const apiExtraitsDeces = {
+
   get: async <T>(path: string): Promise<T | ApiError> => {
     return await request<T>(path);
   },
@@ -57,6 +58,14 @@ export const apiInstitutions = {
       body: JSON.stringify(body),
     });
   },
+
+  put: async <T>(path: string, body?: any): Promise<T | ApiError> => {
+    return await request<T>(path, {
+      method: "PUT",
+      body: JSON.stringify(body),
+    });
+  },
+
 
   delete: async <T>(path: string): Promise<T | ApiError> => {
     return await request<T>(path, {method: "DELETE"});
