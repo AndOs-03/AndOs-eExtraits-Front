@@ -2,7 +2,7 @@ import {Table, TableBody, TableCell, TableHeader, TableRow,} from "../../../comp
 import LigneActionCentreTable from "./LigneActionCentreTable.tsx";
 import {Centre} from "../types.ts";
 import {useEffect, useState} from "react";
-import {recupererCentreActif} from "../../../services/centreActif.service.ts";
+import {recupererCentreActif} from "../../../services/centre-actif.service.ts";
 
 interface Props {
   centres: Centre[];

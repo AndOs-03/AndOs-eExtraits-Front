@@ -149,114 +149,116 @@ export default function EditerInstitutionModal(
   if (!isOpen) return null;
 
   return (
-      <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
-          <h2 className="text-lg font-bold mb-4">{id ? "Modifier l'institution" : "Crée une" +
-              " institution"}</h2>
-          {error && <p className="text-red-500 mb-2 italic">{error}</p>}
-          {errorDepart && <p className="text-red-500 mb-2 italic">{errorDepart}</p>}
-          <input
-              type="text"
-              placeholder="Département"
-              value={commande?.departement!}
-              onChange={(e) => {
-                const value = e.target.value;
-                setCommande((prev) => ({...prev, departement: value}));
-                if (value.trim()) setErrorDepart(null);
-              }}
-              className="w-full border p-2 rounded mb-4"
-          />
-
-          {errorCentreEtat && <p className="text-red-500 mb-2 italic">{errorCentreEtat}</p>}
-          <input
-              type="text"
-              placeholder="Centre d'État Civil"
-              value={commande?.centreEtatCivil!}
-              onChange={(e) => {
-                const value = e.target.value;
-                setCommande((prev) => ({...prev, centreEtatCivil: value}));
-                if (value.trim()) setErrorCentreEtat(null);
-              }}
-              className="w-full border p-2 rounded mb-4"
-          />
-
-          {errorEtatCivil && <p className="text-red-500 mb-2 italic">{errorEtatCivil}</p>}
-          <input
-              type="text"
-              placeholder="État Civil"
-              value={commande?.etatCivil!}
-              onChange={(e) => {
-                const value = e.target.value;
-                setCommande((prev) => ({...prev, etatCivil: value}));
-                if (value.trim()) setErrorEtatCivil(null);
-              }}
-              className="w-full border p-2 rounded mb-4"
-          />
-
-          {errorTribunal && <p className="text-red-500 mb-2 italic">{errorTribunal}</p>}
-          <input
-              type="text"
-              placeholder="Tribunal"
-              value={commande?.tribunal!}
-              onChange={(e) => {
-                const value = e.target.value;
-                setCommande((prev) => ({...prev, tribunal: value}));
-                if (value.trim()) setErrorTribunal(null);
-              }}
-              className="w-full border p-2 rounded mb-4"
-          />
-
-          {errorVille && <p className="text-red-500 mb-2 italic">{errorVille}</p>}
-          <input
-              type="text"
-              placeholder="Ville"
-              value={commande?.ville!}
-              onChange={(e) => {
-                const value = e.target.value;
-                setCommande((prev) => ({...prev, ville: value}));
-                if (value.trim()) setErrorVille(null);
-              }}
-              className="w-full border p-2 rounded mb-4"
-          />
-
-          <input
-              type="text"
-              placeholder="Officier"
-              value={commande?.officier!}
-              onChange={(e) => {
-                const value = e.target.value;
-                setCommande((prev) => ({...prev, officier: value}));
-              }}
-              className="w-full border p-2 rounded mb-4"
-          />
-          <input
-              type="text"
-              placeholder="Titre Officier"
-              value={commande?.titreOfficier!}
-              onChange={(e) => {
-                const value = e.target.value;
-                setCommande((prev) => ({...prev, titreOfficier: value}));
-              }}
-              className="w-full border p-2 rounded mb-4"
-          />
-
-          <div className="flex justify-end gap-2">
-            <button
-                onClick={() => {
-                  handleOnClose();
-                  onClose();
+      <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50">
+        <div className="flex items-center justify-center min-h-screen px-4 py-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
+            <h2 className="text-lg font-bold mb-4">{id ? "Modifier l'institution" : "Crée une" +
+                " institution"}</h2>
+            {error && <p className="text-red-500 mb-2 italic">{error}</p>}
+            {errorDepart && <p className="text-red-500 mb-2 italic">{errorDepart}</p>}
+            <input
+                type="text"
+                placeholder="Département"
+                value={commande?.departement!}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setCommande((prev) => ({...prev, departement: value}));
+                  if (value.trim()) setErrorDepart(null);
                 }}
-                className="px-4 py-2 bg-gray-300 dark:bg-gray-700 rounded hover:bg-gray-400 dark:hover:bg-gray-600"
-            >
-              Annuler
-            </button>
-            <button
-                onClick={handleSubmit}
-                disabled={loading}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-            >
-              {loading ? "Enregistrement..." : "Enregistrer"}
-            </button>
+                className="w-full border p-2 rounded mb-4"
+            />
+
+            {errorCentreEtat && <p className="text-red-500 mb-2 italic">{errorCentreEtat}</p>}
+            <input
+                type="text"
+                placeholder="Centre d'État Civil"
+                value={commande?.centreEtatCivil!}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setCommande((prev) => ({...prev, centreEtatCivil: value}));
+                  if (value.trim()) setErrorCentreEtat(null);
+                }}
+                className="w-full border p-2 rounded mb-4"
+            />
+
+            {errorEtatCivil && <p className="text-red-500 mb-2 italic">{errorEtatCivil}</p>}
+            <input
+                type="text"
+                placeholder="État Civil"
+                value={commande?.etatCivil!}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setCommande((prev) => ({...prev, etatCivil: value}));
+                  if (value.trim()) setErrorEtatCivil(null);
+                }}
+                className="w-full border p-2 rounded mb-4"
+            />
+
+            {errorTribunal && <p className="text-red-500 mb-2 italic">{errorTribunal}</p>}
+            <input
+                type="text"
+                placeholder="Tribunal"
+                value={commande?.tribunal!}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setCommande((prev) => ({...prev, tribunal: value}));
+                  if (value.trim()) setErrorTribunal(null);
+                }}
+                className="w-full border p-2 rounded mb-4"
+            />
+
+            {errorVille && <p className="text-red-500 mb-2 italic">{errorVille}</p>}
+            <input
+                type="text"
+                placeholder="Ville"
+                value={commande?.ville!}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setCommande((prev) => ({...prev, ville: value}));
+                  if (value.trim()) setErrorVille(null);
+                }}
+                className="w-full border p-2 rounded mb-4"
+            />
+
+            <input
+                type="text"
+                placeholder="Officier"
+                value={commande?.officier!}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setCommande((prev) => ({...prev, officier: value}));
+                }}
+                className="w-full border p-2 rounded mb-4"
+            />
+            <input
+                type="text"
+                placeholder="Titre Officier"
+                value={commande?.titreOfficier!}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setCommande((prev) => ({...prev, titreOfficier: value}));
+                }}
+                className="w-full border p-2 rounded mb-4"
+            />
+
+            <div className="flex justify-end gap-2">
+              <button
+                  onClick={() => {
+                    handleOnClose();
+                    onClose();
+                  }}
+                  className="px-4 py-2 bg-gray-300 dark:bg-gray-700 rounded hover:bg-gray-400 dark:hover:bg-gray-600"
+              >
+                Annuler
+              </button>
+              <button
+                  onClick={handleSubmit}
+                  disabled={loading}
+                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+              >
+                {loading ? "Enregistrement..." : "Enregistrer"}
+              </button>
+            </div>
           </div>
         </div>
       </div>

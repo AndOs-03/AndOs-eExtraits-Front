@@ -1,28 +1,21 @@
 import {Table, TableBody, TableCell, TableHeader, TableRow,} from "../../../components/ui/Table";
-import LigneActionInstitutionTable from "./LigneActionInstitutionTable.tsx";
-import {useEffect, useState} from "react";
-import {InstitutionVM} from "../../../models/institution.model.ts";
-import {recupererInstitutionActif} from "../../../services/institution-actif.service.ts";
+import LigneActionExtraitDecesTable from "./LigneActionExtraitDecesTable.tsx";
+import {
+  ExtraitDecesEssentielVM
+} from "../../../models/ExtraitsDeces/extrait-deces-essentiel.model.ts";
 
 interface Props {
-  institutions: InstitutionVM[];
-  setInstitutions: (institutions: any) => void;
+  extraits: ExtraitDecesEssentielVM[];
+  setExtraits: (extraits: any) => void;
   setLoaderStatus: (status: "idle" | "loading" | "success" | "error", message?: string) => void;
 }
 
-export default function ListeInstitutionsTable(
+export default function ListeExtraitsDecesTable(
     {
-      institutions,
-      setInstitutions,
+      extraits,
+      setExtraits,
       setLoaderStatus,
     }: Props) {
-
-  const [institutionActif, setInstitutionActif] = useState<InstitutionVM | null>(null);
-
-  useEffect(() => {
-    const institutionActif = recupererInstitutionActif();
-    setInstitutionActif(institutionActif);
-  }, []);
 
   return (
       <div
@@ -34,56 +27,62 @@ export default function ListeInstitutionsTable(
               <TableRow>
                 <TableCell
                     isHeader
-                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                    className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Département
+                  Régistre
                 </TableCell>
                 <TableCell
                     isHeader
-                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                    className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Centre d'État Civil
+                  Date Décès
                 </TableCell>
                 <TableCell
                     isHeader
-                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                    className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  État Civil
+                  Lieu Décès
                 </TableCell>
                 <TableCell
                     isHeader
-                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                    className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Tribunal
+                  Nom
                 </TableCell>
                 <TableCell
                     isHeader
-                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                    className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Ville
+                  Prénoms
                 </TableCell>
                 <TableCell
                     isHeader
-                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                    className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Officier
+                  Nationalité
                 </TableCell>
                 <TableCell
                     isHeader
-                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                    className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Titre Officier
+                  Profession
                 </TableCell>
 
                 <TableCell
                     isHeader
-                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                    className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Actif
+                  Domicile
                 </TableCell>
                 <TableCell
                     isHeader
-                    className="px-5 py-3 font-medium text-gray-500 text-right text-theme-xs dark:text-gray-400 w-auto"
+                    className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                >
+                  Registre N
+                </TableCell>
+                <TableCell
+                    isHeader
+                    className="px-4 py-3 font-medium text-gray-500 text-right text-theme-xs dark:text-gray-400 w-auto"
                 >
                   Action
                 </TableCell>
@@ -92,51 +91,51 @@ export default function ListeInstitutionsTable(
 
             {/* Table Body */}
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-              {institutions?.map((institution) => (
-                  <TableRow key={institution.id}>
+              {extraits?.map((extrait) => (
+                  <TableRow key={extrait.id}>
                     <TableCell
                         className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {institution.departement}
+                      {extrait.registre}
                     </TableCell>
                     <TableCell
                         className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {institution.centreEtatCivil}
+                      {extrait.dateDeces
+                          ? new Date(extrait.dateDeces).toLocaleDateString("fr-FR")
+                          : ""}
                     </TableCell>
                     <TableCell
                         className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {institution.etatCivil}
+                      {extrait.lieuDeces}
                     </TableCell>
                     <TableCell
                         className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {institution.tribunal}
+                      {extrait.nom}
                     </TableCell>
                     <TableCell
                         className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {institution.ville}
+                      {extrait.prenoms}
                     </TableCell>
                     <TableCell
                         className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {institution.officier}
+                      {extrait.nationalite}
                     </TableCell>
                     <TableCell
                         className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {institution.titreOfficier}
+                      {extrait.profession}
+                    </TableCell>
+                    <TableCell
+                        className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                      {extrait.domicile}
+                    </TableCell>
+                    <TableCell
+                        className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                      {extrait.registreN}
                     </TableCell>
 
-                    <TableCell
-                        className={`px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400 
-                        ${institutionActif?.id == institution.id
-                            ? "font-bold"
-                            : null
-                        }`}>
-                      {institutionActif?.id == institution.id ? "OUI" : "NON"}
-                    </TableCell>
-
-                    <LigneActionInstitutionTable
-                        institution={institution}
-                        setInstitutions={setInstitutions}
+                    <LigneActionExtraitDecesTable
+                        extrait={extrait}
+                        setExtraits={setExtraits}
                         setLoaderStatus={setLoaderStatus}
-                        setInstitutionActif={setInstitutionActif}
                     />
                   </TableRow>
               ))}

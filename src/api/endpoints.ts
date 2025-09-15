@@ -7,8 +7,7 @@ export const ENDPOINTS = {
   centres: {
     list: () => "/api/centres",
     create: () => "/api/centres",
-    get: (id: number) => `/api/centres/${id}`,  // GET pour un centre précis
-    update: () => `/api/centres`, // PUT pour modifier
+    update: () => `/api/centres`,
     delete: (id: number) => `/api/centres/${id}`,
   },
 
@@ -17,5 +16,14 @@ export const ENDPOINTS = {
     create: () => "/api/institutions",
     get: (id: number) => `/api/institutions/${id}`,
     delete: (id: number) => `/api/institutions/${id}`,
+  },
+
+  extraitsDeces: {
+    list: () => "/api/extraits-deces",
+    create: () => "/api/extraits-deces",
+    update: () => `/api/extraits-deces`,
+    get: (id: number) => `/api/extraits-deces/${id}`,
+    getByRegistre: (registre: string) => `/api/extraits-deces?registre=${encodeURIComponent(registre)}`,
+    delete: (id: number) => `/api/extraits-deces/${id}`,
   },
 };
