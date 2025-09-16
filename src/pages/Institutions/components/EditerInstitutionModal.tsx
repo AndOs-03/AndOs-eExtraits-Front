@@ -98,8 +98,15 @@ export default function EditerInstitutionModal(
         setLoaderStatus("error", reponse.message || "Erreur lors de l'enregistrement");
       } else {
         setLoaderStatus("success", "Enregistré avec succès ✅");
+        if (id) {
+          const reponse = await recupererInstitution(id);
+          if (!("message" in reponse)) {
+            setElementAdded(reponse as InstitutionVM);
+          }
+        } else {
+          setElementAdded(institution);
+        }
         handleOnClose();
-        setElementAdded(institution);
       }
     } catch (err: any) {
       setError(err.message || "Erreur lors de l'ajout");
@@ -117,6 +124,10 @@ export default function EditerInstitutionModal(
     setCommande((prev) => ({...prev, ville: ""}));
     setCommande((prev) => ({...prev, officier: ""}));
     setCommande((prev) => ({...prev, titreOfficier: ""}));
+
+    if (id) {
+      onClose();
+    }
   }
 
   const validationDuFormulaire = (): boolean => {
@@ -151,11 +162,17 @@ export default function EditerInstitutionModal(
   return (
       <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50">
         <div className="flex items-center justify-center min-h-screen px-4 py-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-lg font-bold mb-4">{id ? "Modifier l'institution" : "Crée une" +
-                " institution"}</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md text-left">
+            <h2 className="text-lg font-bold mb-4">
+              {id ? "Modifier l'institution" : "Crée une institution"}
+            </h2>
+
             {error && <p className="text-red-500 mb-2 italic">{error}</p>}
-            {errorDepart && <p className="text-red-500 mb-2 italic">{errorDepart}</p>}
+
+            <label className="block text-sm font-medium text-gray-700">Département</label>
+            {errorDepart && (
+                <p className="text-red-500 italic text-sm">{errorDepart}</p>
+            )}
             <input
                 type="text"
                 placeholder="Département"
@@ -165,23 +182,29 @@ export default function EditerInstitutionModal(
                   setCommande((prev) => ({...prev, departement: value}));
                   if (value.trim()) setErrorDepart(null);
                 }}
-                className="w-full border p-2 rounded mb-4"
+                className="w-full border p-2 rounded mb-2"
             />
 
-            {errorCentreEtat && <p className="text-red-500 mb-2 italic">{errorCentreEtat}</p>}
+            <label className="block text-sm font-medium text-gray-700">Centre d'État Civil</label>
+            {errorCentreEtat && (
+                <p className="text-red-500 italic text-sm">{errorCentreEtat}</p>
+            )}
             <input
                 type="text"
-                placeholder="Centre d'État Civil"
+                placeholder="Centre"
                 value={commande?.centreEtatCivil!}
                 onChange={(e) => {
                   const value = e.target.value;
                   setCommande((prev) => ({...prev, centreEtatCivil: value}));
                   if (value.trim()) setErrorCentreEtat(null);
                 }}
-                className="w-full border p-2 rounded mb-4"
+                className="w-full border p-2 rounded mb-2"
             />
 
-            {errorEtatCivil && <p className="text-red-500 mb-2 italic">{errorEtatCivil}</p>}
+            <label className="block text-sm font-medium text-gray-700">État Civil</label>
+            {errorEtatCivil && (
+                <p className="text-red-500 italic text-sm">{errorEtatCivil}</p>
+            )}
             <input
                 type="text"
                 placeholder="État Civil"
@@ -191,10 +214,13 @@ export default function EditerInstitutionModal(
                   setCommande((prev) => ({...prev, etatCivil: value}));
                   if (value.trim()) setErrorEtatCivil(null);
                 }}
-                className="w-full border p-2 rounded mb-4"
+                className="w-full border p-2 rounded mb-2"
             />
 
-            {errorTribunal && <p className="text-red-500 mb-2 italic">{errorTribunal}</p>}
+            <label className="block text-sm font-medium text-gray-700">Tribunal d'État Civil</label>
+            {errorTribunal && (
+                <p className="text-red-500 italic text-sm">{errorTribunal}</p>
+            )}
             <input
                 type="text"
                 placeholder="Tribunal"
@@ -204,10 +230,13 @@ export default function EditerInstitutionModal(
                   setCommande((prev) => ({...prev, tribunal: value}));
                   if (value.trim()) setErrorTribunal(null);
                 }}
-                className="w-full border p-2 rounded mb-4"
+                className="w-full border p-2 rounded mb-2"
             />
 
-            {errorVille && <p className="text-red-500 mb-2 italic">{errorVille}</p>}
+            <label className="block text-sm font-medium text-gray-700">Ville</label>
+            {errorVille && (
+                <p className="text-red-500 italic text-sm">{errorVille}</p>
+            )}
             <input
                 type="text"
                 placeholder="Ville"
@@ -217,9 +246,10 @@ export default function EditerInstitutionModal(
                   setCommande((prev) => ({...prev, ville: value}));
                   if (value.trim()) setErrorVille(null);
                 }}
-                className="w-full border p-2 rounded mb-4"
+                className="w-full border p-2 rounded mb-2"
             />
 
+            <label className="block text-sm font-medium text-gray-700">Officier</label>
             <input
                 type="text"
                 placeholder="Officier"
@@ -230,6 +260,8 @@ export default function EditerInstitutionModal(
                 }}
                 className="w-full border p-2 rounded mb-4"
             />
+
+            <label className="block text-sm font-medium text-gray-700">Titre Officier</label>
             <input
                 type="text"
                 placeholder="Titre Officier"
@@ -238,7 +270,7 @@ export default function EditerInstitutionModal(
                   const value = e.target.value;
                   setCommande((prev) => ({...prev, titreOfficier: value}));
                 }}
-                className="w-full border p-2 rounded mb-4"
+                className="w-full border p-2 rounded mb-2"
             />
 
             <div className="flex justify-end gap-2">

@@ -57,13 +57,16 @@ export default function ListeCentresTable({centres, setCentres, setLoaderStatus,
                       {centre.nom}
                     </TableCell>
                     <TableCell
-                        className={`px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400 
+                        className={`px-5 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400 w-25
                         ${centreActif?.id == centre.id
                             ? "font-bold"
                             : null
                         }`}>
-                      {centreActif?.id == centre.id ? "OUI" : "NON"}
+                      <p className={centreActif?.id === centre.id ? "bg-blue-500 text-white" : "bg-gray-200"}>
+                        {centreActif?.id == centre.id ? "OUI" : "NON"}
+                      </p>
                     </TableCell>
+
                     <LigneActionCentreTable
                         centre={centre}
                         setCentres={setCentres}

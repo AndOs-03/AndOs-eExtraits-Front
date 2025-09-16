@@ -8,7 +8,6 @@ import {ExtraitDecesDetailsVM} from "../../../models/ExtraitsDeces/extrait-deces
 import {CreerExtraitDecesCommande} from "../creer-extrait-deces.commande.ts";
 import {ModifierExtraitDecesCommande} from "../modifier-extrait-deces.commande.ts";
 import {ParentExtrait} from "../../../models/parents-extrait.model.ts";
-import DatePicker from "../../../components/form/date-picker.tsx";
 import Select from "../../../components/form/Select.tsx";
 import {SituationMatrimoniale} from "../../../models/situation-matrimoniale.ts";
 
@@ -155,8 +154,15 @@ export default function EditerExtraitDecesModal(
         setLoaderStatus("error", reponse.message || "Erreur lors de l'enregistrement");
       } else {
         setLoaderStatus("success", `${id ? "Modifié" : "Enregistré"} avec succès ✅`);
+        if (id) {
+          const reponse = await recupererExtraitDeces(id);
+          if (!("message" in reponse)) {
+            setElementAdded(reponse as ExtraitDecesDetailsVM);
+          }
+        } else {
+          setElementAdded(extrait);
+        }
         handleOnClose();
-        setElementAdded(extrait);
       }
     } catch (err: any) {
       setError(err.message || "Erreur lors de l'ajout");
@@ -249,7 +255,7 @@ export default function EditerExtraitDecesModal(
 
   const valeursSelectSituationMatrimoniale = () => {
     return [
-      { value: "", label: "-- Sélectionnez une situation --" },
+      {value: "", label: "-- Sélectionnez une situation --"},
       ...Object.entries(SituationMatrimoniale).map(([situation, label]) => ({
         value: situation,
         label: label,
@@ -263,7 +269,7 @@ export default function EditerExtraitDecesModal(
       <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 pt-6 md:pt-12">
         <div className="flex items-start justify-center min-h-screen px-4 py-6">
           <div
-              className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-5xl overflow-y-auto">
+              className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-5xl overflow-y-auto text-left">
 
             <h2 className="text-lg font-bold sticky top-0 bg-white dark:bg-gray-800">
               {id ? "Modifier l'extrait" : "Crée un extrait"}
@@ -280,7 +286,7 @@ export default function EditerExtraitDecesModal(
             {/* Grid pour 2 champs par ligne */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-x-2">
               <div className="mb-2">
-                <p className="text-red-500 italic h-5 mb-1"></p>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Registre</label>
                 <input
                     type="text"
                     placeholder="Registre"
@@ -304,9 +310,7 @@ export default function EditerExtraitDecesModal(
               </div>
 
               <div className="mb-2">
-                <p className="text-red-500 italic h-5 mb-1">
-                  {errorAnnee ? errorAnnee : ""}
-                </p>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Année</label>
                 <input
                     type="number"
                     placeholder="Année"
@@ -329,12 +333,13 @@ export default function EditerExtraitDecesModal(
                     }}
                     className="w-full border p-2 rounded"
                 />
+                {errorAnnee && (
+                    <p className="text-red-500 italic text-sm">{errorAnnee}</p>
+                )}
               </div>
 
               <div className="mb-2">
-                <p className="text-red-500 italic h-5 mb-1">
-                  {errorNumeroRegistre ? errorNumeroRegistre : ""}
-                </p>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nº Acte</label>
                 <input
                     type="text"
                     placeholder="Nº Acte"
@@ -356,17 +361,20 @@ export default function EditerExtraitDecesModal(
                     }}
                     className="w-full border p-2 rounded"
                 />
+                {errorNumeroRegistre && (
+                    <p className="text-red-500 italic text-sm">{errorNumeroRegistre}</p>
+                )}
               </div>
 
               <div className="mb-2">
-                <p className="text-red-500 italic h-5 mb-1">
-                  {errorDateRegistre ? errorDateRegistre : ""}
-                </p>
-                <DatePicker
+                <label className="block text-sm font-medium text-gray-700 mb-1">Du</label>
+                <input
+                    type="date"
                     id="dateRegistre"
-                    defaultDate={id ? modifierCommande?.dateRegistre ?? "" : commande?.dateRegistre ?? ""}
-                    placeholder="Date de Régistre"
-                    onChange={(dates, currentDateString) => {
+                    value={id ? modifierCommande?.dateRegistre ?? "" : commande?.dateRegistre ?? ""}
+                    placeholder="Ex: 01/01/2000"
+                    onChange={(e) => {
+                      const currentDateString = e.target.value;
                       if (id) {
                         setModifierCommande((prev) => ({
                           ...prev,
@@ -383,13 +391,15 @@ export default function EditerExtraitDecesModal(
                         setErrorDateRegistre(null);
                       }
                     }}
+                    className="w-full border p-2 rounded"
                 />
+                {errorDateRegistre && (
+                    <p className="text-red-500 italic text-sm">{errorDateRegistre}</p>
+                )}
               </div>
 
               <div className="mb-2">
-                <p className="text-red-500 italic h-5 mb-1">
-                  {errorEtatCivil ? errorEtatCivil : ""}
-                </p>
+                <label className="block text-sm font-medium text-gray-700 mb-1">État Civil</label>
                 <input
                     type="text"
                     placeholder="État Civil"
@@ -411,15 +421,17 @@ export default function EditerExtraitDecesModal(
                     }}
                     className="w-full border p-2 rounded"
                 />
+                {errorEtatCivil && (
+                    <p className="text-red-500 italic text-sm">{errorEtatCivil}</p>
+                )}
               </div>
 
               <div className="mb-2">
-                <p className="text-red-500 italic h-5 mb-1">
-                  {errorCentreEtatCivil ? errorCentreEtatCivil : ""}
-                </p>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Centre d'État
+                  Civil</label>
                 <input
                     type="text"
-                    placeholder="Centre d'État Civil"
+                    placeholder="Centre"
                     value={id ? modifierCommande?.centreEtatCivil ?? "" : commande?.centreEtatCivil ?? ""}
                     onChange={(e) => {
                       const value = e.target.value;
@@ -438,6 +450,67 @@ export default function EditerExtraitDecesModal(
                     }}
                     className="w-full border p-2 rounded"
                 />
+                {errorCentreEtatCivil && (
+                    <p className="text-red-500 italic text-sm">{errorCentreEtatCivil}</p>
+                )}
+              </div>
+
+              <div className="mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Date de
+                  Décès</label>
+                <input
+                    type="date"
+                    id="dateDeces"
+                    value={id ? modifierCommande?.dateDeces ?? "" : commande?.dateDeces ?? ""}
+                    placeholder="Ex: 01/01/2000"
+                    onChange={(e) => {
+                      const currentDateString = e.target.value;
+                      if (id) {
+                        setModifierCommande((prev) => ({
+                          ...prev,
+                          dateDeces: currentDateString
+                        } as ModifierExtraitDecesCommande));
+                      } else {
+                        setCommande((prev) => ({
+                          ...prev,
+                          dateDeces: currentDateString
+                        } as CreerExtraitDecesCommande));
+                      }
+
+                      if (estDateValide(currentDateString)) {
+                        setErrorDateDeces(null);
+                      }
+                    }}
+                    className="w-full border p-2 rounded"
+                />
+                {errorDateDeces && (
+                    <p className="text-red-500 italic text-sm">{errorDateDeces}</p>
+                )}
+              </div>
+
+              <div className="mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Lieu de
+                  Décès</label>
+                <input
+                    type="text"
+                    placeholder="Lieu de Décès"
+                    value={id ? modifierCommande?.lieuDeces ?? "" : commande?.lieuDeces ?? ""}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (id) {
+                        setModifierCommande((prev) => ({
+                          ...prev,
+                          lieuDeces: value
+                        } as ModifierExtraitDecesCommande));
+                      } else {
+                        setCommande((prev) => ({
+                          ...prev,
+                          lieuDeces: value
+                        } as CreerExtraitDecesCommande));
+                      }
+                    }}
+                    className="w-full border p-2 rounded"
+                />
               </div>
             </div>
             <div className="relative flex py-3 items-center">
@@ -446,11 +519,9 @@ export default function EditerExtraitDecesModal(
               <div className="flex-grow border-t border-gray-400"></div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-x-2">
               <div className="mb-2">
-                <p className="text-red-500 italic h-5 mb-1">
-                  {errorNom ? errorNom : ""}
-                </p>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nom</label>
                 <input
                     type="text"
                     placeholder="Nom"
@@ -472,12 +543,13 @@ export default function EditerExtraitDecesModal(
                     }}
                     className="w-full border p-2 rounded"
                 />
+                {errorNom && (
+                    <p className="text-red-500 italic text-sm">{errorNom}</p>
+                )}
               </div>
 
               <div className="mb-2">
-                <p className="text-red-500 italic h-5 mb-1">
-                  {errorPrenoms ? errorPrenoms : ""}
-                </p>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Prénoms</label>
                 <input
                     type="text"
                     placeholder="Prénoms"
@@ -499,17 +571,20 @@ export default function EditerExtraitDecesModal(
                     }}
                     className="w-full border p-2 rounded"
                 />
+                {errorPrenoms && (
+                    <p className="text-red-500 italic text-sm">{errorPrenoms}</p>
+                )}
               </div>
 
               <div className="mb-2">
-                <p className="text-red-500 italic h-5 mb-1">
-                  {errorDateNaissance ? errorDateNaissance : ""}
-                </p>
-                <DatePicker
+                <label className="block text-sm font-medium text-gray-700 mb-1">Né le</label>
+                <input
+                    type="date"
                     id="dateNaissance"
-                    defaultDate={id ? modifierCommande?.dateNaissance ?? "" : commande?.dateNaissance ?? ""}
-                    placeholder="Date de Naissance"
-                    onChange={(dates, currentDateString) => {
+                    value={id ? modifierCommande?.dateNaissance ?? "" : commande?.dateNaissance ?? ""}
+                    placeholder="Ex: 01/01/2000"
+                    onChange={(e) => {
+                      const currentDateString = e.target.value;
                       if (id) {
                         setModifierCommande((prev) => ({
                           ...prev,
@@ -526,11 +601,15 @@ export default function EditerExtraitDecesModal(
                         setErrorDateNaissance(null);
                       }
                     }}
+                    className="w-full border p-2 rounded"
                 />
+                {errorDateNaissance && (
+                    <p className="text-red-500 italic text-sm">{errorDateNaissance}</p>
+                )}
               </div>
 
               <div className="mb-2">
-                <p className="text-red-500 italic h-5 mb-1"></p>
+                <label className="block text-sm font-medium text-gray-700 mb-1">à</label>
                 <input
                     type="text"
                     placeholder="Lieu de Naissance"
@@ -554,7 +633,7 @@ export default function EditerExtraitDecesModal(
               </div>
 
               <div className="mb-2">
-                <p className="text-red-500 italic h-5 mb-1"></p>
+                <label className="block text-sm font-medium text-gray-700">Profession</label>
                 <input
                     type="text"
                     placeholder="Profession"
@@ -578,7 +657,7 @@ export default function EditerExtraitDecesModal(
               </div>
 
               <div className="mb-2">
-                <p className="text-red-500 italic h-5 mb-1"></p>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Domicilé à</label>
                 <input
                     type="text"
                     placeholder="Domicile"
@@ -602,7 +681,7 @@ export default function EditerExtraitDecesModal(
               </div>
 
               <div className="mb-2">
-                <p className="text-red-500 italic h-5 mb-1"></p>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nationalité</label>
                 <input
                     type="text"
                     placeholder="Nationalité"
@@ -626,14 +705,12 @@ export default function EditerExtraitDecesModal(
               </div>
 
               <div className="mb-2">
-                <p className="text-red-500 italic h-5 mb-1">
-                  {errorSituationMatrimoniale ? errorSituationMatrimoniale : ""}
-                </p>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Situation
+                  Matrimoniale</label>
                 <Select
-                    defaultValue={id ? modifierCommande?.situationMatrimoniale ?? "" : commande?.situationMatrimoniale ?? ""}
-                    placeholder="Situation Matrimoniale"
+                    value={id ? modifierCommande?.situationMatrimoniale ?? "" : commande?.situationMatrimoniale ?? ""}
+                    placeholder="Veillez choisir"
                     onChange={value => {
-                      console.log(value);
                       if (id) {
                         setModifierCommande((prev) => ({
                           ...prev,
@@ -650,58 +727,9 @@ export default function EditerExtraitDecesModal(
                     className="dark:bg-dark-900"
                     options={valeursSelectSituationMatrimoniale()}
                 />
-              </div>
-
-              <div className="mb-2">
-                <p className="text-red-500 italic h-5 mb-1">
-                  {errorDateDeces ? errorDateDeces : ""}
-                </p>
-                <DatePicker
-                    id="dateDeces"
-                    defaultDate={id ? modifierCommande?.dateDeces ?? "" : commande?.dateDeces ?? ""}
-                    placeholder="Date de Décès"
-                    onChange={(dates, currentDateString) => {
-                      if (id) {
-                        setModifierCommande((prev) => ({
-                          ...prev,
-                          dateDeces: currentDateString
-                        } as ModifierExtraitDecesCommande));
-                      } else {
-                        setCommande((prev) => ({
-                          ...prev,
-                          dateDeces: currentDateString
-                        } as CreerExtraitDecesCommande));
-                      }
-
-                      if (estDateValide(currentDateString)) {
-                        setErrorDateDeces(null);
-                      }
-                    }}
-                />
-              </div>
-
-              <div className="mb-2">
-                <p className="text-red-500 italic h-5 mb-1"></p>
-                <input
-                    type="text"
-                    placeholder="Lieu de Décès"
-                    value={id ? modifierCommande?.lieuDeces ?? "" : commande?.lieuDeces ?? ""}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (id) {
-                        setModifierCommande((prev) => ({
-                          ...prev,
-                          lieuDeces: value
-                        } as ModifierExtraitDecesCommande));
-                      } else {
-                        setCommande((prev) => ({
-                          ...prev,
-                          lieuDeces: value
-                        } as CreerExtraitDecesCommande));
-                      }
-                    }}
-                    className="w-full border p-2 rounded"
-                />
+                {errorSituationMatrimoniale && (
+                    <p className="text-red-500 italic text-sm">{errorSituationMatrimoniale}</p>
+                )}
               </div>
             </div>
 
@@ -713,6 +741,7 @@ export default function EditerExtraitDecesModal(
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2">
               <div className="mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Père</label>
                 <input
                     type="text"
                     placeholder="Nom Prénoms du Père"
@@ -736,6 +765,7 @@ export default function EditerExtraitDecesModal(
                 />
               </div>
               <div className="mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Mère</label>
                 <input
                     type="text"
                     placeholder="Nom Prénoms de la Mère"

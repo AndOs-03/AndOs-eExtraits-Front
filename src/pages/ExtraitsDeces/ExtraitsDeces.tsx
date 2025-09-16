@@ -7,7 +7,7 @@ import {ExtraitDecesEssentielVM} from "../../models/ExtraitsDeces/extrait-deces-
 import ListeExtraitsDecesTable from "./components/ListeExtraitsDecesTable.tsx";
 import EditerExtraitDecesModal from "./components/EditerExtraitDecesModal.tsx";
 
-export default function Institutions() {
+export default function ExtraitsDeces() {
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [extraits, setExtraits] = useState<ExtraitDecesEssentielVM[]>([]);
@@ -71,7 +71,7 @@ export default function Institutions() {
         <div className="space-y-6">
           <LoaderBanner status={loaderStatus} message={loaderMessage}/>
 
-          <ComponentCard title="Liste des centres">
+          <ComponentCard title="Liste des extraits">
             <div className="flex justify-end mb-4">
               <button
                   onClick={() => setIsAddModalOpen(true)}
