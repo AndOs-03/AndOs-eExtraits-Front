@@ -55,7 +55,7 @@ export default function ModifierCentreModal(
   return (
       <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50">
         <div className="flex items-center justify-center min-h-screen px-4 py-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md text-left">
             <h2 className="text-lg font-bold mb-4">Modifier le centre</h2>
             {error && <p className="text-red-500 mb-2">{error}</p>}
 

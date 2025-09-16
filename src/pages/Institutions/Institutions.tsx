@@ -71,7 +71,7 @@ export default function Institutions() {
         <div className="space-y-6">
           <LoaderBanner status={loaderStatus} message={loaderMessage}/>
 
-          <ComponentCard title="Liste des centres">
+          <ComponentCard title="Liste des institutions">
             <div className="flex justify-end mb-4">
               <button
                   onClick={() => setIsAddModalOpen(true)}

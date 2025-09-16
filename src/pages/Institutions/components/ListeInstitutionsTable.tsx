@@ -124,12 +124,14 @@ export default function ListeInstitutionsTable(
                     </TableCell>
 
                     <TableCell
-                        className={`px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400 
+                        className={`px-5 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400 w-25
                         ${institutionActif?.id == institution.id
                             ? "font-bold"
                             : null
                         }`}>
-                      {institutionActif?.id == institution.id ? "OUI" : "NON"}
+                      <p className={institutionActif?.id === institution.id ? "bg-blue-500 text-white" : "bg-gray-200"}>
+                        {institutionActif?.id == institution.id ? "OUI" : "NON"}
+                      </p>
                     </TableCell>
 
                     <LigneActionInstitutionTable

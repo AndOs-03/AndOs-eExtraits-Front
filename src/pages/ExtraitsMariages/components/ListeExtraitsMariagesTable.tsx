@@ -1,16 +1,16 @@
 import {Table, TableBody, TableCell, TableHeader, TableRow,} from "../../../components/ui/Table";
-import LigneActionExtraitDecesTable from "./LigneActionExtraitDecesTable.tsx";
+import LigneActionExtraitDecesTable from "./LigneActionExtraitMariageTable.tsx";
 import {
-  ExtraitDecesEssentielVM
-} from "../../../models/ExtraitsDeces/extrait-deces-essentiel.model.ts";
+  ExtraitMariageEssentielVM
+} from "../../../models/ExtraitsMariages/extrait-mariage-essentiel.model.ts";
 
 interface Props {
-  extraits: ExtraitDecesEssentielVM[];
+  extraits: ExtraitMariageEssentielVM[];
   setExtraits: (extraits: any) => void;
   setLoaderStatus: (status: "idle" | "loading" | "success" | "error", message?: string) => void;
 }
 
-export default function ListeExtraitsDecesTable(
+export default function ListeExtraitsMariagesTable(
     {
       extraits,
       setExtraits,
@@ -35,44 +35,19 @@ export default function ListeExtraitsDecesTable(
                     isHeader
                     className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Date Décès
+                  Date Mariage
                 </TableCell>
                 <TableCell
                     isHeader
                     className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Lieu Décès
+                  Époux
                 </TableCell>
                 <TableCell
                     isHeader
                     className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Nom
-                </TableCell>
-                <TableCell
-                    isHeader
-                    className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Prénoms
-                </TableCell>
-                <TableCell
-                    isHeader
-                    className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Nationalité
-                </TableCell>
-                <TableCell
-                    isHeader
-                    className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Profession
-                </TableCell>
-
-                <TableCell
-                    isHeader
-                    className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Domicile
+                  Épouse
                 </TableCell>
                 <TableCell
                     isHeader
@@ -99,33 +74,17 @@ export default function ListeExtraitsDecesTable(
                     </TableCell>
                     <TableCell
                         className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {extrait.dateDeces
-                          ? new Date(extrait.dateDeces).toLocaleDateString("fr-FR")
+                      {extrait.dateMariage
+                          ? new Date(extrait.dateMariage).toLocaleDateString("fr-FR")
                           : ""}
                     </TableCell>
                     <TableCell
                         className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {extrait.lieuDeces}
+                      {extrait.epoux.nomPrenoms}
                     </TableCell>
                     <TableCell
                         className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {extrait.nom}
-                    </TableCell>
-                    <TableCell
-                        className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {extrait.prenoms}
-                    </TableCell>
-                    <TableCell
-                        className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {extrait.nationalite}
-                    </TableCell>
-                    <TableCell
-                        className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {extrait.profession}
-                    </TableCell>
-                    <TableCell
-                        className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {extrait.domicile}
+                      {extrait.epouse.nomPrenoms}
                     </TableCell>
                     <TableCell
                         className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
