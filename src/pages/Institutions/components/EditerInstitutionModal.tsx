@@ -182,7 +182,7 @@ export default function EditerInstitutionModal(
                   setCommande((prev) => ({...prev, departement: value}));
                   if (value.trim()) setErrorDepart(null);
                 }}
-                className="w-full border p-2 rounded mb-2"
+                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-2"
             />
 
             <label className="block text-sm font-medium text-gray-700">Centre d'État Civil</label>
@@ -198,7 +198,7 @@ export default function EditerInstitutionModal(
                   setCommande((prev) => ({...prev, centreEtatCivil: value}));
                   if (value.trim()) setErrorCentreEtat(null);
                 }}
-                className="w-full border p-2 rounded mb-2"
+                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-2"
             />
 
             <label className="block text-sm font-medium text-gray-700">État Civil</label>
@@ -214,7 +214,7 @@ export default function EditerInstitutionModal(
                   setCommande((prev) => ({...prev, etatCivil: value}));
                   if (value.trim()) setErrorEtatCivil(null);
                 }}
-                className="w-full border p-2 rounded mb-2"
+                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded mb-2"
             />
 
             <label className="block text-sm font-medium text-gray-700">Tribunal d'État Civil</label>
@@ -230,7 +230,7 @@ export default function EditerInstitutionModal(
                   setCommande((prev) => ({...prev, tribunal: value}));
                   if (value.trim()) setErrorTribunal(null);
                 }}
-                className="w-full border p-2 rounded mb-2"
+                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-2"
             />
 
             <label className="block text-sm font-medium text-gray-700">Ville</label>
@@ -246,7 +246,7 @@ export default function EditerInstitutionModal(
                   setCommande((prev) => ({...prev, ville: value}));
                   if (value.trim()) setErrorVille(null);
                 }}
-                className="w-full border p-2 rounded mb-2"
+                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded mb-2"
             />
 
             <label className="block text-sm font-medium text-gray-700">Officier</label>
@@ -258,7 +258,7 @@ export default function EditerInstitutionModal(
                   const value = e.target.value;
                   setCommande((prev) => ({...prev, officier: value}));
                 }}
-                className="w-full border p-2 rounded mb-4"
+                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-4"
             />
 
             <label className="block text-sm font-medium text-gray-700">Titre Officier</label>
@@ -270,7 +270,7 @@ export default function EditerInstitutionModal(
                   const value = e.target.value;
                   setCommande((prev) => ({...prev, titreOfficier: value}));
                 }}
-                className="w-full border p-2 rounded mb-2"
+                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-2"
             />
 
             <div className="flex justify-end gap-2">

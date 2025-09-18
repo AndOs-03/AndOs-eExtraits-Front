@@ -1,4 +1,4 @@
-import {PersonneExtraitMariage} from "../personne-extrait-mariage.model.ts";
+import {PersonneExtraitMariage} from "./personne-extrait-mariage.model.ts";
 
 export class ExtraitMariageDetailsVM {
 

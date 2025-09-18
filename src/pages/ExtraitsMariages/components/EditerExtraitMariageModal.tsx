@@ -75,7 +75,7 @@ export default function EditerExtraitMariageModal(
 
         const reponse = await recupererExtraitMariages(id);
         if ("message" in reponse) {
-          setLoaderStatus("error", reponse.message || "Erreur de récupération de l'institution");
+          setLoaderStatus("error", reponse.message || "Erreur de récupération de l'extrait");
         } else {
           setModifierCommande((prev) => ({
             ...prev,
@@ -146,9 +146,9 @@ export default function EditerExtraitMariageModal(
       } else {
         setLoaderStatus("success", `${id ? "Modifié" : "Enregistré"} avec succès ✅`);
         if (id) {
-          const reponse = await recupererExtraitMariages(id);
-          if (!("message" in reponse)) {
-            setElementAdded(reponse as ExtraitMariageDetailsVM);
+          const extraitUpdated = await recupererExtraitMariages(id);
+          if (!("message" in extraitUpdated)) {
+            setElementAdded(extraitUpdated as ExtraitMariageDetailsVM);
           }
         } else {
           setElementAdded(extrait);
@@ -273,212 +273,215 @@ export default function EditerExtraitMariageModal(
             </div>
 
             {/* Grid pour 2 champs par ligne */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-x-2">
-              <div className="mb-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Registre</label>
-                <input
-                    type="text"
-                    placeholder="Registre"
-                    value={id ? modifierCommande?.registreN ?? "" : commande?.registreN ?? ""}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (id) {
-                        setModifierCommande((prev) => ({
-                          ...prev,
-                          registreN: value
-                        } as ModifierExtraitMariageCommande));
-                      } else {
-                        setCommande((prev) => ({
-                          ...prev,
-                          registreN: value
-                        } as CreerExtraitMariageCommande));
-                      }
-                    }}
-                    className="w-full border p-2 rounded"
-                />
-              </div>
+            <div className="p-6 py-1 rounded-lg shadow-md mb-2 border border-gray-200">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-x-2">
+                <div className="mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Registre</label>
+                  <input
+                      type="text"
+                      placeholder="Registre"
+                      value={id ? modifierCommande?.registreN ?? "" : commande?.registreN ?? ""}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (id) {
+                          setModifierCommande((prev) => ({
+                            ...prev,
+                            registreN: value
+                          } as ModifierExtraitMariageCommande));
+                        } else {
+                          setCommande((prev) => ({
+                            ...prev,
+                            registreN: value
+                          } as CreerExtraitMariageCommande));
+                        }
+                      }}
+                      className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                </div>
 
-              <div className="mb-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Année</label>
-                <input
-                    type="number"
-                    placeholder="Année"
-                    min="1"
-                    value={id ? modifierCommande?.annee ?? "" : commande?.annee ?? ""}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (id) {
-                        setModifierCommande((prev) => ({
-                          ...prev,
-                          annee: value
-                        } as ModifierExtraitMariageCommande));
-                      } else {
-                        setCommande((prev) => ({
-                          ...prev,
-                          annee: value
-                        } as CreerExtraitMariageCommande));
-                      }
-                      if (value.trim()) setErrorAnnee(null);
-                    }}
-                    className="w-full border p-2 rounded"
-                />
-                {errorAnnee && (
-                    <p className="text-red-500 italic text-sm mt-1">{errorAnnee}</p>
-                )}
-              </div>
+                <div className="mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Année</label>
+                  <input
+                      type="number"
+                      placeholder="Année"
+                      min="1"
+                      value={id ? modifierCommande?.annee ?? "" : commande?.annee ?? ""}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (id) {
+                          setModifierCommande((prev) => ({
+                            ...prev,
+                            annee: value
+                          } as ModifierExtraitMariageCommande));
+                        } else {
+                          setCommande((prev) => ({
+                            ...prev,
+                            annee: value
+                          } as CreerExtraitMariageCommande));
+                        }
+                        if (value.trim()) setErrorAnnee(null);
+                      }}
+                      className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                  {errorAnnee && (
+                      <p className="text-red-500 italic text-sm mt-1">{errorAnnee}</p>
+                  )}
+                </div>
 
-              <div className="mb-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nº Acte</label>
-                <input
-                    type="text"
-                    placeholder="Nº Acte"
-                    value={id ? modifierCommande?.numeroRegistre ?? "" : commande?.numeroRegistre ?? ""}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (id) {
-                        setModifierCommande((prev) => ({
-                          ...prev,
-                          numeroRegistre: value
-                        } as ModifierExtraitMariageCommande));
-                      } else {
-                        setCommande((prev) => ({
-                          ...prev,
-                          numeroRegistre: value
-                        } as CreerExtraitMariageCommande));
-                      }
-                      if (value.trim()) setErrorNumeroRegistre(null);
-                    }}
-                    className="w-full border p-2 rounded"
-                />
-                {errorNumeroRegistre && (
-                    <p className="text-red-500 italic text-sm mt-1">{errorNumeroRegistre}</p>
-                )}
-              </div>
+                <div className="mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Nº Acte</label>
+                  <input
+                      type="text"
+                      placeholder="Nº Acte"
+                      value={id ? modifierCommande?.numeroRegistre ?? "" : commande?.numeroRegistre ?? ""}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (id) {
+                          setModifierCommande((prev) => ({
+                            ...prev,
+                            numeroRegistre: value
+                          } as ModifierExtraitMariageCommande));
+                        } else {
+                          setCommande((prev) => ({
+                            ...prev,
+                            numeroRegistre: value
+                          } as CreerExtraitMariageCommande));
+                        }
+                        if (value.trim()) setErrorNumeroRegistre(null);
+                      }}
+                      className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                  {errorNumeroRegistre && (
+                      <p className="text-red-500 italic text-sm mt-1">{errorNumeroRegistre}</p>
+                  )}
+                </div>
 
-              <div className="mb-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Du</label>
-                <input
-                    type="date"
-                    id="dateRegistre"
-                    value={id ? modifierCommande?.dateRegistre ?? "" : commande?.dateRegistre ?? ""}
-                    placeholder="Ex: 01/01/2000"
-                    onChange={(e) => {
-                      const currentDateString = e.target.value;
-                      if (id) {
-                        setModifierCommande((prev) => ({
-                          ...prev,
-                          dateRegistre: currentDateString
-                        } as ModifierExtraitMariageCommande));
-                      } else {
-                        setCommande((prev) => ({
-                          ...prev,
-                          dateRegistre: currentDateString
-                        } as CreerExtraitMariageCommande));
-                      }
+                <div className="mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Du</label>
+                  <input
+                      type="date"
+                      id="dateRegistre"
+                      value={id ? modifierCommande?.dateRegistre ?? "" : commande?.dateRegistre ?? ""}
+                      placeholder="Ex: 01/01/2000"
+                      onChange={(e) => {
+                        const currentDateString = e.target.value;
+                        if (id) {
+                          setModifierCommande((prev) => ({
+                            ...prev,
+                            dateRegistre: currentDateString
+                          } as ModifierExtraitMariageCommande));
+                        } else {
+                          setCommande((prev) => ({
+                            ...prev,
+                            dateRegistre: currentDateString
+                          } as CreerExtraitMariageCommande));
+                        }
 
-                      if (estDateValide(currentDateString)) {
-                        setErrorDateRegistre(null);
-                      }
-                    }}
-                    className="w-full border p-2 rounded"
-                />
-                {errorDateRegistre && (
-                    <p className="text-red-500 italic text-sm mt-1">{errorDateRegistre}</p>
-                )}
-              </div>
+                        if (estDateValide(currentDateString)) {
+                          setErrorDateRegistre(null);
+                        }
+                      }}
+                      className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                  {errorDateRegistre && (
+                      <p className="text-red-500 italic text-sm mt-1">{errorDateRegistre}</p>
+                  )}
+                </div>
 
-              <div className="mb-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">État Civil</label>
-                <input
-                    type="text"
-                    placeholder="État Civil"
-                    value={id ? modifierCommande?.etatCivil ?? "" : commande?.etatCivil ?? ""}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (id) {
-                        setModifierCommande((prev) => ({
-                          ...prev,
-                          etatCivil: value
-                        } as ModifierExtraitMariageCommande));
-                      } else {
-                        setCommande((prev) => ({
-                          ...prev,
-                          etatCivil: value
-                        } as CreerExtraitMariageCommande));
-                      }
-                      if (value.trim()) setErrorEtatCivil(null);
-                    }}
-                    className="w-full border p-2 rounded"
-                />
-                {errorEtatCivil && (
-                    <p className="text-red-500 italic text-sm mt-1">{errorEtatCivil}</p>
-                )}
-              </div>
+                <div className="mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">État Civil</label>
+                  <input
+                      type="text"
+                      placeholder="État Civil"
+                      value={id ? modifierCommande?.etatCivil ?? "" : commande?.etatCivil ?? ""}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (id) {
+                          setModifierCommande((prev) => ({
+                            ...prev,
+                            etatCivil: value
+                          } as ModifierExtraitMariageCommande));
+                        } else {
+                          setCommande((prev) => ({
+                            ...prev,
+                            etatCivil: value
+                          } as CreerExtraitMariageCommande));
+                        }
+                        if (value.trim()) setErrorEtatCivil(null);
+                      }}
+                      className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                  {errorEtatCivil && (
+                      <p className="text-red-500 italic text-sm mt-1">{errorEtatCivil}</p>
+                  )}
+                </div>
 
-              <div className="mb-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Centre d'État
-                  Civil</label>
-                <input
-                    type="text"
-                    placeholder="Centre"
-                    value={id ? modifierCommande?.centreEtatCivil ?? "" : commande?.centreEtatCivil ?? ""}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (id) {
-                        setModifierCommande((prev) => ({
-                          ...prev,
-                          centreEtatCivil: value
-                        } as ModifierExtraitMariageCommande));
-                      } else {
-                        setCommande((prev) => ({
-                          ...prev,
-                          centreEtatCivil: value
-                        } as CreerExtraitMariageCommande));
-                      }
-                      if (value.trim()) setErrorCentreEtatCivil(null);
-                    }}
-                    className="w-full border p-2 rounded"
-                />
-                {errorCentreEtatCivil && (
-                    <p className="text-red-500 italic text-sm mt-1">{errorCentreEtatCivil}</p>
-                )}
-              </div>
+                <div className="mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Centre d'État
+                    Civil</label>
+                  <input
+                      type="text"
+                      placeholder="Centre"
+                      value={id ? modifierCommande?.centreEtatCivil ?? "" : commande?.centreEtatCivil ?? ""}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (id) {
+                          setModifierCommande((prev) => ({
+                            ...prev,
+                            centreEtatCivil: value
+                          } as ModifierExtraitMariageCommande));
+                        } else {
+                          setCommande((prev) => ({
+                            ...prev,
+                            centreEtatCivil: value
+                          } as CreerExtraitMariageCommande));
+                        }
+                        if (value.trim()) setErrorCentreEtatCivil(null);
+                      }}
+                      className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                  {errorCentreEtatCivil && (
+                      <p className="text-red-500 italic text-sm mt-1">{errorCentreEtatCivil}</p>
+                  )}
+                </div>
 
-              <div className="mb-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Date Mariage</label>
-                <input
-                    type="date"
-                    id="dateMariage"
-                    value={id ? modifierCommande?.dateMariage ?? "" : commande?.dateMariage ?? ""}
-                    placeholder="Ex: 01/01/2000"
-                    onChange={(e) => {
-                      const currentDateString = e.target.value;
-                      if (id) {
-                        setModifierCommande((prev) => ({
-                          ...prev,
-                          dateMariage: currentDateString
-                        } as ModifierExtraitMariageCommande));
-                      } else {
-                        setCommande((prev) => ({
-                          ...prev,
-                          dateMariage: currentDateString
-                        } as CreerExtraitMariageCommande));
-                      }
+                <div className="mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Date
+                    Mariage</label>
+                  <input
+                      type="date"
+                      id="dateMariage"
+                      value={id ? modifierCommande?.dateMariage ?? "" : commande?.dateMariage ?? ""}
+                      placeholder="Ex: 01/01/2000"
+                      onChange={(e) => {
+                        const currentDateString = e.target.value;
+                        if (id) {
+                          setModifierCommande((prev) => ({
+                            ...prev,
+                            dateMariage: currentDateString
+                          } as ModifierExtraitMariageCommande));
+                        } else {
+                          setCommande((prev) => ({
+                            ...prev,
+                            dateMariage: currentDateString
+                          } as CreerExtraitMariageCommande));
+                        }
 
-                      if (estDateValide(currentDateString)) {
-                        setErrorDateMariage(null);
-                      }
-                    }}
-                    className="w-full border p-2 rounded"
-                />
-                {errorDateMariage && (
-                    <p className="text-red-500 italic text-sm mt-1">{errorDateMariage}</p>
-                )}
+                        if (estDateValide(currentDateString)) {
+                          setErrorDateMariage(null);
+                        }
+                      }}
+                      className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                  {errorDateMariage && (
+                      <p className="text-red-500 italic text-sm mt-1">{errorDateMariage}</p>
+                  )}
+                </div>
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2">
-              <div>
+              <div className="p-6 py-1 rounded-lg shadow-md mb-2 border border-gray-200">
                 <div className="relative flex py-3 items-center">
                   <div className="flex-grow border-t border-gray-400"></div>
                   <span className="flex-shrink mx-4 text-gray-400">INFOS DU MARIÉ</span>
@@ -513,7 +516,7 @@ export default function EditerExtraitMariageModal(
                           }
                           if (value.trim()) setErrorNomEpoux(null);
                         }}
-                        className="w-full border p-2 rounded"
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     />
                     {errorNomEpoux && (
                         <p className="text-red-500 italic text-sm mt-1">{errorNomEpoux}</p>
@@ -551,7 +554,7 @@ export default function EditerExtraitMariageModal(
                             setErrorDateNaissanceEpoux(null);
                           }
                         }}
-                        className="w-full border p-2 rounded"
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     />
                     {errorDateNaissanceEpoux && (
                         <p className="text-red-500 italic text-sm mt-1">{errorDateNaissanceEpoux}</p>
@@ -585,7 +588,7 @@ export default function EditerExtraitMariageModal(
                           }
                           if (value.trim()) setErrorLieuNaissanceEpoux(null);
                         }}
-                        className="w-full border p-2 rounded"
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     />
                     {errorLieuNaissanceEpoux && (
                         <p className="text-red-500 italic text-sm mt-1">{errorLieuNaissanceEpoux}</p>
@@ -619,7 +622,7 @@ export default function EditerExtraitMariageModal(
                             } as CreerExtraitMariageCommande));
                           }
                         }}
-                        className="w-full border p-2 rounded"
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     />
                   </div>
 
@@ -650,7 +653,7 @@ export default function EditerExtraitMariageModal(
                             } as CreerExtraitMariageCommande));
                           }
                         }}
-                        className="w-full border p-2 rounded"
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     />
                   </div>
 
@@ -681,13 +684,13 @@ export default function EditerExtraitMariageModal(
                             } as CreerExtraitMariageCommande));
                           }
                         }}
-                        className="w-full border p-2 rounded"
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     />
                   </div>
                 </div>
               </div>
 
-              <div>
+              <div className="p-6 py-1 rounded-lg shadow-md mb-2 border border-gray-200">
                 <div className="relative flex py-3 items-center">
                   <div className="flex-grow border-t border-gray-400"></div>
                   <span className="flex-shrink mx-4 text-gray-400">INFOS DE LA MARIÉE</span>
@@ -722,7 +725,7 @@ export default function EditerExtraitMariageModal(
                           }
                           if (value.trim()) setErrorNomEpouse(null);
                         }}
-                        className="w-full border p-2 rounded"
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     />
                     {errorNomEpouse && (
                         <p className="text-red-500 italic text-sm mt-1">{errorNomEpouse}</p>
@@ -760,7 +763,7 @@ export default function EditerExtraitMariageModal(
                             setErrorDateNaissanceEpouse(null);
                           }
                         }}
-                        className="w-full border p-2 rounded"
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     />
                     {errorDateNaissanceEpouse && (
                         <p className="text-red-500 italic text-sm mt-1">{errorDateNaissanceEpouse}</p>
@@ -794,7 +797,7 @@ export default function EditerExtraitMariageModal(
                           }
                           if (value.trim()) setErrorLieuNaissanceEpouse(null);
                         }}
-                        className="w-full border p-2 rounded"
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     />
                     {errorLieuNaissanceEpouse && (
                         <p className="text-red-500 italic text-sm mt-1">{errorLieuNaissanceEpouse}</p>
@@ -828,7 +831,7 @@ export default function EditerExtraitMariageModal(
                             } as CreerExtraitMariageCommande));
                           }
                         }}
-                        className="w-full border p-2 rounded"
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     />
                   </div>
 
@@ -859,7 +862,7 @@ export default function EditerExtraitMariageModal(
                             } as CreerExtraitMariageCommande));
                           }
                         }}
-                        className="w-full border p-2 rounded"
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     />
                   </div>
 
@@ -890,7 +893,7 @@ export default function EditerExtraitMariageModal(
                             } as CreerExtraitMariageCommande));
                           }
                         }}
-                        className="w-full border p-2 rounded"
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     />
                   </div>
                 </div>

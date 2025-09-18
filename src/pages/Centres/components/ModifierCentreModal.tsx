@@ -64,7 +64,7 @@ export default function ModifierCentreModal(
                 placeholder="Nom"
                 value={nom}
                 onChange={(e) => setNom(e.target.value)}
-                className="w-full border p-2 rounded mb-4 dark:bg-gray-700 dark:text-white"
+                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-4"
             />
 
             <div className="flex justify-end gap-2">

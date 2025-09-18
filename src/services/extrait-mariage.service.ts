@@ -33,6 +33,6 @@ export const recupererExtraitMariages = async (id: number): Promise<ApiError | E
   return await apiExtraitsMariages.get<ExtraitMariageDetailsVM>(ENDPOINTS.extraitsMariages.get(id));
 };
 
-export const recupererExtraitMariagesParRegistre = async (registre: string): Promise<ApiError | ExtraitDecesDetailsVM> => {
-  return await apiExtraitsMariages.get<ExtraitDecesDetailsVM>(ENDPOINTS.extraitsMariages.getByRegistre(registre));
+export const recupererExtraitMariagesParRegistre = async (registre: string): Promise<ApiError | ExtraitMariageDetailsVM> => {
+  return await apiExtraitsMariages.get<ExtraitMariageDetailsVM>(ENDPOINTS.extraitsMariages.getByRegistre(registre));
 };
