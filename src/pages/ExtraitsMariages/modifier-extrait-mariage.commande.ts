@@ -1,8 +1,8 @@
-import {PersonneExtraitMariage} from "../../models/personne-extrait-mariage.model.ts";
+import {PersonneExtraitMariage} from "../../models/ExtraitsMariages/personne-extrait-mariage.model.ts";
 
 export class ModifierExtraitMariageCommande {
 
-  id: string | null;
+  id: number | null;
   annee: number | null;
   numeroRegistre: string | null;
   dateRegistre: string | null;

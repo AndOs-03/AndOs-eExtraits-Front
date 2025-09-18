@@ -1,4 +1,4 @@
-import {PersonneExtraitMariage} from "../../models/personne-extrait-mariage.model.ts";
+import {PersonneExtraitMariage} from "../../models/ExtraitsMariages/personne-extrait-mariage.model.ts";
 
 export class CreerExtraitMariageCommande {
 

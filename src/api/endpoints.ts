@@ -35,4 +35,14 @@ export const ENDPOINTS = {
     getByRegistre: (registre: string) => `/api/extraits-mariages/recuperer-par-registre?registre=${encodeURIComponent(registre)}`,
     delete: (id: number) => `/api/extraits-mariages/${id}`,
   },
+
+  extraitsNaissances: {
+    list: (centreId: number) => `/api/extraits-naissances/centre/${centreId}`,
+    create: () => "/api/extraits-naissances",
+    update: () => `/api/extraits-naissances`,
+    get: (id: number) => `/api/extraits-naissances/${id}`,
+    getEssentiel: (id: number) => `/api/extraits-naissances/${id}/essentiel`,
+    getByRegistre: (centreId: number, registre: string) => `/api/extraits-naissances/centre/${centreId}/recuperer-par-registre?registre=${encodeURIComponent(registre)}`,
+    delete: (id: number) => `/api/extraits-naissances/${id}`,
+  },
 };

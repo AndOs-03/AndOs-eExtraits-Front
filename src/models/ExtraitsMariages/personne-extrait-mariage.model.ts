@@ -1,4 +1,4 @@
-import {ParentExtrait} from "./parents-extrait.model.ts";
+import {ParentExtrait} from "../parents-extrait.model.ts";
 
 export class PersonneExtraitMariage {
 

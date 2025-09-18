@@ -3,7 +3,7 @@ import {ParentExtrait} from "../../models/parents-extrait.model.ts";
 
 export class ModifierExtraitDecesCommande {
 
-  id: string | null;
+  id: number | null;
   annee: number | null;
   numeroRegistre: string | null;
   dateRegistre: string | null;
