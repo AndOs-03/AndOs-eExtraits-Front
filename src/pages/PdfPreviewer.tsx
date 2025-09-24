@@ -39,28 +39,33 @@ export default function PdfPreviewer({extrait, typeExtrait, setLoaderStatus, onC
       let reponse: ApiError | Blob | undefined = undefined;
       switch (typeExtrait) {
         case TypeExtrait.DECES: {
-          reponse = await genererExtraitDeces(extrait.id, institution?.id!, centre?.id!);
+          if (institution?.id && centre?.id) {
+            reponse = await genererExtraitDeces(extrait.id, institution?.id, centre?.id);
+          }
           break
         }
         case TypeExtrait.MARIAGE: {
-          reponse = await genererExtraitMariage(extrait.id, institution?.id!, centre?.id!);
+          if (institution?.id && centre?.id) {
+            reponse = await genererExtraitMariage(extrait.id, institution?.id, centre?.id);
+          }
           break
         }
         case TypeExtrait.NAISSANCE: {
-          reponse = await genererExtraitNaissance(extrait.id, institution?.id!, centre?.id!);
+          if (institution?.id) {
+            reponse = await genererExtraitNaissance(extrait.id, institution?.id);
+          }
           break
         }
       }
 
-      if ("message" in reponse) {
+      if (reponse !== undefined && "message" in reponse) {
         setLoaderStatus("error", reponse!.message || "Erreur de génération du PDF ");
-      } else if (reponse !== undefined) {
-        console.log("response : " + reponse);
-        const url = URL.createObjectURL(reponse);
+      } else {
+        const blob = reponse as Blob;
+        const url = URL.createObjectURL(blob);
         setPdfUrl(url);
       }
     } catch (err: any) {
-      console.log("erreur : " + err);
       setLoaderStatus("error", err.message || "Erreur de génération du PDF " + err);
     }
   }

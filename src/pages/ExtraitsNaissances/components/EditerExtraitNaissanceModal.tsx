@@ -333,7 +333,7 @@ export default function EditerExtraitNaissanceModal(
         ...prev,
         personne: {
           ...prev.personne,
-          sexe: valeur ? Sexe.FEMININ : Sexe.MASCULIN,
+          sexe: valeur ? "FEMININ" : "MASCULIN",
         },
       } as CreerExtraitNaissanceCommande));
     }

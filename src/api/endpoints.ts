@@ -45,7 +45,7 @@ export const ENDPOINTS = {
     get: (id: number) => `/api/extraits-naissances/${id}`,
     getEssentiel: (id: number) => `/api/extraits-naissances/${id}/essentiel`,
     getByRegistre: (centreId: number, registre: string) => `/api/extraits-naissances/centre/${centreId}/recuperer-par-registre?registre=${encodeURIComponent(registre)}`,
-    genererExtrait: (id: number, institutionId: number, centreId: number) => `/api/extraits-naissances/${id}/generer-fichier-extrait?institutionId=${institutionId}&centreId=${centreId}`,
+    genererExtrait: (id: number, institutionId: number) => `/api/extraits-naissances/${id}/generer-fichier-extrait?institutionId=${institutionId}`,
     delete: (id: number) => `/api/extraits-naissances/${id}`,
   },
 };
