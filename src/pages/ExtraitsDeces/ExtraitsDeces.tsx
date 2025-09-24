@@ -6,11 +6,14 @@ import LoaderBanner from "../../components/common/LoaderBanner.tsx";
 import {ExtraitDecesEssentielVM} from "../../models/ExtraitsDeces/extrait-deces-essentiel.model.ts";
 import ListeExtraitsDecesTable from "./components/ListeExtraitsDecesTable.tsx";
 import EditerExtraitDecesModal from "./components/EditerExtraitDecesModal.tsx";
+import PdfPreviewer from "../PdfPreviewer.tsx";
+import {TypeExtrait} from "../../models/type-extrait.ts";
 
 export default function ExtraitsDeces() {
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [extraits, setExtraits] = useState<ExtraitDecesEssentielVM[]>([]);
+  const [extraitToPrint, setExtraitToPrint] = useState<ExtraitDecesEssentielVM | null>(null);
   const [elementAdded, setElementAdded] = useState<boolean>(false);
 
   const [loaderStatus, setLoaderStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -65,6 +68,10 @@ export default function ExtraitsDeces() {
     setLoaderMessage("Extrait ajouté avec succès ✅");
   };
 
+  const handleExtraitToPrint = (extrait: ExtraitDecesEssentielVM | null) => {
+    setExtraitToPrint(extrait);
+  };
+
   return (
       <>
         <PageBreadcrumb pageTitle="Gestion des extraits de décès"/>
@@ -102,8 +109,20 @@ export default function ExtraitsDeces() {
             <ListeExtraitsDecesTable
                 extraits={extraits}
                 setExtraits={setExtraits}
+                setExtraitToPrint={handleExtraitToPrint}
                 setLoaderStatus={handleLoaderStatus}
             />
+
+            {extraitToPrint && (
+                <div className="mt-6">
+                  <PdfPreviewer
+                      extrait={extraitToPrint}
+                      typeExtrait={TypeExtrait.DECES}
+                      setLoaderStatus={setLoaderStatus}
+                      onClose={() => setExtraitToPrint(null)}
+                  />
+                </div>
+            )}
           </ComponentCard>
         </div>
       </>

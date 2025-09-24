@@ -7,6 +7,7 @@ import {
 interface Props {
   extraits: ExtraitDecesEssentielVM[];
   setExtraits: (extraits: any) => void;
+  setExtraitToPrint: (extrait: ExtraitDecesEssentielVM | null) => void;
   setLoaderStatus: (status: "idle" | "loading" | "success" | "error", message?: string) => void;
 }
 
@@ -14,6 +15,7 @@ export default function ListeExtraitsDecesTable(
     {
       extraits,
       setExtraits,
+      setExtraitToPrint,
       setLoaderStatus,
     }: Props) {
 
@@ -135,6 +137,7 @@ export default function ListeExtraitsDecesTable(
                     <LigneActionExtraitDecesTable
                         extrait={extrait}
                         setExtraits={setExtraits}
+                        setExtraitToPrint={setExtraitToPrint}
                         setLoaderStatus={setLoaderStatus}
                     />
                   </TableRow>

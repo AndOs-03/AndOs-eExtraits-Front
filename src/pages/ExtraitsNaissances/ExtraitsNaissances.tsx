@@ -3,18 +3,20 @@ import {listerExtraitsNaissances} from "../../services/extrait-naissance.service
 import PageBreadcrumb from "../../components/common/PageBreadCrumb.tsx";
 import ComponentCard from "../../components/common/ComponentCard.tsx";
 import LoaderBanner from "../../components/common/LoaderBanner.tsx";
-import {Centre} from "../Centres/types.ts";
 import {recupererCentreActif} from "../../services/centre-actif.service.ts";
 import {
   ExtraitNaissanceEssentielVM
 } from "../../models/ExtraitsNaissances/extrait-naissance-essentiel.model.ts";
 import ListeExtraitsNaissancesTable from "./components/ListeExtraitsNaissancesTable.tsx";
 import EditerExtraitNaissanceModal from "./components/EditerExtraitNaissanceModal.tsx";
+import PdfPreviewer from "../PdfPreviewer.tsx";
+import {TypeExtrait} from "../../models/type-extrait.ts";
 
 export default function ExtraitsNaissances() {
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [extraits, setExtraits] = useState<ExtraitNaissanceEssentielVM[]>([]);
+  const [extraitToPrint, setExtraitToPrint] = useState<ExtraitNaissanceEssentielVM | null>(null);
   const [elementAdded, setElementAdded] = useState<boolean>(false);
 
   const [loaderStatus, setLoaderStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -70,6 +72,10 @@ export default function ExtraitsNaissances() {
     setLoaderMessage("Extrait ajouté avec succès ✅");
   };
 
+  const handleExtraitToPrint = (extrait: ExtraitNaissanceEssentielVM | null) => {
+    setExtraitToPrint(extrait);
+  };
+
   return (
       <>
         <PageBreadcrumb pageTitle="Gestion des extraits de naissance"/>
@@ -107,8 +113,20 @@ export default function ExtraitsNaissances() {
             <ListeExtraitsNaissancesTable
                 extraits={extraits}
                 setExtraits={setExtraits}
+                setExtraitToPrint={handleExtraitToPrint}
                 setLoaderStatus={handleLoaderStatus}
             />
+
+            {extraitToPrint && (
+                <div className="mt-6">
+                  <PdfPreviewer
+                      extrait={extraitToPrint}
+                      typeExtrait={TypeExtrait.NAISSANCE}
+                      setLoaderStatus={setLoaderStatus}
+                      onClose={() => setExtraitToPrint(null)}
+                  />
+                </div>
+            )}
           </ComponentCard>
         </div>
       </>

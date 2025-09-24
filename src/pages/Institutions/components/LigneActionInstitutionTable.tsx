@@ -4,6 +4,7 @@ import {InstitutionVM} from "../../../models/institution.model.ts";
 import {InstitutionActif} from "../types.ts";
 import {supprimerInstitution} from "../../../services/institution.service.ts";
 import EditerInstitutionModal from "./EditerInstitutionModal.tsx";
+import {CheckCircleIcon, DeleteIcon, PencilIcon, PrinterIcon} from "../../../icons";
 
 interface Props {
   institution: InstitutionVM;
@@ -89,35 +90,40 @@ export default function LigneActionInstitutionTable(
                 className="absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black/5 z-10"
             >
               <ul className="py-1">
-                <li>
+                <li className="flex items-center px-4 py-2 justify-between hover:bg-gray-100 dark:hover:bg-gray-700">
                   <button
                       onClick={() => {
                         handleActiverInstitution()
                         setOpen(false);
                       }}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="block w-full text-left text-sm text-gray-700 dark:text-gray-200"
                   >
                     Activer
                   </button>
+                  <CheckCircleIcon />
                 </li>
-                <li>
+
+                <li className="flex items-center px-4 py-2 justify-between hover:bg-gray-100 dark:hover:bg-gray-700">
                   <button
                       onClick={() => {
                         setShowModal(true);
                         setOpen(false);
                       }}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="block w-full text-left text-sm text-gray-700 dark:text-gray-200"
                   >
                     Modifier
                   </button>
+                  <PencilIcon />
                 </li>
-                <li>
+
+                <li className="flex items-center px-4 py-2 justify-between hover:bg-gray-100 dark:hover:bg-gray-700">
                   <button
                       onClick={handleDelete}
-                      className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-700"
+                      className="block w-full text-left text-sm text-red-600"
                   >
                     Supprimer
                   </button>
+                  <DeleteIcon />
                 </li>
               </ul>
             </div>

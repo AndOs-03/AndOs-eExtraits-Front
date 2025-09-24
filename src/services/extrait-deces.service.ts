@@ -31,3 +31,7 @@ export const recupererExtraitDeces = async (id: number): Promise<ApiError | Extr
 export const recupererExtraitDecesParRegistre = async (registre: string): Promise<ApiError | ExtraitDecesDetailsVM> => {
   return await apiMethodes.get<ExtraitDecesDetailsVM>(ENDPOINTS.extraitsDeces.getByRegistre(registre));
 };
+
+export const genererFichierExtrait = async (id: number, institutionId: number, centreId: number): Promise<ApiError | Blob> => {
+  return await apiMethodes.getFile<any>(ENDPOINTS.extraitsDeces.genererExtrait(id, institutionId, centreId));
+};

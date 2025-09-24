@@ -3,10 +3,14 @@ import LigneActionExtraitDecesTable from "./LigneActionExtraitMariageTable.tsx";
 import {
   ExtraitMariageEssentielVM
 } from "../../../models/ExtraitsMariages/extrait-mariage-essentiel.model.ts";
+import {
+  ExtraitDecesEssentielVM
+} from "../../../models/ExtraitsDeces/extrait-deces-essentiel.model.ts";
 
 interface Props {
   extraits: ExtraitMariageEssentielVM[];
   setExtraits: (extraits: any) => void;
+  setExtraitToPrint: (extrait: ExtraitMariageEssentielVM | null) => void;
   setLoaderStatus: (status: "idle" | "loading" | "success" | "error", message?: string) => void;
 }
 
@@ -14,6 +18,7 @@ export default function ListeExtraitsMariagesTable(
     {
       extraits,
       setExtraits,
+      setExtraitToPrint,
       setLoaderStatus,
     }: Props) {
 
@@ -94,6 +99,7 @@ export default function ListeExtraitsMariagesTable(
                     <LigneActionExtraitDecesTable
                         extrait={extrait}
                         setExtraits={setExtraits}
+                        setExtraitToPrint={setExtraitToPrint}
                         setLoaderStatus={setLoaderStatus}
                     />
                   </TableRow>

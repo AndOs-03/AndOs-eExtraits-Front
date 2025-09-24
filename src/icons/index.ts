@@ -55,6 +55,8 @@ import { ReactComponent as MoreDotIcon } from "./moredot.svg?react";
 import { ReactComponent as AlertHexaIcon } from "./alert-hexa.svg?react";
 import { ReactComponent as ErrorHexaIcon } from "./info-hexa.svg?react";
 import { ReactComponent as SettingsIcon } from "./settings.svg?react";
+import { ReactComponent as PrinterIcon } from "./printer-thin.svg?react";
+import { ReactComponent as DeleteIcon } from "./delete.svg?react";
 
 export {
   ErrorHexaIcon,
@@ -114,4 +116,6 @@ export {
   AngleLeftIcon,
   AngleRightIcon,
   SettingsIcon,
+  PrinterIcon,
+  DeleteIcon,
 };

@@ -41,3 +41,7 @@ export const recupererExtraitNaissanceEssentiel = async (id: number): Promise<Ap
 export const recupererExtraitNaissancesParRegistre = async (centreId: number, registre: string): Promise<ApiError | ExtraitNaissanceDetailsVM> => {
   return await apiMethodes.get<ExtraitNaissanceDetailsVM>(ENDPOINTS.extraitsNaissances.getByRegistre(centreId, registre));
 };
+
+export const genererFichierExtrait = async (id: number, institutionId: number, centreId: number): Promise<ApiError | Blob> => {
+  return await apiMethodes.getFile<any>(ENDPOINTS.extraitsNaissances.genererExtrait(id, institutionId, centreId));
+};

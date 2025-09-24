@@ -14,7 +14,7 @@ export const clearAccessToken = () => {
   localStorage.removeItem("token");
 };
 
-async function request<T>(path: string, options: RequestInit = {}): Promise<T | ApiError> {
+async function request<T>(path: string, isBlob: boolean = false, options: RequestInit = {}): Promise<T | ApiError> {
   try {
     const headers: HeadersInit = {
       "Content-Type": "application/json",
@@ -36,8 +36,13 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T | 
     }
 
     try {
-      const data = await res.json();
-      return data as T;
+      if (isBlob) {
+        const blobData = await res.blob();
+        return blobData as unknown as T;
+      } else {
+        const jsonData = await res.json();
+        return jsonData as T;
+      }
     } catch {
       return {} as T;
     }
@@ -52,15 +57,19 @@ export const apiMethodes = {
     return await request<T>(path);
   },
 
+  getFile: async <T>(path: string): Promise<T | ApiError> => {
+    return await request<T>(path, true);
+  },
+
   post: async <T>(path: string, body?: any): Promise<T | ApiError> => {
-    return await request<T>(path, {
+    return await request<T>(path, false, {
       method: "POST",
       body: JSON.stringify(body),
     });
   },
 
   put: async <T>(path: string, body?: any): Promise<T | ApiError> => {
-    return await request<T>(path, {
+    return await request<T>(path, false, {
       method: "PUT",
       body: JSON.stringify(body),
     });
@@ -68,6 +77,6 @@ export const apiMethodes = {
 
 
   delete: async <T>(path: string): Promise<T | ApiError> => {
-    return await request<T>(path, {method: "DELETE"});
+    return await request<T>(path, false, {method: "DELETE"});
   },
 };
