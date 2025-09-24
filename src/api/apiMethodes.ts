@@ -46,7 +46,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T | 
   }
 }
 
-export const apiExtraitsNaissances = {
+export const apiMethodes = {
 
   get: async <T>(path: string): Promise<T | ApiError> => {
     return await request<T>(path);
