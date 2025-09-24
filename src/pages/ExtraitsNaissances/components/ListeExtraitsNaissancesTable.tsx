@@ -7,6 +7,7 @@ import LigneActionExtraitNaissanceTable from "./LigneActionExtraitNaissanceTable
 interface Props {
   extraits: ExtraitNaissanceEssentielVM[];
   setExtraits: (extraits: any) => void;
+  setExtraitToPrint: (extrait: ExtraitNaissanceEssentielVM | null) => void;
   setLoaderStatus: (status: "idle" | "loading" | "success" | "error", message?: string) => void;
 }
 
@@ -14,7 +15,8 @@ export default function ListeExtraitsNaissancesTable(
     {
       extraits,
       setExtraits,
-      setLoaderStatus,
+      setExtraitToPrint,
+      setLoaderStatus
     }: Props) {
 
   return (
@@ -114,6 +116,7 @@ export default function ListeExtraitsNaissancesTable(
                     <LigneActionExtraitNaissanceTable
                         extrait={extrait}
                         setExtraits={setExtraits}
+                        setExtraitToPrint={setExtraitToPrint}
                         setLoaderStatus={setLoaderStatus}
                     />
                   </TableRow>

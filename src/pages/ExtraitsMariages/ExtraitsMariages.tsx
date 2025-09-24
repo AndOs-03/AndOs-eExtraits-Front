@@ -3,19 +3,19 @@ import {listerExtraitsMariages} from "../../services/extrait-mariage.service.ts"
 import PageBreadcrumb from "../../components/common/PageBreadCrumb.tsx";
 import ComponentCard from "../../components/common/ComponentCard.tsx";
 import LoaderBanner from "../../components/common/LoaderBanner.tsx";
-import {ExtraitDecesEssentielVM} from "../../models/ExtraitsDeces/extrait-deces-essentiel.model.ts";
-import ListeExtraitsDecesTable from "./components/ListeExtraitsMariagesTable.tsx";
-import EditerExtraitDecesModal from "./components/EditerExtraitMariageModal.tsx";
+import ListeExtraitsMariagesTable from "./components/ListeExtraitsMariagesTable.tsx";
+import EditerExtraitMariageModal from "./components/EditerExtraitMariageModal.tsx";
 import {
   ExtraitMariageEssentielVM
 } from "../../models/ExtraitsMariages/extrait-mariage-essentiel.model.ts";
-import EditerExtraitMariageModal from "./components/EditerExtraitMariageModal.tsx";
-import ListeExtraitsMariagesTable from "./components/ListeExtraitsMariagesTable.tsx";
+import PdfPreviewer from "../PdfPreviewer.tsx";
+import {TypeExtrait} from "../../models/type-extrait.ts";
 
 export default function ExtraitsMariages() {
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [extraits, setExtraits] = useState<ExtraitMariageEssentielVM[]>([]);
+  const [extraitToPrint, setExtraitToPrint] = useState<ExtraitMariageEssentielVM | null>(null);
   const [elementAdded, setElementAdded] = useState<boolean>(false);
 
   const [loaderStatus, setLoaderStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -70,6 +70,10 @@ export default function ExtraitsMariages() {
     setLoaderMessage("Extrait ajouté avec succès ✅");
   };
 
+  const handleExtraitToPrint = (extrait: ExtraitMariageEssentielVM | null) => {
+    setExtraitToPrint(extrait);
+  };
+
   return (
       <>
         <PageBreadcrumb pageTitle="Gestion des extraits de mariage"/>
@@ -107,8 +111,20 @@ export default function ExtraitsMariages() {
             <ListeExtraitsMariagesTable
                 extraits={extraits}
                 setExtraits={setExtraits}
+                setExtraitToPrint={handleExtraitToPrint}
                 setLoaderStatus={handleLoaderStatus}
             />
+
+            {extraitToPrint && (
+                <div className="mt-6">
+                  <PdfPreviewer
+                      extrait={extraitToPrint}
+                      typeExtrait={TypeExtrait.MARIAGE}
+                      setLoaderStatus={setLoaderStatus}
+                      onClose={() => setExtraitToPrint(null)}
+                  />
+                </div>
+            )}
           </ComponentCard>
         </div>
       </>

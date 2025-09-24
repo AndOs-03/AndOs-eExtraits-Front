@@ -1,6 +1,6 @@
 import {InstitutionActif} from "../pages/Institutions/types.ts";
 
-export function recupererInstitutionActif(): any {
+export function recupererInstitutionActif(): InstitutionActif | null {
   try {
     const institutionActif = localStorage.getItem("eExtraitInstitutionActif");
     if (!institutionActif) return null;

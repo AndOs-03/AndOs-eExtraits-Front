@@ -24,6 +24,7 @@ export const ENDPOINTS = {
     update: () => `/api/extraits-deces`,
     get: (id: number) => `/api/extraits-deces/${id}`,
     getByRegistre: (registre: string) => `/api/extraits-deces/recuperer-par-registre?registre=${encodeURIComponent(registre)}`,
+    genererExtrait: (id: number, institutionId: number, centreId: number) => `/api/extraits-deces/${id}/generer-fichier-extrait?institutionId=${institutionId}&centreId=${centreId}`,
     delete: (id: number) => `/api/extraits-deces/${id}`,
   },
 
@@ -33,6 +34,7 @@ export const ENDPOINTS = {
     update: () => `/api/extraits-mariages`,
     get: (id: number) => `/api/extraits-mariages/${id}`,
     getByRegistre: (registre: string) => `/api/extraits-mariages/recuperer-par-registre?registre=${encodeURIComponent(registre)}`,
+    genererExtrait: (id: number, institutionId: number, centreId: number) => `/api/extraits-mariages/${id}/generer-fichier-extrait?institutionId=${institutionId}&centreId=${centreId}`,
     delete: (id: number) => `/api/extraits-mariages/${id}`,
   },
 
@@ -43,6 +45,7 @@ export const ENDPOINTS = {
     get: (id: number) => `/api/extraits-naissances/${id}`,
     getEssentiel: (id: number) => `/api/extraits-naissances/${id}/essentiel`,
     getByRegistre: (centreId: number, registre: string) => `/api/extraits-naissances/centre/${centreId}/recuperer-par-registre?registre=${encodeURIComponent(registre)}`,
+    genererExtrait: (id: number, institutionId: number, centreId: number) => `/api/extraits-naissances/${id}/generer-fichier-extrait?institutionId=${institutionId}&centreId=${centreId}`,
     delete: (id: number) => `/api/extraits-naissances/${id}`,
   },
 };
