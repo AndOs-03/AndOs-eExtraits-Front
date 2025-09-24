@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {editeInstitutions, recupererInstitution} from "../../../services/institution.service.ts";
 import {EditerInstitutionCommande} from "../editer-institution.commande.ts";
 import {InstitutionVM} from "../../../models/institution.model.ts";
+import ModalRetourAppelApi from "../../../components/ui/modal/modal-retour-appel-api.tsx";
 
 interface Props {
   id: number | null
@@ -39,6 +40,10 @@ export default function EditerInstitutionModal(
     officier: "",
     titreOfficier: ""
   });
+
+  const [isReponseApiOpen, setIsReponseApiOpen] = useState<boolean>(false)
+  const [messageReponseApi, setMessageReponseApi] = useState<string>("")
+  const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "">("")
 
   const loadInstitution = async () => {
     try {
@@ -96,8 +101,15 @@ export default function EditerInstitutionModal(
 
       if ("message" in reponse) {
         setLoaderStatus("error", reponse.message || "Erreur lors de l'enregistrement");
+        setIsReponseApiOpen(true);
+        setMessageReponseApi(reponse.message);
+        setTypeReponseApi("error");
       } else {
         setLoaderStatus("success", "Enregistré avec succès ✅");
+        setIsReponseApiOpen(true);
+        setMessageReponseApi(`${id ? "Modifié" : "Enregistré"} avec succès`);
+        setTypeReponseApi("success");
+
         if (id) {
           const reponse = await recupererInstitution(id);
           if (!("message" in reponse)) {
@@ -106,10 +118,12 @@ export default function EditerInstitutionModal(
         } else {
           setElementAdded(institution);
         }
-        handleOnClose();
       }
     } catch (err: any) {
       setError(err.message || "Erreur lors de l'ajout");
+      setIsReponseApiOpen(true);
+      setMessageReponseApi(err);
+      setTypeReponseApi("error");
     } finally {
       setLoading(false);
     }
@@ -156,6 +170,13 @@ export default function EditerInstitutionModal(
 
     return isValid;
   };
+
+  const handleModalReponseApiClose = () => {
+    setIsReponseApiOpen(false)
+    setMessageReponseApi("")
+    setTypeReponseApi("")
+    handleOnClose();
+  }
 
   if (!isOpen) return null;
 
@@ -293,6 +314,17 @@ export default function EditerInstitutionModal(
             </div>
           </div>
         </div>
+
+        {
+            isReponseApiOpen && (
+                <ModalRetourAppelApi
+                    onClose={handleModalReponseApiClose}
+                    isOpen={isReponseApiOpen}
+                    message={messageReponseApi}
+                    type={typeReponseApi}
+                />
+            )
+        }
       </div>
   );
 }

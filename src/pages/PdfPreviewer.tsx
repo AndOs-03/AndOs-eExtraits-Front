@@ -64,6 +64,7 @@ export default function PdfPreviewer({extrait, typeExtrait, setLoaderStatus, onC
         const blob = reponse as Blob;
         const url = URL.createObjectURL(blob);
         setPdfUrl(url);
+        setLoaderStatus("success", "Génération PDF terminé");
       }
     } catch (err: any) {
       setLoaderStatus("error", err.message || "Erreur de génération du PDF " + err);

@@ -21,6 +21,7 @@ import {Centre} from "../../Centres/types.ts";
 import {
   ExtraitNaissanceEssentielVM
 } from "../../../models/ExtraitsNaissances/extrait-naissance-essentiel.model.ts";
+import ModalRetourAppelApi from "../../../components/ui/modal/modal-retour-appel-api.tsx";
 
 interface Props {
   id: number | undefined
@@ -88,6 +89,10 @@ export default function EditerExtraitNaissanceModal(
     extraitTypeTPI: false,
     nouveauModel: false,
   });
+
+  const [isReponseApiOpen, setIsReponseApiOpen] = useState<boolean>(false)
+  const [messageReponseApi, setMessageReponseApi] = useState<string>("")
+  const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "">("")
 
   const loadExtrait = async () => {
     try {
@@ -190,8 +195,15 @@ export default function EditerExtraitNaissanceModal(
 
       if ("message" in reponse) {
         setLoaderStatus("error", reponse.message || "Erreur lors de l'enregistrement");
+        setIsReponseApiOpen(true);
+        setMessageReponseApi(reponse.message);
+        setTypeReponseApi("error");
       } else {
         setLoaderStatus("success", `${id ? "Modifié" : "Enregistré"} avec succès ✅`);
+        setIsReponseApiOpen(true);
+        setMessageReponseApi(`${id ? "Modifié" : "Enregistré"} avec succès`);
+        setTypeReponseApi("success");
+
         if (id) {
           const extraitUpdated = await recupererExtraitNaissanceEssentiel(id);
           if (!("message" in extraitUpdated)) {
@@ -200,10 +212,12 @@ export default function EditerExtraitNaissanceModal(
         } else {
           setElementAdded(extrait);
         }
-        handleOnClose();
       }
     } catch (err: any) {
       setError(err.message || "Erreur lors de l'ajout");
+      setIsReponseApiOpen(true);
+      setMessageReponseApi(err);
+      setTypeReponseApi("error");
     } finally {
       setLoading(false);
     }
@@ -338,6 +352,13 @@ export default function EditerExtraitNaissanceModal(
       } as CreerExtraitNaissanceCommande));
     }
   };
+
+  const handleModalReponseApiClose = () => {
+    setIsReponseApiOpen(false)
+    setMessageReponseApi("")
+    setTypeReponseApi("")
+    handleOnClose();
+  }
 
   if (!isOpen) return null;
 
@@ -1291,6 +1312,17 @@ export default function EditerExtraitNaissanceModal(
             </div>
           </div>
         </div>
+
+        {
+          isReponseApiOpen && (
+              <ModalRetourAppelApi
+                  onClose={handleModalReponseApiClose}
+                  isOpen={isReponseApiOpen}
+                  message={messageReponseApi}
+                  type={typeReponseApi}
+              />
+            )
+        }
       </div>
   );
 }

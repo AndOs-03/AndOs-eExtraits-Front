@@ -122,7 +122,7 @@ export default function ExtraitsNaissances() {
                   <PdfPreviewer
                       extrait={extraitToPrint}
                       typeExtrait={TypeExtrait.NAISSANCE}
-                      setLoaderStatus={setLoaderStatus}
+                      setLoaderStatus={handleLoaderStatus}
                       onClose={() => setExtraitToPrint(null)}
                   />
                 </div>

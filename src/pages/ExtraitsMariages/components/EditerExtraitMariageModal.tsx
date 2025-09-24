@@ -11,6 +11,7 @@ import {
   ExtraitMariageDetailsVM
 } from "../../../models/ExtraitsMariages/extrait-mariage-details.model.ts";
 import {estDateValide} from "../../../services/common.service.ts";
+import ModalRetourAppelApi from "../../../components/ui/modal/modal-retour-appel-api.tsx";
 
 interface Props {
   id: number | undefined
@@ -47,6 +48,10 @@ export default function EditerExtraitMariageModal(
   const [errorNomEpouse, setErrorNomEpouse] = useState<string | null>(null);
   const [errorDateNaissanceEpouse, setErrorDateNaissanceEpouse] = useState<string | null>(null);
   const [errorLieuNaissanceEpouse, setErrorLieuNaissanceEpouse] = useState<string | null>(null);
+
+  const [isReponseApiOpen, setIsReponseApiOpen] = useState<boolean>(false)
+  const [messageReponseApi, setMessageReponseApi] = useState<string>("")
+  const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "">("")
 
   const [commande, setCommande] = useState<CreerExtraitMariageCommande>({
     annee: new Date().getFullYear(),
@@ -143,8 +148,15 @@ export default function EditerExtraitMariageModal(
 
       if ("message" in reponse) {
         setLoaderStatus("error", reponse.message || "Erreur lors de l'enregistrement");
+        setIsReponseApiOpen(true);
+        setMessageReponseApi(reponse.message);
+        setTypeReponseApi("error");
       } else {
         setLoaderStatus("success", `${id ? "Modifié" : "Enregistré"} avec succès ✅`);
+        setIsReponseApiOpen(true);
+        setMessageReponseApi(`${id ? "Modifié" : "Enregistré"} avec succès`);
+        setTypeReponseApi("success");
+
         if (id) {
           const extraitUpdated = await recupererExtraitMariages(id);
           if (!("message" in extraitUpdated)) {
@@ -153,10 +165,12 @@ export default function EditerExtraitMariageModal(
         } else {
           setElementAdded(extrait);
         }
-        handleOnClose();
       }
     } catch (err: any) {
       setError(err.message || "Erreur lors de l'ajout");
+      setIsReponseApiOpen(true);
+      setMessageReponseApi(err);
+      setTypeReponseApi("error");
     } finally {
       setLoading(false);
     }
@@ -251,6 +265,13 @@ export default function EditerExtraitMariageModal(
 
     return isValid;
   };
+
+  const handleModalReponseApiClose = () => {
+    setIsReponseApiOpen(false)
+    setMessageReponseApi("")
+    setTypeReponseApi("")
+    handleOnClose();
+  }
 
   if (!isOpen) return null;
 
@@ -921,6 +942,17 @@ export default function EditerExtraitMariageModal(
             </div>
           </div>
         </div>
+
+        {
+            isReponseApiOpen && (
+                <ModalRetourAppelApi
+                    onClose={handleModalReponseApiClose}
+                    isOpen={isReponseApiOpen}
+                    message={messageReponseApi}
+                    type={typeReponseApi}
+                />
+            )
+        }
       </div>
   );
 }
