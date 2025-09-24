@@ -10,6 +10,7 @@ import {ModifierExtraitDecesCommande} from "../modifier-extrait-deces.commande.t
 import {ParentExtrait} from "../../../models/parents-extrait.model.ts";
 import Select from "../../../components/form/Select.tsx";
 import {SituationMatrimoniale} from "../../../models/situation-matrimoniale.ts";
+import ModalRetourAppelApi from "../../../components/ui/modal/modal-retour-appel-api.tsx";
 
 interface Props {
   id: number | undefined
@@ -69,6 +70,10 @@ export default function EditerExtraitDecesModal(
     centreEtatCivil: null,
     situationMatrimoniale: null
   });
+
+  const [isReponseApiOpen, setIsReponseApiOpen] = useState<boolean>(false)
+  const [messageReponseApi, setMessageReponseApi] = useState<string>("")
+  const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "">("")
 
   const loadExtrait = async () => {
     try {
@@ -152,8 +157,15 @@ export default function EditerExtraitDecesModal(
 
       if ("message" in reponse) {
         setLoaderStatus("error", reponse.message || "Erreur lors de l'enregistrement");
+        setIsReponseApiOpen(true);
+        setMessageReponseApi(reponse.message);
+        setTypeReponseApi("error");
       } else {
         setLoaderStatus("success", `${id ? "Modifié" : "Enregistré"} avec succès ✅`);
+        setIsReponseApiOpen(true);
+        setMessageReponseApi(`${id ? "Modifié" : "Enregistré"} avec succès`);
+        setTypeReponseApi("success");
+
         if (id) {
           const extraitUpdated = await recupererExtraitDeces(id);
           if (!("message" in extraitUpdated)) {
@@ -162,10 +174,12 @@ export default function EditerExtraitDecesModal(
         } else {
           setElementAdded(extrait);
         }
-        handleOnClose();
       }
     } catch (err: any) {
       setError(err.message || "Erreur lors de l'ajout");
+      setIsReponseApiOpen(true);
+      setMessageReponseApi(err);
+      setTypeReponseApi("error");
     } finally {
       setLoading(false);
     }
@@ -262,6 +276,13 @@ export default function EditerExtraitDecesModal(
       })),
     ];
   };
+
+  const handleModalReponseApiClose = () => {
+    setIsReponseApiOpen(false)
+    setMessageReponseApi("")
+    setTypeReponseApi("")
+    handleOnClose();
+  }
 
   if (!isOpen) return null;
 
@@ -819,6 +840,17 @@ export default function EditerExtraitDecesModal(
             </div>
           </div>
         </div>
+
+        {
+            isReponseApiOpen && (
+                <ModalRetourAppelApi
+                    onClose={handleModalReponseApiClose}
+                    isOpen={isReponseApiOpen}
+                    message={messageReponseApi}
+                    type={typeReponseApi}
+                />
+            )
+        }
       </div>
   );
 }
