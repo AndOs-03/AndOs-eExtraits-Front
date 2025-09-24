@@ -42,6 +42,6 @@ export const recupererExtraitNaissancesParRegistre = async (centreId: number, re
   return await apiMethodes.get<ExtraitNaissanceDetailsVM>(ENDPOINTS.extraitsNaissances.getByRegistre(centreId, registre));
 };
 
-export const genererFichierExtrait = async (id: number, institutionId: number, centreId: number): Promise<ApiError | Blob> => {
-  return await apiMethodes.getFile<any>(ENDPOINTS.extraitsNaissances.genererExtrait(id, institutionId, centreId));
+export const genererFichierExtrait = async (id: number, institutionId: number): Promise<ApiError | Blob> => {
+  return await apiMethodes.getFile<Blob>(ENDPOINTS.extraitsNaissances.genererExtrait(id, institutionId));
 };
