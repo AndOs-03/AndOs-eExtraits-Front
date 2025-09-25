@@ -2,6 +2,7 @@ export const ENDPOINTS = {
   auth: {
     login: () => `/api/auth/login`,
     register: () => `/api/auth/register`,
+    getByUsername: (username: string) => `/api/utilisateurs/recuperer-par-username?username=${encodeURIComponent(username)}`,
   },
 
   centres: {

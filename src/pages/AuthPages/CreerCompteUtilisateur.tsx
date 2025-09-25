@@ -1,12 +1,119 @@
 import {useState} from "react";
-import {Link} from "react-router";
-import {EyeCloseIcon, EyeIcon} from "../../icons";
+import {Link, useNavigate} from "react-router";
+import {EyeCloseIcon, EyeIcon, Spinner} from "../../icons";
 import Label from "../../components/form/Label.tsx";
 import Input from "../../components/form/input/InputField.tsx";
 import Button from "../../components/ui/button/Button.tsx";
+import {register} from "../../services/auth.service.ts";
+import {setAccessToken} from "../../api/apiMethodes.ts";
+import {CreerUtilisateurCommande} from "./creer-compte-utilisateur.commande.ts";
+import ModalRetourAppelApi from "../../components/ui/modal/modal-retour-appel-api.tsx";
 
 export default function CreerCompteUtilisateur() {
+
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
+  const [nom, setNom] = useState<string>("");
+  const [prenom, setPrenom] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [nomUtilisateur, setNomUtilisateur] = useState<string>("");
+  const [motPasse, setMotPasse] = useState<string>("");
+
+  const [errorNom, setErrorNom] = useState<string | null>(null);
+  const [errorPrenom, setErrorPrenom] = useState<string | null>(null);
+  const [errorEmail, setErrorEmail] = useState<string | null>(null);
+  const [errorUsername, setErrorUsername] = useState<string | null>(null);
+  const [errorMotPasse, setErrorMotPasse] = useState<string | null>(null);
+
+  const [isReponseApiOpen, setIsReponseApiOpen] = useState<boolean>(false)
+  const [messageReponseApi, setMessageReponseApi] = useState<string>("")
+  const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "">("")
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validationDuFormulaire()) {
+      return;
+    }
+
+    setLoading(true);
+    setErrorNom(null);
+    setErrorPrenom(null);
+    setErrorEmail(null);
+    setErrorUsername(null);
+    setErrorMotPasse(null);
+
+    try {
+      const commande = new CreerUtilisateurCommande(nom, prenom, nomUtilisateur, motPasse);
+      commande.email = email;
+      const reponse = await register(commande);
+      if ("message" in reponse) {
+        setLoading(false);
+        setIsReponseApiOpen(true);
+        setMessageReponseApi(reponse.message);
+        setTypeReponseApi("error");
+      } else {
+        setIsReponseApiOpen(true);
+        setMessageReponseApi("Compte crée avec succès !");
+        setTypeReponseApi("success");
+        setLoading(false);
+
+        setNom("");
+        setPrenom("");
+        setEmail("");
+        setNomUtilisateur("");
+        setMotPasse("");
+      }
+    } catch (err: any) {
+      setLoading(false);
+      setIsReponseApiOpen(true);
+      setMessageReponseApi(err);
+      setTypeReponseApi("error");
+    }
+  }
+
+  const validationDuFormulaire = (): boolean => {
+    let isValid = true;
+
+    if (!nom.trim() || nom.length < 3) {
+      setErrorNom("Nom invalide !");
+      isValid = false;
+    }
+
+    if (!prenom.trim() || prenom.length < 3) {
+      setErrorPrenom("Prénom invalide !");
+      isValid = false;
+    }
+
+    if (email !== "" && !validateEmail(email)) {
+      setErrorEmail("Adresse email invalide !");
+      isValid = false;
+    }
+
+    if (!nomUtilisateur.trim() || nomUtilisateur.length < 4) {
+      setErrorUsername("Nom d'utilisateur invalide (minimum 4 caractères) !");
+      isValid = false;
+    }
+
+    if (!motPasse.trim() || motPasse.length < 6) {
+      setErrorMotPasse("Mot de passe invalide (minimum 6 caractères) !");
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  const validateEmail = (value: string) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(value);
+  };
+
+  const handleModalReponseApiClose = () => {
+    setIsReponseApiOpen(false)
+    setMessageReponseApi("")
+    setTypeReponseApi("")
+  }
 
   return (
       <div className="flex items-center justify-center min-h-screen w-screen bg-gray-200">
@@ -33,7 +140,7 @@ export default function CreerCompteUtilisateur() {
               </div>
             </div>
 
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="space-y-6">
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   <div className="sm:col-span-1">
@@ -41,11 +148,20 @@ export default function CreerCompteUtilisateur() {
                       Nom<span className="text-error-500">*</span>
                     </Label>
                     <Input
+                        value={nom}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setNom(value);
+                          if (value.trim()) setErrorNom(null);
+                        }}
                         type="text"
                         id="fname"
                         name="fname"
                         placeholder="Entrer votre nom"
                     />
+                    {errorNom && (
+                        <p className="text-red-500 italic text-sm mt-1">{errorNom}</p>
+                    )}
                   </div>
 
                   <div className="sm:col-span-1">
@@ -53,11 +169,20 @@ export default function CreerCompteUtilisateur() {
                       Prénom<span className="text-error-500">*</span>
                     </Label>
                     <Input
+                        value={prenom}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setPrenom(value);
+                          if (value.trim()) setErrorPrenom(null);
+                        }}
                         type="text"
                         id="lname"
                         name="lname"
                         placeholder="Entrer votre prénom"
                     />
+                    {errorPrenom && (
+                        <p className="text-red-500 italic text-sm mt-1">{errorPrenom}</p>
+                    )}
                   </div>
                 </div>
 
@@ -66,18 +191,38 @@ export default function CreerCompteUtilisateur() {
                     Email<span className="text-error-500"></span>
                   </Label>
                   <Input
+                      value={email}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setEmail(value);
+                        if (value !== "" && validateEmail(value)) setErrorEmail(null);
+                      }}
                       type="email"
                       id="email"
                       name="email"
                       placeholder="exemple@gmail.com"
                   />
+                  {errorEmail && (
+                      <p className="text-red-500 italic text-sm mt-1">{errorEmail}</p>
+                  )}
                 </div>
 
                 <div>
                   <Label>
                     Non d'utilisateur <span className="text-error-500">*</span>{" "}
                   </Label>
-                  <Input min="4" placeholder="Entrer votre nom d'utilisateur"/>
+                  <Input
+                      value={nomUtilisateur}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setNomUtilisateur(value);
+                        if (value.trim()) setErrorUsername(null);
+                      }}
+                      placeholder="Entrer votre nom d'utilisateur"
+                  />
+                  {errorUsername && (
+                      <p className="text-red-500 italic text-sm mt-1">{errorUsername}</p>
+                  )}
                 </div>
 
                 <div>
@@ -86,6 +231,12 @@ export default function CreerCompteUtilisateur() {
                   </Label>
                   <div className="relative">
                     <Input
+                        value={motPasse}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setMotPasse(value);
+                          if (value.trim()) setErrorMotPasse(null);
+                        }}
                         type={showPassword ? "text" : "password"}
                         placeholder="Entrer votre mode de passe"
                     />
@@ -100,6 +251,9 @@ export default function CreerCompteUtilisateur() {
                       )}
                     </span>
                   </div>
+                  {errorMotPasse && (
+                      <p className="text-red-500 italic text-sm mt-1">{errorMotPasse}</p>
+                  )}
                 </div>
 
                 <div className="flex items-center justify-between">
@@ -110,10 +264,11 @@ export default function CreerCompteUtilisateur() {
                     Mot de passe oublié ?
                   </Link>
                 </div>
-                
+
                 <div>
                   <Button className="w-full" size="sm">
-                    Se connecter
+                    S'inscrire
+                    {loading && (<Spinner/>)}
                   </Button>
                 </div>
               </div>
@@ -132,6 +287,17 @@ export default function CreerCompteUtilisateur() {
             </div>
           </div>
         </div>
+
+        {
+            isReponseApiOpen && (
+                <ModalRetourAppelApi
+                    onClose={handleModalReponseApiClose}
+                    isOpen={isReponseApiOpen}
+                    message={messageReponseApi}
+                    type={typeReponseApi}
+                />
+            )
+        }
       </div>
   );
 }
