@@ -6,6 +6,7 @@ import LoaderBanner from "../../components/common/LoaderBanner.tsx";
 import {InstitutionVM} from "../../models/institution.model.ts";
 import ListeInstitutionsTable from "./components/ListeInstitutionsTable.tsx";
 import EditerInstitutionModal from "./components/EditerInstitutionModal.tsx";
+import ModalRetourAppelApi from "../../components/ui/modal/modal-retour-appel-api.tsx";
 
 export default function Institutions() {
 
@@ -16,6 +17,10 @@ export default function Institutions() {
   const [loaderStatus, setLoaderStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [loaderMessage, setLoaderMessage] = useState<string | undefined>(undefined);
 
+  const [isReponseApiOpen, setIsReponseApiOpen] = useState<boolean>(false)
+  const [messageReponseApi, setMessageReponseApi] = useState<string>("")
+  const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "">("")
+
   const loadInstitutions = async () => {
     try {
       setLoaderStatus("loading");
@@ -23,15 +28,17 @@ export default function Institutions() {
       const reponse = await fetchInstitutions();
 
       if ("message" in reponse) {
-        setLoaderStatus("error");
-        setLoaderMessage(reponse.message || "Erreur lors du chargement");
+        setIsReponseApiOpen(true);
+        setMessageReponseApi(reponse.message || "Impossible de lister les données !");
+        setTypeReponseApi("error");
       } else {
         setInstitutions(reponse);
         setLoaderStatus("success");
       }
     } catch (err: any) {
-      setLoaderStatus("error");
-      setLoaderMessage(err.message || "Erreur lors du chargement");
+      setIsReponseApiOpen(true);
+      setMessageReponseApi(err);
+      setTypeReponseApi("error");
     }
 
     handleLoaderStatus(loaderStatus, loaderMessage)
@@ -64,6 +71,12 @@ export default function Institutions() {
     setLoaderStatus("success");
     setLoaderMessage("Institution ajouté avec succès ✅");
   };
+
+  const handleModalReponseApiClose = () => {
+    setIsReponseApiOpen(false)
+    setMessageReponseApi("")
+    setTypeReponseApi("")
+  }
 
   return (
       <>
@@ -104,6 +117,17 @@ export default function Institutions() {
                 setInstitutions={setInstitutions}
                 setLoaderStatus={handleLoaderStatus}
             />
+
+            {
+                isReponseApiOpen && (
+                    <ModalRetourAppelApi
+                        onClose={handleModalReponseApiClose}
+                        isOpen={isReponseApiOpen}
+                        message={messageReponseApi}
+                        type={typeReponseApi}
+                    />
+                )
+            }
           </ComponentCard>
         </div>
       </>

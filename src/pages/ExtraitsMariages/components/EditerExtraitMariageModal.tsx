@@ -80,7 +80,9 @@ export default function EditerExtraitMariageModal(
 
         const reponse = await recupererExtraitMariages(id);
         if ("message" in reponse) {
-          setLoaderStatus("error", reponse.message || "Erreur de récupération de l'extrait");
+          setIsReponseApiOpen(true);
+          setMessageReponseApi(reponse.message || "Erreur de récupération de l'extrait");
+          setTypeReponseApi("error");
         } else {
           setModifierCommande((prev) => ({
             ...prev,
@@ -100,7 +102,9 @@ export default function EditerExtraitMariageModal(
         }
       }
     } catch (err: any) {
-      setLoaderStatus("error", err.message || "Erreur lors du chargement");
+      setIsReponseApiOpen(true);
+      setMessageReponseApi(err);
+      setTypeReponseApi("error");
     } finally {
       setLoading(false);
     }

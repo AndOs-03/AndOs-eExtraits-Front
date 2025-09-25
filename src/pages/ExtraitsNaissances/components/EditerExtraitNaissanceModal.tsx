@@ -7,7 +7,8 @@ import {CreerExtraitNaissanceCommande} from "../creer-extrait-naissance.commande
 import {ModifierExtraitNaissanceCommande} from "../modifier-extrait-naissance.commande.ts";
 import {
   creerExtraitsNaissances,
-  modifierExtraitsNaissances, recupererExtraitNaissanceEssentiel,
+  modifierExtraitsNaissances,
+  recupererExtraitNaissanceEssentiel,
   recupererExtraitNaissances
 } from "../../../services/extrait-naissance.service.ts";
 import {Sexe} from "../../../models/sexe-enum.ts";
@@ -105,7 +106,9 @@ export default function EditerExtraitNaissanceModal(
 
         const reponse = await recupererExtraitNaissances(id);
         if ("message" in reponse) {
-          setLoaderStatus("error", reponse.message || "Erreur de récupération de l'extrait");
+          setIsReponseApiOpen(true);
+          setMessageReponseApi(reponse.message || "Erreur de récupération de l'extrait");
+          setTypeReponseApi("error");
         } else {
           setModifierCommande((prev) => ({
             ...prev,
@@ -143,7 +146,9 @@ export default function EditerExtraitNaissanceModal(
         } as CreerExtraitNaissanceCommande));
       }
     } catch (err: any) {
-      setLoaderStatus("error", err.message || "Erreur lors du chargement");
+      setIsReponseApiOpen(true);
+      setMessageReponseApi(err);
+      setTypeReponseApi("error");
     } finally {
       setLoading(false);
     }
@@ -1314,13 +1319,13 @@ export default function EditerExtraitNaissanceModal(
         </div>
 
         {
-          isReponseApiOpen && (
-              <ModalRetourAppelApi
-                  onClose={handleModalReponseApiClose}
-                  isOpen={isReponseApiOpen}
-                  message={messageReponseApi}
-                  type={typeReponseApi}
-              />
+            isReponseApiOpen && (
+                <ModalRetourAppelApi
+                    onClose={handleModalReponseApiClose}
+                    isOpen={isReponseApiOpen}
+                    message={messageReponseApi}
+                    type={typeReponseApi}
+                />
             )
         }
       </div>
