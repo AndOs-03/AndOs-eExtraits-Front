@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router";
 import {EyeCloseIcon, EyeIcon, Spinner} from "../../icons";
 import Label from "../../components/form/Label.tsx";
@@ -7,7 +7,7 @@ import Button from "../../components/ui/button/Button.tsx";
 import {login} from "../../services/auth.service.ts";
 import {ConnexionCommande} from "./connexion-utilisateur.commande.ts";
 import ModalRetourAppelApi from "../../components/ui/modal/modal-retour-appel-api.tsx";
-import {setAccessToken} from "../../api/apiMethodes.ts";
+import {clearAccessToken, setAccessToken} from "../../api/apiMethodes.ts";
 
 export default function Connexion() {
 
@@ -24,6 +24,10 @@ export default function Connexion() {
   const [isReponseApiOpen, setIsReponseApiOpen] = useState<boolean>(false)
   const [messageReponseApi, setMessageReponseApi] = useState<string>("")
   const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "">("")
+
+  useEffect(() => {
+    clearAccessToken();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -146,11 +150,10 @@ export default function Connexion() {
                           <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5"/>
                       )}
                     </span>
-
-                    {errorMotPasse && (
-                        <p className="text-red-500 italic text-sm mt-1">{errorMotPasse}</p>
-                    )}
                   </div>
+                  {errorMotPasse && (
+                      <p className="text-red-500 italic text-sm mt-1">{errorMotPasse}</p>
+                  )}
                 </div>
 
                 <div className="flex items-center justify-between">
