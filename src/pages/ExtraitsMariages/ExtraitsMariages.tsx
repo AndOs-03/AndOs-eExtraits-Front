@@ -26,6 +26,9 @@ export default function ExtraitsMariages() {
   const [messageReponseApi, setMessageReponseApi] = useState<string>("")
   const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "">("")
 
+  const [isCherche, setIscherche] = useState(false);
+  const [extraitsFilter, setExtraitsFilter] = useState<ExtraitMariageEssentielVM[]>([]);
+
   const loadExtraits = async () => {
     try {
       setLoaderStatus("loading");
@@ -87,6 +90,23 @@ export default function ExtraitsMariages() {
     setTypeReponseApi("")
   }
 
+  const handleOnCherche = (recherche: string) => {
+    if (recherche === "") {
+      setIscherche(false);
+    } else {
+      setIscherche(true);
+      const filteredExtraits = extraits.filter((extrait) =>
+          extrait.epoux.nomPrenoms.toLowerCase().includes(recherche.toLowerCase())
+          || extrait.epouse.nomPrenoms.toLowerCase().includes(recherche.toLowerCase())
+          || extrait.registre.includes(recherche)
+          || extrait.registreN === recherche
+          || new Date(extrait.dateMariage).toLocaleDateString("fr-FR").includes(recherche)
+      );
+
+      setExtraitsFilter(filteredExtraits);
+    }
+  }
+
   return (
       <>
         <PageBreadcrumb pageTitle="Gestion des extraits de mariage"/>
@@ -94,13 +114,47 @@ export default function ExtraitsMariages() {
           <LoaderBanner status={loaderStatus} message={loaderMessage}/>
 
           <ComponentCard title="Liste des extraits">
-            <div className="flex justify-end mb-4">
-              <button
-                  onClick={() => setIsAddModalOpen(true)}
-                  className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-              >
-                Ajouter
-              </button>
+            <div className="flex items-center justify-between mb-4">
+              <div className="relative w-full sm:w-2/3 md:w-1/2 lg:w-1/3 mr-2">
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <svg
+                      className="w-5 h-5 text-gray-400"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                  >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
+                    />
+                  </svg>
+                </span>
+
+                <input
+                    type="search"
+                    name="iRecherche"
+                    id="iRecherche"
+                    placeholder="Rechercher..."
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      handleOnCherche(value);
+                    }}
+                    className="w-full pl-10 pr-4 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
+                />
+              </div>
+
+              {/* Bouton ajouter */}
+              <div>
+                <button
+                    onClick={() => setIsAddModalOpen(true)}
+                    className="px-4 py-2 bg-green-600 text-white text-sm rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                >
+                  Ajouter
+                </button>
+              </div>
             </div>
 
             <EditerExtraitMariageModal
@@ -122,7 +176,7 @@ export default function ExtraitsMariages() {
             />
 
             <ListeExtraitsMariagesTable
-                extraits={extraits}
+                extraits={isCherche ? extraitsFilter : extraits}
                 setExtraits={setExtraits}
                 setExtraitToPrint={handleExtraitToPrint}
                 setLoaderStatus={handleLoaderStatus}
