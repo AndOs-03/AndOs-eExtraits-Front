@@ -50,10 +50,12 @@ export default function EditerInstitutionModal(
       if (id) {
         setLoading(true);
         setLoaderStatus("loading", "Chargement...");
-        const reponse = await recupererInstitution(id);
 
+        const reponse = await recupererInstitution(id);
         if ("message" in reponse) {
-          setLoaderStatus("error", reponse.message || "Erreur de récupération de l'institution");
+          setIsReponseApiOpen(true);
+          setMessageReponseApi(reponse.message || "Erreur de récupération de l'institution");
+          setTypeReponseApi("error");
         } else {
           setCommande((prev) => ({...prev, id: id}));
           setCommande((prev) => ({...prev, departement: reponse.departement}));
@@ -68,7 +70,9 @@ export default function EditerInstitutionModal(
         }
       }
     } catch (err: any) {
-      setLoaderStatus("error", err.message || "Erreur lors du chargement");
+      setIsReponseApiOpen(true);
+      setMessageReponseApi(err);
+      setTypeReponseApi("error");
     } finally {
       setLoading(false);
     }

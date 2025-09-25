@@ -6,6 +6,7 @@ import ComponentCard from "../../components/common/ComponentCard.tsx";
 import ListeCentresTable from "./components/ListeCentresTable.tsx";
 import AjouterCentreModal from "./components/AjouterCentreModal.tsx";
 import LoaderBanner from "../../components/common/LoaderBanner.tsx";
+import ModalRetourAppelApi from "../../components/ui/modal/modal-retour-appel-api.tsx";
 
 export default function Centres() {
 
@@ -16,6 +17,10 @@ export default function Centres() {
   const [loaderStatus, setLoaderStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [loaderMessage, setLoaderMessage] = useState<string | undefined>(undefined);
 
+  const [isReponseApiOpen, setIsReponseApiOpen] = useState<boolean>(false)
+  const [messageReponseApi, setMessageReponseApi] = useState<string>("")
+  const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "">("")
+
   const loadCentres = async () => {
     try {
       setLoaderStatus("loading");
@@ -23,15 +28,17 @@ export default function Centres() {
       const reponse = await fetchCentres();
 
       if ("message" in reponse) {
-        setLoaderStatus("error");
-        setLoaderMessage(reponse.message || "Erreur lors du chargement");
+        setIsReponseApiOpen(true);
+        setMessageReponseApi(reponse.message || "Impossible de lister les données !");
+        setTypeReponseApi("error");
       } else {
         setCentres(reponse);
         setLoaderStatus("success");
       }
     } catch (err: any) {
-      setLoaderStatus("error");
-      setLoaderMessage(err.message || "Erreur lors du chargement");
+      setIsReponseApiOpen(true);
+      setMessageReponseApi(err);
+      setTypeReponseApi("error");
     }
 
     handleLoaderStatus(loaderStatus, loaderMessage)
@@ -64,6 +71,12 @@ export default function Centres() {
     setLoaderStatus("success");
     setLoaderMessage("Centre ajouté avec succès ✅");
   };
+
+  const handleModalReponseApiClose = () => {
+    setIsReponseApiOpen(false)
+    setMessageReponseApi("")
+    setTypeReponseApi("")
+  }
 
   return (
       <>
@@ -103,6 +116,17 @@ export default function Centres() {
                 setCentres={setCentres}
                 setLoaderStatus={handleLoaderStatus}
             />
+
+            {
+                isReponseApiOpen && (
+                    <ModalRetourAppelApi
+                        onClose={handleModalReponseApiClose}
+                        isOpen={isReponseApiOpen}
+                        message={messageReponseApi}
+                        type={typeReponseApi}
+                    />
+                )
+            }
           </ComponentCard>
         </div>
       </>

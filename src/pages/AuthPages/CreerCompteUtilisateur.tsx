@@ -1,11 +1,11 @@
 import {useState} from "react";
 import {Link} from "react-router";
 import {EyeCloseIcon, EyeIcon} from "../../icons";
-import Label from "../form/Label";
-import Input from "../form/input/InputField";
-import Button from "../ui/button/Button";
+import Label from "../../components/form/Label.tsx";
+import Input from "../../components/form/input/InputField.tsx";
+import Button from "../../components/ui/button/Button.tsx";
 
-export default function SignInForm() {
+export default function CreerCompteUtilisateur() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -15,10 +15,10 @@ export default function SignInForm() {
 
             <div>
               <h1 className="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
-                Connexion
+                Créer un compte
               </h1>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                Entrer votre nom d'utilisateur et votre mot de passe !
+                Remplissez le formulaire !
               </p>
             </div>
 
@@ -35,12 +35,51 @@ export default function SignInForm() {
 
             <form>
               <div className="space-y-6">
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                  <div className="sm:col-span-1">
+                    <Label>
+                      Nom<span className="text-error-500">*</span>
+                    </Label>
+                    <Input
+                        type="text"
+                        id="fname"
+                        name="fname"
+                        placeholder="Entrer votre nom"
+                    />
+                  </div>
+
+                  <div className="sm:col-span-1">
+                    <Label>
+                      Prénom<span className="text-error-500">*</span>
+                    </Label>
+                    <Input
+                        type="text"
+                        id="lname"
+                        name="lname"
+                        placeholder="Entrer votre prénom"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label>
+                    Email<span className="text-error-500"></span>
+                  </Label>
+                  <Input
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder="exemple@gmail.com"
+                  />
+                </div>
+
                 <div>
                   <Label>
                     Non d'utilisateur <span className="text-error-500">*</span>{" "}
                   </Label>
                   <Input min="4" placeholder="Entrer votre nom d'utilisateur"/>
                 </div>
+
                 <div>
                   <Label>
                     Mot de passe <span className="text-error-500">*</span>{" "}
@@ -62,6 +101,7 @@ export default function SignInForm() {
                     </span>
                   </div>
                 </div>
+
                 <div className="flex items-center justify-between">
                   <Link
                       to="/reset-password"
@@ -70,6 +110,7 @@ export default function SignInForm() {
                     Mot de passe oublié ?
                   </Link>
                 </div>
+                
                 <div>
                   <Button className="w-full" size="sm">
                     Se connecter
@@ -80,12 +121,12 @@ export default function SignInForm() {
 
             <div className="mt-5">
               <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
-                Pas de compte ? {""}
+                Déjà un compte ? {""}
                 <Link
-                    to="/register"
+                    to="/login"
                     className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
                 >
-                  Créer un compte
+                  Connecter vous
                 </Link>
               </p>
             </div>

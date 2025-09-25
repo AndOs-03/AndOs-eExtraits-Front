@@ -58,6 +58,7 @@ import { ReactComponent as SettingsIcon } from "./settings.svg?react";
 import { ReactComponent as PrinterIcon } from "./printer-thin.svg?react";
 import { ReactComponent as DeleteIcon } from "./delete.svg?react";
 import { ReactComponent as XCircle } from "./x-circle.svg?react";
+import { ReactComponent as Spinner } from "./spinner.svg?react";
 
 export {
   ErrorHexaIcon,
@@ -120,4 +121,5 @@ export {
   PrinterIcon,
   DeleteIcon,
   XCircle,
+  Spinner,
 };
