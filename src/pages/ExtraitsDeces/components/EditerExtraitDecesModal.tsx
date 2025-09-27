@@ -728,7 +728,7 @@ export default function EditerExtraitDecesModal(
                   <label className="block text-sm font-medium text-gray-700 mb-1">Situation
                     Matrimoniale</label>
                   <Select
-                      value={id ? modifierCommande?.situationMatrimoniale ?? "" : commande?.situationMatrimoniale ?? ""}
+                      defaultValue={id ? modifierCommande?.situationMatrimoniale ?? "" : commande?.situationMatrimoniale ?? ""}
                       placeholder="Veillez choisir"
                       onChange={value => {
                         if (id) {
