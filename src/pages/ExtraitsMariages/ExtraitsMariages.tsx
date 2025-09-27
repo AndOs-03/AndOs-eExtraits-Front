@@ -187,7 +187,6 @@ export default function ExtraitsMariages() {
                   <PdfPreviewer
                       extrait={extraitToPrint}
                       typeExtrait={TypeExtrait.MARIAGE}
-                      setLoaderStatus={setLoaderStatus}
                       onClose={() => setExtraitToPrint(null)}
                   />
                 </div>

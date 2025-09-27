@@ -4,7 +4,7 @@ import {InstitutionVM} from "../../../models/institution.model.ts";
 import {InstitutionActif} from "../types.ts";
 import {supprimerInstitution} from "../../../services/institution.service.ts";
 import EditerInstitutionModal from "./EditerInstitutionModal.tsx";
-import {CheckCircleIcon, DeleteIcon, PencilIcon, PrinterIcon} from "../../../icons";
+import {CheckCircleIcon, DeleteIcon, PencilIcon} from "../../../icons";
 
 interface Props {
   institution: InstitutionVM;
@@ -42,7 +42,6 @@ export default function LigneActionInstitutionTable(
     try {
       setLoaderStatus("loading", "Suppression en cours...");
       const reponse = await supprimerInstitution(institution.id)
-
       if ("message" in reponse) {
         setLoaderStatus("error", reponse.message || "Erreur lors de la suppression");
       } else {
@@ -100,7 +99,7 @@ export default function LigneActionInstitutionTable(
                   >
                     Activer
                   </button>
-                  <CheckCircleIcon />
+                  <CheckCircleIcon/>
                 </li>
 
                 <li className="flex items-center px-4 py-2 justify-between hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -113,7 +112,7 @@ export default function LigneActionInstitutionTable(
                   >
                     Modifier
                   </button>
-                  <PencilIcon />
+                  <PencilIcon/>
                 </li>
 
                 <li className="flex items-center px-4 py-2 justify-between hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -123,7 +122,7 @@ export default function LigneActionInstitutionTable(
                   >
                     Supprimer
                   </button>
-                  <DeleteIcon />
+                  <DeleteIcon/>
                 </li>
               </ul>
             </div>
@@ -135,7 +134,6 @@ export default function LigneActionInstitutionTable(
                 id={institution.id}
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
-                setLoaderStatus={setLoaderStatus}
                 setElementAdded={(updatedInstitution) => {
                   setInstitutions(prev =>
                       prev.map(i => (i.id === updatedInstitution?.id ? updatedInstitution : i))

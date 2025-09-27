@@ -41,7 +41,6 @@ export default function LigneActionExtraitMariageTable(
   const handleDelete = async () => {
     try {
       setLoaderStatus("loading", "Suppression en cours...");
-
       const reponse = await supprimerExtraitsMariages(extrait.id)
       if ("message" in reponse) {
         setLoaderStatus("error", reponse.message || "Erreur lors de la suppression");
@@ -117,7 +116,6 @@ export default function LigneActionExtraitMariageTable(
                 id={extrait.id}
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
-                setLoaderStatus={setLoaderStatus}
                 setElementAdded={(updated) => {
                   setExtraits(prev =>
                       prev.map(i => (i.id === updated?.id ? updated : i))

@@ -23,12 +23,12 @@ import {
   ExtraitNaissanceEssentielVM
 } from "../../../models/ExtraitsNaissances/extrait-naissance-essentiel.model.ts";
 import ModalRetourAppelApi from "../../../components/ui/modal/modal-retour-appel-api.tsx";
+import {Spinner} from "../../../icons";
 
 interface Props {
   id: number | undefined
   isOpen: boolean;
   onClose: () => void;
-  setLoaderStatus: (status: "idle" | "loading" | "success" | "error", message?: string) => void;
   setElementAdded: (extrait: ExtraitNaissanceDetailsVM | ExtraitNaissanceEssentielVM | null) => void;
 }
 
@@ -37,13 +37,13 @@ export default function EditerExtraitNaissanceModal(
       id,
       isOpen,
       onClose,
-      setLoaderStatus,
       setElementAdded
     }: Props) {
 
+  const [loading, setLoading] = useState(false);
+
   const [extrait, setExtrait] = useState<ExtraitNaissanceDetailsVM | null>(null);
   const [centreActif, setCentreActif] = useState<Centre | null>(null);
-  const [loading, setLoading] = useState(false);
 
   const [extraitTPI, setExtraitTPI] = useState(false);
   const [mariage, setMariage] = useState(false);
@@ -101,9 +101,6 @@ export default function EditerExtraitNaissanceModal(
       setCentreActif(centre);
 
       if (id) {
-        setLoading(true);
-        setLoaderStatus("loading", "Chargement...");
-
         const reponse = await recupererExtraitNaissances(id);
         if ("message" in reponse) {
           setIsReponseApiOpen(true);
@@ -128,7 +125,6 @@ export default function EditerExtraitNaissanceModal(
             personne: reponse.personne,
           } as ModifierExtraitNaissanceCommande));
           setExtrait(reponse);
-          setLoaderStatus("success");
 
           setSexeChoisi(reponse.personne.sexe != "MASCULIN");
           setMariage(reponse.personne.mentionsEventuelle?.mariage ?? false);
@@ -149,8 +145,6 @@ export default function EditerExtraitNaissanceModal(
       setIsReponseApiOpen(true);
       setMessageReponseApi(err);
       setTypeReponseApi("error");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -189,7 +183,6 @@ export default function EditerExtraitNaissanceModal(
     setErrorNomMere(null);
 
     try {
-      setLoaderStatus("loading", "Enregistrement...");
       let reponse;
       if (id) {
         reponse = await modifierExtraitsNaissances(modifierCommande)
@@ -199,12 +192,10 @@ export default function EditerExtraitNaissanceModal(
       }
 
       if ("message" in reponse) {
-        setLoaderStatus("error", reponse.message || "Erreur lors de l'enregistrement");
         setIsReponseApiOpen(true);
         setMessageReponseApi(reponse.message);
         setTypeReponseApi("error");
       } else {
-        setLoaderStatus("success", `${id ? "Modifié" : "Enregistré"} avec succès ✅`);
         setIsReponseApiOpen(true);
         setMessageReponseApi(`${id ? "Modifié" : "Enregistré"} avec succès`);
         setTypeReponseApi("success");
@@ -218,13 +209,13 @@ export default function EditerExtraitNaissanceModal(
           setElementAdded(extrait);
         }
       }
+      setLoading(false);
     } catch (err: any) {
+      setLoading(false);
       setError(err.message || "Erreur lors de l'ajout");
       setIsReponseApiOpen(true);
       setMessageReponseApi(err);
       setTypeReponseApi("error");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -1309,10 +1300,10 @@ export default function EditerExtraitNaissanceModal(
               </button>
               <button
                   onClick={handleSubmit}
-                  disabled={loading}
                   className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
               >
-                {loading ? "Enregistrement..." : "Enregistrer"}
+                Enregistrer
+                {loading && (<Spinner/>)}
               </button>
             </div>
           </div>

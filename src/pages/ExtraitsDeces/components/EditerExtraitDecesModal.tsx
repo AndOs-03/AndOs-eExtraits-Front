@@ -11,12 +11,12 @@ import {ParentExtrait} from "../../../models/parents-extrait.model.ts";
 import Select from "../../../components/form/Select.tsx";
 import {SituationMatrimoniale} from "../../../models/situation-matrimoniale.ts";
 import ModalRetourAppelApi from "../../../components/ui/modal/modal-retour-appel-api.tsx";
+import {Spinner} from "../../../icons";
 
 interface Props {
   id: number | undefined
   isOpen: boolean;
   onClose: () => void;
-  setLoaderStatus: (status: "idle" | "loading" | "success" | "error", message?: string) => void;
   setElementAdded: (extrait: ExtraitDecesDetailsVM | null) => void;
 }
 
@@ -25,13 +25,12 @@ export default function EditerExtraitDecesModal(
       id,
       isOpen,
       onClose,
-      setLoaderStatus,
       setElementAdded
     }: Props) {
 
-  const [extrait, setExtrait] = useState<ExtraitDecesDetailsVM | null>(null);
-
   const [loading, setLoading] = useState(false);
+
+  const [extrait, setExtrait] = useState<ExtraitDecesDetailsVM | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [errorAnnee, setErrorAnnee] = useState<string | null>(null);
   const [errorNumeroRegistre, setErrorNumeroRegistre] = useState<string | null>(null);
@@ -78,9 +77,6 @@ export default function EditerExtraitDecesModal(
   const loadExtrait = async () => {
     try {
       if (id) {
-        setLoading(true);
-        setLoaderStatus("loading", "Chargement...");
-
         const reponse = await recupererExtraitDeces(id);
         if ("message" in reponse) {
           setIsReponseApiOpen(true);
@@ -105,20 +101,17 @@ export default function EditerExtraitDecesModal(
             etatCivil: reponse.etatCivil,
             centreEtatCivil: reponse.centreEtatCivil,
             registreN: reponse.registreN,
-            situationMatrimoniale: reponse.situationMatrimoniale,
+            situationMatrimoniale: reponse.situationMatrimoniale.toUpperCase(),
             pere: reponse.pere,
             mere: reponse.mere
           } as ModifierExtraitDecesCommande));
           setExtrait(reponse);
-          setLoaderStatus("success");
         }
       }
     } catch (err: any) {
       setIsReponseApiOpen(true);
       setMessageReponseApi(err);
       setTypeReponseApi("error");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -151,7 +144,6 @@ export default function EditerExtraitDecesModal(
     setErrorSituationMatrimoniale(null);
 
     try {
-      setLoaderStatus("loading", "Enregistrement...");
       let reponse;
       if (id) {
         reponse = await modifierExtraitsDeces(modifierCommande)
@@ -160,12 +152,10 @@ export default function EditerExtraitDecesModal(
       }
 
       if ("message" in reponse) {
-        setLoaderStatus("error", reponse.message || "Erreur lors de l'enregistrement");
         setIsReponseApiOpen(true);
         setMessageReponseApi(reponse.message);
         setTypeReponseApi("error");
       } else {
-        setLoaderStatus("success", `${id ? "Modifié" : "Enregistré"} avec succès ✅`);
         setIsReponseApiOpen(true);
         setMessageReponseApi(`${id ? "Modifié" : "Enregistré"} avec succès`);
         setTypeReponseApi("success");
@@ -179,13 +169,13 @@ export default function EditerExtraitDecesModal(
           setElementAdded(extrait);
         }
       }
+      setLoading(false);
     } catch (err: any) {
+      setLoading(false);
       setError(err.message || "Erreur lors de l'ajout");
       setIsReponseApiOpen(true);
       setMessageReponseApi(err);
       setTypeReponseApi("error");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -836,10 +826,10 @@ export default function EditerExtraitDecesModal(
               </button>
               <button
                   onClick={handleSubmit}
-                  disabled={loading}
                   className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
               >
-                {loading ? "Enregistrement..." : "Enregistrer"}
+                Enregistrer
+                {loading && (<Spinner/>)}
               </button>
             </div>
           </div>
