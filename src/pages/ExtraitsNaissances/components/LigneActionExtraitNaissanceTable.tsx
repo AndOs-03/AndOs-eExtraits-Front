@@ -117,7 +117,6 @@ export default function LigneActionExtraitNaissanceTable(
                 id={extrait.id}
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
-                setLoaderStatus={setLoaderStatus}
                 setElementAdded={(updated) => {
                   setExtraits(prev =>
                       prev.map(i => (i.id === updated?.id ? updated : i))

@@ -41,7 +41,6 @@ export default function LigneActionExtraitDecesTable(
   const handleDelete = async () => {
     try {
       setLoaderStatus("loading", "Suppression en cours...");
-
       const reponse = await supprimerExtraitsDeces(extrait.id)
       if ("message" in reponse) {
         setLoaderStatus("error", reponse.message || "Erreur lors de la suppression");

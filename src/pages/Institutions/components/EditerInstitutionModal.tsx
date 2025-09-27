@@ -3,12 +3,12 @@ import {editeInstitutions, recupererInstitution} from "../../../services/institu
 import {EditerInstitutionCommande} from "../editer-institution.commande.ts";
 import {InstitutionVM} from "../../../models/institution.model.ts";
 import ModalRetourAppelApi from "../../../components/ui/modal/modal-retour-appel-api.tsx";
+import {Spinner} from "../../../icons";
 
 interface Props {
   id: number | null
   isOpen: boolean;
   onClose: () => void;
-  setLoaderStatus: (status: "idle" | "loading" | "success" | "error", message?: string) => void;
   setElementAdded: (institution: InstitutionVM | null) => void;
 }
 
@@ -17,12 +17,11 @@ export default function EditerInstitutionModal(
       id,
       isOpen,
       onClose,
-      setLoaderStatus,
       setElementAdded
     }: Props) {
 
-  const [institution, setInstitution] = useState<InstitutionVM | null>(null);
   const [loading, setLoading] = useState(false);
+  const [institution, setInstitution] = useState<InstitutionVM | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [errorDepart, setErrorDepart] = useState<string | null>(null);
   const [errorCentreEtat, setErrorCentreEtat] = useState<string | null>(null);
@@ -48,9 +47,6 @@ export default function EditerInstitutionModal(
   const loadInstitution = async () => {
     try {
       if (id) {
-        setLoading(true);
-        setLoaderStatus("loading", "Chargement...");
-
         const reponse = await recupererInstitution(id);
         if ("message" in reponse) {
           setIsReponseApiOpen(true);
@@ -66,15 +62,12 @@ export default function EditerInstitutionModal(
           setCommande((prev) => ({...prev, officier: reponse.officier}));
           setCommande((prev) => ({...prev, titreOfficier: reponse.titreOfficier}));
           setInstitution(reponse);
-          setLoaderStatus("success");
         }
       }
     } catch (err: any) {
       setIsReponseApiOpen(true);
       setMessageReponseApi(err);
       setTypeReponseApi("error");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -100,16 +93,12 @@ export default function EditerInstitutionModal(
     setErrorVille(null);
 
     try {
-      setLoaderStatus("loading", "Enregistrement...");
       const reponse = await editeInstitutions(commande!)
-
       if ("message" in reponse) {
-        setLoaderStatus("error", reponse.message || "Erreur lors de l'enregistrement");
         setIsReponseApiOpen(true);
         setMessageReponseApi(reponse.message);
         setTypeReponseApi("error");
       } else {
-        setLoaderStatus("success", "Enregistré avec succès ✅");
         setIsReponseApiOpen(true);
         setMessageReponseApi(`${id ? "Modifié" : "Enregistré"} avec succès`);
         setTypeReponseApi("success");
@@ -123,13 +112,13 @@ export default function EditerInstitutionModal(
           setElementAdded(institution);
         }
       }
+      setLoading(false);
     } catch (err: any) {
+      setLoading(false);
       setError(err.message || "Erreur lors de l'ajout");
       setIsReponseApiOpen(true);
       setMessageReponseApi(err);
       setTypeReponseApi("error");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -310,10 +299,10 @@ export default function EditerInstitutionModal(
               </button>
               <button
                   onClick={handleSubmit}
-                  disabled={loading}
                   className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
               >
-                {loading ? "Enregistrement..." : "Enregistrer"}
+                Enregistrer
+                {loading && (<Spinner/>)}
               </button>
             </div>
           </div>

@@ -17,24 +17,30 @@ import {
 import {
   ExtraitNaissanceEssentielVM
 } from "../models/ExtraitsNaissances/extrait-naissance-essentiel.model.ts";
+import ModalRetourAppelApi from "../components/ui/modal/modal-retour-appel-api.tsx";
 
 interface Props {
   extrait: ExtraitDecesEssentielVM | ExtraitMariageEssentielVM | ExtraitNaissanceEssentielVM;
   typeExtrait: TypeExtrait;
-  setLoaderStatus: (status: "idle" | "loading" | "success" | "error", message?: string) => void;
   onClose: () => void;
 }
 
-export default function PdfPreviewer({extrait, typeExtrait, setLoaderStatus, onClose}: Props) {
+export default function PdfPreviewer({extrait, typeExtrait, onClose}: Props) {
 
   const [pdfUrl, setPdfUrl] = useState<string | null>(null)
+
+  const [isReponseApiOpen, setIsReponseApiOpen] = useState<boolean>(false)
+  const [messageReponseApi, setMessageReponseApi] = useState<string>("")
+  const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "">("")
+
+  const [messagePrevisualisation, setMessagePrevisualisation] = useState("")
 
   const chargerFichierExtrait = async () => {
     try {
       const centre = recupererCentreActif();
       const institution = recupererInstitutionActif();
 
-      setLoaderStatus("loading", "Chargement...");
+      setMessagePrevisualisation("Génération du PDF en cours...")
 
       let reponse: ApiError | Blob | undefined = undefined;
       switch (typeExtrait) {
@@ -59,15 +65,19 @@ export default function PdfPreviewer({extrait, typeExtrait, setLoaderStatus, onC
       }
 
       if (reponse !== undefined && "message" in reponse) {
-        setLoaderStatus("error", reponse!.message || "Erreur de génération du PDF ");
+        setIsReponseApiOpen(true);
+        setMessageReponseApi(reponse.message || "Erreur de génération du PDF");
+        setTypeReponseApi("error");
+        setMessagePrevisualisation("Erreur de génération du PDF")
       } else {
         const blob = reponse as Blob;
         const url = URL.createObjectURL(blob);
         setPdfUrl(url);
-        setLoaderStatus("success", "Génération PDF terminé");
       }
     } catch (err: any) {
-      setLoaderStatus("error", err.message || "Erreur de génération du PDF " + err);
+      setIsReponseApiOpen(true);
+      setMessageReponseApi(err);
+      setTypeReponseApi("error");
     }
   }
 
@@ -101,6 +111,12 @@ export default function PdfPreviewer({extrait, typeExtrait, setLoaderStatus, onC
         return "extrait - naissance - " + nom + " " + prenoms + ".pdf";
       }
     }
+  }
+
+  const handleModalReponseApiClose = () => {
+    setIsReponseApiOpen(false)
+    setMessageReponseApi("")
+    setTypeReponseApi("")
   }
 
   return (
@@ -141,8 +157,19 @@ export default function PdfPreviewer({extrait, typeExtrait, setLoaderStatus, onC
               </div>
             </>
         ) : (
-            <p>Génération du PDF en cours...</p>
+            <p>{messagePrevisualisation}</p>
         )}
+
+        {
+            isReponseApiOpen && (
+                <ModalRetourAppelApi
+                    onClose={handleModalReponseApiClose}
+                    isOpen={isReponseApiOpen}
+                    message={messageReponseApi}
+                    type={typeReponseApi}
+                />
+            )
+        }
       </div>
   );
 }
