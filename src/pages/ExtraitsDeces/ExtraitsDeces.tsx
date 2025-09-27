@@ -184,7 +184,6 @@ export default function ExtraitsDeces() {
                   <PdfPreviewer
                       extrait={extraitToPrint}
                       typeExtrait={TypeExtrait.DECES}
-                      setLoaderStatus={setLoaderStatus}
                       onClose={() => setExtraitToPrint(null)}
                   />
                 </div>
