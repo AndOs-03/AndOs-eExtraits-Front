@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router";
 import {EyeCloseIcon, EyeIcon, Spinner} from "../../icons";
 import Label from "../../components/form/Label.tsx";
@@ -29,7 +29,7 @@ export default function Connexion() {
     clearAccessToken();
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validationDuFormulaire()) {
       return;

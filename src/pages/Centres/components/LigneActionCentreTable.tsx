@@ -3,7 +3,7 @@ import {TableCell} from "../../../components/ui/table";
 import {Centre} from "../types.ts";
 import {supprimerCentre} from "../../../services/centre.service.ts";
 import ModifierCentreModal from "./ModifierCentreModal.tsx";
-import {CheckCircleIcon, DeleteIcon, PencilIcon, PrinterIcon} from "../../../icons";
+import {CheckCircleIcon, DeleteIcon, PencilIcon} from "../../../icons";
 
 interface LigneActionCentreTableProps {
   centre: Centre;
@@ -93,7 +93,7 @@ export default function LigneActionCentreTable(
                   >
                     Activer
                   </button>
-                  <CheckCircleIcon />
+                  <CheckCircleIcon/>
                 </li>
 
                 <li className="flex items-center px-4 py-2 justify-between hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -106,7 +106,7 @@ export default function LigneActionCentreTable(
                   >
                     Modifier
                   </button>
-                  <PencilIcon />
+                  <PencilIcon/>
                 </li>
 
                 <li className="flex items-center px-4 py-2 justify-between hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -116,7 +116,7 @@ export default function LigneActionCentreTable(
                   >
                     Supprimer
                   </button>
-                  <DeleteIcon />
+                  <DeleteIcon/>
                 </li>
               </ul>
             </div>

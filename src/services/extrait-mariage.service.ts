@@ -1,7 +1,6 @@
 import {ENDPOINTS} from "../api/endpoints";
 import {ApiError} from "../api/types.ts";
 import {apiMethodes} from "../api/apiMethodes.ts";
-import {ExtraitDecesDetailsVM} from "../models/ExtraitsDeces/extrait-deces-details.model.ts";
 import {
   ExtraitMariageEssentielVM
 } from "../models/ExtraitsMariages/extrait-mariage-essentiel.model.ts";
