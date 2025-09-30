@@ -9,7 +9,6 @@ on:
 env:
   DOCKER_IMAGE_NAME: andos-eextraits-front
   DOCKER_REGISTRY: docker.io
-  VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }} # Accède à la variable d'environnement sécurisée
 
 jobs:
   build_and_push:
@@ -34,7 +33,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/andos-eextraits-back:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/andos-eextraits-front:latest
           build-args: |
             VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}
 
@@ -49,9 +48,12 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            # Changez de répertoire si nécessaire
+            IMAGE_TAG=${{ secrets.DOCKER_USERNAME }}/andos-eextraits-front:latest
+            docker pull $IMAGE_TAG
+            
             cd /root/andos_eextraits_front
             
-            docker-compose build andos-eextraits-front
-            docker-compose up -d --force-recreate andos-eextraits-front
+            docker stop andos-eextraits-front || true
+            docker rm andos-eextraits-front || true
+            docker run -d --name andos-eextraits-front -p 8080:80 $IMAGE_TAG
             docker image prune -f
