@@ -95,9 +95,9 @@ export default function ExtraitsDeces() {
       setIscherche(true);
       const filteredExtraits = extraits.filter((extrait) =>
           (extrait.nom + " " + extrait.prenoms).toLowerCase().includes(recherche.toLowerCase())
-          || extrait.registre.includes(recherche)
+          || extrait.registre?.includes(recherche)
           || extrait.registreN === recherche
-          || new Date(extrait.dateDeces).toLocaleDateString("fr-FR").includes(recherche)
+          || new Date(extrait.dateDeces ?? "").toLocaleDateString("fr-FR").includes(recherche)
       );
 
       setExtraitsFilter(filteredExtraits);
@@ -168,7 +168,6 @@ export default function ExtraitsDeces() {
                     }
                   }
                 }}
-                setLoaderStatus={handleLoaderStatus}
                 setElementAdded={handleElementAdd}
             />
 

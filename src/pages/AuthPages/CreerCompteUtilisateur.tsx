@@ -1,18 +1,16 @@
-import {useState} from "react";
-import {Link, useNavigate} from "react-router";
+import React, {useState} from "react";
+import {Link} from "react-router";
 import {EyeCloseIcon, EyeIcon, Spinner} from "../../icons";
 import Label from "../../components/form/Label.tsx";
 import Input from "../../components/form/input/InputField.tsx";
 import Button from "../../components/ui/button/Button.tsx";
 import {register} from "../../services/auth.service.ts";
-import {setAccessToken} from "../../api/apiMethodes.ts";
 import {CreerUtilisateurCommande} from "./creer-compte-utilisateur.commande.ts";
 import ModalRetourAppelApi from "../../components/ui/modal/modal-retour-appel-api.tsx";
 
 export default function CreerCompteUtilisateur() {
 
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   const [nom, setNom] = useState<string>("");
@@ -31,7 +29,7 @@ export default function CreerCompteUtilisateur() {
   const [messageReponseApi, setMessageReponseApi] = useState<string>("")
   const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "">("")
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validationDuFormulaire()) {
       return;

@@ -70,26 +70,9 @@ export default function EditerExtraitNaissanceModal(
 
   const [sexeChoisi, setSexeChoisi] = useState(false);
 
-  const [commande, setCommande] = useState<CreerExtraitNaissanceCommande>({
-    annee: new Date().getFullYear(),
-    numeroRegistre: null,
-    dateRegistre: null,
-    etatCivil: null,
-    centreEtatCivil: null,
-    extraitTypeTPI: false,
-    nouveauModel: false,
-  });
+  const [commande, setCommande] = useState<CreerExtraitNaissanceCommande>(new CreerExtraitNaissanceCommande(new Date().getFullYear()));
 
-  const [modifierCommande, setModifierCommande] = useState<ModifierExtraitNaissanceCommande>({
-    id: null,
-    annee: new Date().getFullYear(),
-    numeroRegistre: null,
-    dateRegistre: null,
-    etatCivil: null,
-    centreEtatCivil: null,
-    extraitTypeTPI: false,
-    nouveauModel: false,
-  });
+  const [modifierCommande, setModifierCommande] = useState<ModifierExtraitNaissanceCommande>(new ModifierExtraitNaissanceCommande(new Date().getFullYear()));
 
   const [isReponseApiOpen, setIsReponseApiOpen] = useState<boolean>(false)
   const [messageReponseApi, setMessageReponseApi] = useState<string>("")
@@ -121,20 +104,20 @@ export default function EditerExtraitNaissanceModal(
             tribunalJugementSupletif: reponse.tribunalJugementSupletif,
             extraitTypeTPI: reponse.extraitTypeTPI,
             nouveauModel: reponse.nouveauModel,
-            centreId: reponse.centre.id,
+            centreId: reponse.centre?.id,
             personne: reponse.personne,
           } as ModifierExtraitNaissanceCommande));
           setExtrait(reponse);
 
-          setSexeChoisi(reponse.personne.sexe != "MASCULIN");
-          setMariage(reponse.personne.mentionsEventuelle?.mariage ?? false);
-          setDivorce(reponse.personne.mentionsEventuelle?.divorce ?? false);
-          setDecede(reponse.personne.mentionsEventuelle?.decede ?? false);
+          setSexeChoisi(reponse.personne?.sexe != "MASCULIN");
+          setMariage(reponse.personne?.mentionsEventuelle?.mariage ?? false);
+          setDivorce(reponse.personne?.mentionsEventuelle?.divorce ?? false);
+          setDecede(reponse.personne?.mentionsEventuelle?.decede ?? false);
           setExtraitTPI(reponse.extraitTypeTPI ?? false);
         }
       } else {
         const personne = new PersonneExtraitNaissance("", "", "", "", "MASCULIN");
-        setCommande((prev) => ({
+        setCommande((prev: CreerExtraitNaissanceCommande) => ({
           ...prev,
           id: null,
           annee: new Date().getFullYear(),
@@ -187,7 +170,7 @@ export default function EditerExtraitNaissanceModal(
       if (id) {
         reponse = await modifierExtraitsNaissances(modifierCommande)
       } else {
-        commande.centreId = centreActif?.id;
+        commande.centreId = centreActif?.id!;
         reponse = await creerExtraitsNaissances(commande)
       }
 
@@ -242,15 +225,15 @@ export default function EditerExtraitNaissanceModal(
     setDivorce(false);
     setDecede(false);
 
-    setCommande(null);
-    setModifierCommande(null);
+    setCommande(new CreerExtraitNaissanceCommande(new Date().getFullYear()));
+    setModifierCommande(new ModifierExtraitNaissanceCommande(new Date().getFullYear()));
 
     const annee = new Date().getFullYear();
     setModifierCommande((prev) => ({
       ...prev,
       annee: annee
     } as ModifierExtraitNaissanceCommande));
-    setCommande((prev) => ({
+    setCommande((prev: CreerExtraitNaissanceCommande) => ({
       ...prev,
       annee: annee
     } as CreerExtraitNaissanceCommande));
@@ -339,7 +322,7 @@ export default function EditerExtraitNaissanceModal(
         },
       } as ModifierExtraitNaissanceCommande));
     } else {
-      setCommande((prev) => ({
+      setCommande((prev: CreerExtraitNaissanceCommande) => ({
         ...prev,
         personne: {
           ...prev.personne,
@@ -389,12 +372,12 @@ export default function EditerExtraitNaissanceModal(
                           onChange={(e) => {
                             const checked = e.target.checked;
                             if (id) {
-                              setModifierCommande((prev) => ({
+                              setModifierCommande((prev:ModifierExtraitNaissanceCommande) => ({
                                 ...prev,
                                 nouveauModel: checked,
                               } as ModifierExtraitNaissanceCommande));
                             } else {
-                              setCommande((prev) => ({
+                              setCommande((prev: CreerExtraitNaissanceCommande) => ({
                                 ...prev,
                                 nouveauModel: checked,
                               } as CreerExtraitNaissanceCommande));
@@ -413,12 +396,12 @@ export default function EditerExtraitNaissanceModal(
                         onChange={(e) => {
                           const value = e.target.value;
                           if (id) {
-                            setModifierCommande((prev) => ({
+                            setModifierCommande((prev: ModifierExtraitNaissanceCommande) => ({
                               ...prev,
                               registreN: value
                             } as ModifierExtraitNaissanceCommande));
                           } else {
-                            setCommande((prev) => ({
+                            setCommande((prev: CreerExtraitNaissanceCommande) => ({
                               ...prev,
                               registreN: value
                             } as CreerExtraitNaissanceCommande));
@@ -441,12 +424,12 @@ export default function EditerExtraitNaissanceModal(
                         if (id) {
                           setModifierCommande((prev) => ({
                             ...prev,
-                            annee: value
+                            annee: value !== "" ? Number(value) : null
                           } as ModifierExtraitNaissanceCommande));
                         } else {
                           setCommande((prev) => ({
                             ...prev,
-                            annee: value
+                            annee: value !== "" ? Number(value) : null
                           } as CreerExtraitNaissanceCommande));
                         }
                         if (value.trim()) setErrorAnnee(null);

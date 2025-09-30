@@ -96,11 +96,11 @@ export default function ExtraitsMariages() {
     } else {
       setIscherche(true);
       const filteredExtraits = extraits.filter((extrait) =>
-          extrait.epoux.nomPrenoms.toLowerCase().includes(recherche.toLowerCase())
-          || extrait.epouse.nomPrenoms.toLowerCase().includes(recherche.toLowerCase())
-          || extrait.registre.includes(recherche)
+          extrait.epoux?.nomPrenoms?.toLowerCase().includes(recherche.toLowerCase())
+          || extrait.epouse?.nomPrenoms?.toLowerCase().includes(recherche.toLowerCase())
+          || extrait.registre?.includes(recherche)
           || extrait.registreN === recherche
-          || new Date(extrait.dateMariage).toLocaleDateString("fr-FR").includes(recherche)
+          || new Date(extrait.dateMariage ?? "").toLocaleDateString("fr-FR").includes(recherche)
       );
 
       setExtraitsFilter(filteredExtraits);
@@ -171,7 +171,6 @@ export default function ExtraitsMariages() {
                     }
                   }
                 }}
-                setLoaderStatus={handleLoaderStatus}
                 setElementAdded={handleElementAdd}
             />
 

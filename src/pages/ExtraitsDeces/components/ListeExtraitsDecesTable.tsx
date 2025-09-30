@@ -1,4 +1,4 @@
-import {Table, TableBody, TableCell, TableHeader, TableRow,} from "../../../components/ui/Table";
+import {Table, TableBody, TableCell, TableHeader, TableRow,} from "../../../components/ui/table";
 import LigneActionExtraitDecesTable from "./LigneActionExtraitDecesTable.tsx";
 import {
   ExtraitDecesEssentielVM
@@ -93,7 +93,7 @@ export default function ListeExtraitsDecesTable(
 
             {/* Table Body */}
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-              {extraits?.map((extrait) => (
+              {extraits?.map((extrait: ExtraitDecesEssentielVM) => (
                   <TableRow key={extrait.id}>
                     <TableCell
                         className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">

@@ -1,12 +1,12 @@
 export class MentionsEventuelle {
 
-  mariage?: boolean;
-  dateMariage?: string;
-  lieuMariage?: string;
-  epouOuEpouse?: string;
-  divorce?: boolean;
-  dateDivorce?: string;
-  decede?: boolean;
-  dateDeces?: string;
-  lieuDeces?: string;
+  mariage!: boolean | null;
+  dateMariage!: string | null;
+  lieuMariage!: string | null;
+  epouOuEpouse!: string | null;
+  divorce!: boolean | null;
+  dateDivorce!: string | null;
+  decede!: boolean | null;
+  dateDeces!: string | null;
+  lieuDeces!: string | null;
 }

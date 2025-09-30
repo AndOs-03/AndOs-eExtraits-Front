@@ -42,11 +42,11 @@ export default function LigneActionExtraitNaissanceTable(
     try {
       setLoaderStatus("loading", "Suppression en cours...");
 
-      const reponse = await supprimerExtraitsNaissances(extrait.id)
+      const reponse = await supprimerExtraitsNaissances(extrait.id!)
       if ("message" in reponse) {
         setLoaderStatus("error", reponse.message || "Erreur lors de la suppression");
       } else {
-        setExtraits(prev => prev.filter(c => c.id !== extrait.id));
+        setExtraits((prev: ExtraitNaissanceEssentielVM[]) => prev.filter((c: ExtraitNaissanceEssentielVM) => c.id !== extrait.id));
         setLoaderStatus("success", "Suppression terminée");
       }
     } catch (err: any) {
@@ -114,12 +114,12 @@ export default function LigneActionExtraitNaissanceTable(
         {/* 👉 Modal */}
         {showModal && (
             <EditerExtraitNaissanceModal
-                id={extrait.id}
+                id={extrait.id!}
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
                 setElementAdded={(updated) => {
-                  setExtraits(prev =>
-                      prev.map(i => (i.id === updated?.id ? updated : i))
+                  setExtraits((prev: ExtraitNaissanceEssentielVM[]) =>
+                      prev.map((e: ExtraitNaissanceEssentielVM) => (e.id === updated?.id ? updated : e))
                   );
                 }}
             />

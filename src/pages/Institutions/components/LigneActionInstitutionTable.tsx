@@ -41,11 +41,11 @@ export default function LigneActionInstitutionTable(
   const handleDelete = async () => {
     try {
       setLoaderStatus("loading", "Suppression en cours...");
-      const reponse = await supprimerInstitution(institution.id)
+      const reponse = await supprimerInstitution(institution.id!)
       if ("message" in reponse) {
         setLoaderStatus("error", reponse.message || "Erreur lors de la suppression");
       } else {
-        setInstitutions(prev => prev.filter(c => c.id !== institution.id));
+        setInstitutions((prev: InstitutionVM[]) => prev.filter((c: InstitutionVM) => c.id !== institution.id));
         setLoaderStatus("success", "Suppression terminée");
       }
     } catch (err: any) {
@@ -135,8 +135,8 @@ export default function LigneActionInstitutionTable(
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
                 setElementAdded={(updatedInstitution) => {
-                  setInstitutions(prev =>
-                      prev.map(i => (i.id === updatedInstitution?.id ? updatedInstitution : i))
+                  setInstitutions((prev: InstitutionVM[]) =>
+                      prev.map((i: InstitutionVM) => (i.id === updatedInstitution?.id ? updatedInstitution : i))
                   );
                 }}
             />

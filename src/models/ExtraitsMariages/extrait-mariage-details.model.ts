@@ -2,15 +2,15 @@ import {PersonneExtraitMariage} from "./personne-extrait-mariage.model.ts";
 
 export class ExtraitMariageDetailsVM {
 
-  readonly id: number;
-  readonly annee: number;
-  readonly numeroRegistre: string;
-  readonly dateRegistre: string;
-  readonly registre: string;
-  readonly dateMariage: string;
-  readonly etatCivil: string;
-  readonly centreEtatCivil: string;
-  readonly registreN: string;
-  readonly epoux: PersonneExtraitMariage;
-  readonly epouse: PersonneExtraitMariage;
+  readonly id!: number | null;
+  readonly annee!: number | null;
+  readonly numeroRegistre!: string | null;
+  readonly dateRegistre!: string | null;
+  readonly registre!: string | null;
+  readonly dateMariage!: string | null;
+  readonly etatCivil!: string | null;
+  readonly centreEtatCivil!: string | null;
+  readonly registreN!: string | null;
+  readonly epoux!: PersonneExtraitMariage | null;
+  readonly epouse!: PersonneExtraitMariage | null;
 }

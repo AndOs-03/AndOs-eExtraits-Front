@@ -52,24 +52,9 @@ export default function EditerExtraitMariageModal(
   const [messageReponseApi, setMessageReponseApi] = useState<string>("")
   const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "">("")
 
-  const [commande, setCommande] = useState<CreerExtraitMariageCommande>({
-    annee: new Date().getFullYear(),
-    numeroRegistre: null,
-    dateRegistre: null,
-    dateMariage: null,
-    etatCivil: null,
-    centreEtatCivil: null,
-  });
+  const [commande, setCommande] = useState<CreerExtraitMariageCommande>(new CreerExtraitMariageCommande(new Date().getFullYear()));
 
-  const [modifierCommande, setModifierCommande] = useState<ModifierExtraitMariageCommande>({
-    id: null,
-    annee: new Date().getFullYear(),
-    numeroRegistre: null,
-    dateRegistre: null,
-    dateMariage: null,
-    etatCivil: null,
-    centreEtatCivil: null,
-  });
+  const [modifierCommande, setModifierCommande] = useState<ModifierExtraitMariageCommande>(new ModifierExtraitMariageCommande(new Date().getFullYear()));
 
   const loadExtrait = async () => {
     try {
@@ -185,8 +170,8 @@ export default function EditerExtraitMariageModal(
     setErrorDateNaissanceEpouse(null);
     setErrorLieuNaissanceEpouse(null);
 
-    setCommande(null);
-    setModifierCommande(null);
+    setCommande(new CreerExtraitMariageCommande(new Date().getFullYear()));
+    setModifierCommande(new ModifierExtraitMariageCommande(new Date().getFullYear()));
 
     const annee = new Date().getFullYear();
     setModifierCommande((prev) => ({
@@ -239,7 +224,7 @@ export default function EditerExtraitMariageModal(
       setErrorDateNaissanceEpoux("La date du registre est obligatoire !");
       isValid = false;
     }
-    if (!commande.epoux?.lieuNaissance.trim()) {
+    if (!commande.epoux?.lieuNaissance?.trim()) {
       setErrorLieuNaissanceEpoux("Le lieu de naissance est obligatoire !");
       isValid = false;
     }
@@ -252,7 +237,7 @@ export default function EditerExtraitMariageModal(
       setErrorDateNaissanceEpouse("La date du registre est obligatoire !");
       isValid = false;
     }
-    if (!commande.epouse?.lieuNaissance.trim()) {
+    if (!commande.epouse?.lieuNaissance?.trim()) {
       setErrorLieuNaissanceEpouse("Le lieu de naissance est obligatoire !");
       isValid = false;
     }
@@ -326,12 +311,12 @@ export default function EditerExtraitMariageModal(
                         if (id) {
                           setModifierCommande((prev) => ({
                             ...prev,
-                            annee: value
+                            annee: value !== "" ? Number(value) : null
                           } as ModifierExtraitMariageCommande));
                         } else {
                           setCommande((prev) => ({
                             ...prev,
-                            annee: value
+                            annee: value !== "" ? Number(value) : null
                           } as CreerExtraitMariageCommande));
                         }
                         if (value.trim()) setErrorAnnee(null);

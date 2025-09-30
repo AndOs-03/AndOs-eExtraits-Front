@@ -99,10 +99,10 @@ export default function ExtraitsNaissances() {
       setIscherche(true);
       const filteredExtraits = extraits.filter((extrait) =>
           (extrait.nom + " " + extrait.prenoms).toLowerCase().includes(recherche.toLowerCase())
-          || extrait.registre.includes(recherche)
+          || extrait.registre?.includes(recherche)
           || extrait.registreN === recherche
-          || new Date(extrait.dateNaissance).toLocaleDateString("fr-FR").includes(recherche)
-          || extrait.numeroJugementSupletif === recherche
+          || new Date(extrait.dateNaissance ?? "").toLocaleDateString("fr-FR").includes(recherche)
+          || (extrait.numeroJugementSupletif ?? "") === recherche
       );
 
       setExtraitsFilter(filteredExtraits);
@@ -173,7 +173,6 @@ export default function ExtraitsNaissances() {
                     }
                   }
                 }}
-                setLoaderStatus={handleLoaderStatus}
                 setElementAdded={handleElementAdd}
             />
 

@@ -3,14 +3,14 @@ import {MentionsEventuelle} from "./mentions-eventuelle.model.ts";
 
 export class PersonneExtraitNaissance {
 
-  nom: string;
-  prenoms: string;
-  dateNaissance: string;
-  lieuNaissance: string;
-  sexe: string;
-  mentionsEventuelle?: MentionsEventuelle;
-  pere?: ParentExtrait;
-  mere?: ParentExtrait;
+  nom!: string | null;
+  prenoms!: string | null;
+  dateNaissance!: string | null;
+  lieuNaissance!: string | null;
+  sexe!: string | null;
+  mentionsEventuelle!: MentionsEventuelle | null;
+  pere!: ParentExtrait | null;
+  mere!: ParentExtrait | null;
 
   constructor(nom: string, prenoms: string, dateNaissance: string, lieuNaissance: string, sexe: string) {
     this.nom = nom;

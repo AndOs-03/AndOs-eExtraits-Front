@@ -108,7 +108,6 @@ export default function Institutions() {
                     }
                   }
                 }}
-                setLoaderStatus={handleLoaderStatus}
                 setElementAdded={handleElementAdd}
             />
 

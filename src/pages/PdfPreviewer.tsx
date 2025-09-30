@@ -46,19 +46,19 @@ export default function PdfPreviewer({extrait, typeExtrait, onClose}: Props) {
       switch (typeExtrait) {
         case TypeExtrait.DECES: {
           if (institution?.id && centre?.id) {
-            reponse = await genererExtraitDeces(extrait.id, institution?.id, centre?.id);
+            reponse = await genererExtraitDeces(extrait.id!, institution?.id!, centre?.id!);
           }
           break
         }
         case TypeExtrait.MARIAGE: {
           if (institution?.id && centre?.id) {
-            reponse = await genererExtraitMariage(extrait.id, institution?.id, centre?.id);
+            reponse = await genererExtraitMariage(extrait.id!, institution?.id!, centre?.id!);
           }
           break
         }
         case TypeExtrait.NAISSANCE: {
           if (institution?.id) {
-            reponse = await genererExtraitNaissance(extrait.id, institution?.id);
+            reponse = await genererExtraitNaissance(extrait.id!, institution?.id!);
           }
           break
         }
@@ -95,19 +95,19 @@ export default function PdfPreviewer({extrait, typeExtrait, onClose}: Props) {
     switch (typeExtrait) {
       case TypeExtrait.DECES: {
         const extraitDeces = extrait as ExtraitDecesEssentielVM;
-        const nom: string = extraitDeces.nom;
-        const prenoms: string = extraitDeces.prenoms;
+        const nom: string = extraitDeces.nom!;
+        const prenoms: string = extraitDeces.prenoms!;
         return "extrait - décès - " + nom + " " + prenoms + ".pdf";
       }
       case TypeExtrait.MARIAGE: {
         const extraitMariage = extrait as ExtraitMariageEssentielVM;
-        const nom: string = extraitMariage.epoux.nomPrenoms;
+        const nom: string = extraitMariage.epoux?.nomPrenoms!;
         return "extrait - mariage - " + nom + ".pdf";
       }
       case TypeExtrait.NAISSANCE: {
         const extraitNaissance = extrait as ExtraitNaissanceEssentielVM;
-        const nom: string = extraitNaissance.nom;
-        const prenoms: string = extraitNaissance.prenoms;
+        const nom: string = extraitNaissance.nom!;
+        const prenoms: string = extraitNaissance.prenoms!;
         return "extrait - naissance - " + nom + " " + prenoms + ".pdf";
       }
     }

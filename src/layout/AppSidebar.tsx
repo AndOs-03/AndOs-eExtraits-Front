@@ -1,22 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router";
+import {useCallback, useEffect, useRef, useState} from "react";
+import {Link, useLocation} from "react-router";
 
 // Assume these icons are imported from an icon library
-import {
-  BoxCubeIcon,
-  CalenderIcon,
-  ChevronDownIcon,
-  SettingsIcon,
-  HorizontaLDots,
-  ListIcon,
-  PageIcon,
-  PieChartIcon,
-  PlugInIcon,
-  TableIcon,
-  UserCircleIcon, DocsIcon,
-} from "../icons";
-import { useSidebar } from "../context/SidebarContext";
-import SidebarWidget from "./SidebarWidget";
+import {ChevronDownIcon, DocsIcon, HorizontaLDots, PieChartIcon, SettingsIcon,} from "../icons";
+import {useSidebar} from "../context/SidebarContext";
 
 type NavItem = {
   name: string;

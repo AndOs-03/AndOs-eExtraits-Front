@@ -1,12 +1,13 @@
 export class InstitutionVM {
-  readonly id: number;
-  readonly departement: string;
-  readonly centreEtatCivil: string;
-  readonly etatCivil: string;
-  readonly tribunal: string;
-  readonly ville!: string;
-  readonly officier!: string;
-  readonly titreOfficier!: string
+
+  readonly id!: number | null;
+  readonly departement!: string | null;
+  readonly centreEtatCivil!: string | null;
+  readonly etatCivil!: string | null;
+  readonly tribunal!: string | null;
+  readonly ville!: string | null;
+  readonly officier!: string | null;
+  readonly titreOfficier!: string | null
 
   constructor(
       id: number,
