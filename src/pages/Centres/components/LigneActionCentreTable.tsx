@@ -45,7 +45,7 @@ export default function LigneActionCentreTable(
       if ("message" in reponse) {
         setLoaderStatus("error", reponse.message || "Erreur lors de la suppression");
       } else {
-        setCentres(prev => prev.filter(c => c.id !== centre.id));
+        setCentres((prev: Centre[]) => prev.filter((c: Centre) => c.id !== centre.id));
         setLoaderStatus("success", "Suppression terminée");
       }
     } catch (err: any) {
@@ -129,8 +129,8 @@ export default function LigneActionCentreTable(
                 onClose={() => setShowModal(false)}
                 setLoaderStatus={setLoaderStatus}
                 setElementAdded={(updatedCentre) => {
-                  setCentres(prev =>
-                      prev.map(c => (c.id === updatedCentre.id ? updatedCentre : c))
+                  setCentres((prev: Centre[]) =>
+                      prev.map((c: Centre) => (c.id === updatedCentre.id ? updatedCentre : c))
                   );
                 }}
                 centre={centre}

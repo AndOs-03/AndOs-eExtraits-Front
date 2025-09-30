@@ -43,32 +43,9 @@ export default function EditerExtraitDecesModal(
   const [errorCentreEtatCivil, setErrorCentreEtatCivil] = useState<string | null>(null);
   const [errorSituationMatrimoniale, setErrorSituationMatrimoniale] = useState<string | null>(null);
 
-  const [commande, setCommande] = useState<CreerExtraitDecesCommande>({
-    annee: new Date().getFullYear(),
-    numeroRegistre: null,
-    dateRegistre: null,
-    dateDeces: null,
-    nom: null,
-    prenoms: null,
-    dateNaissance: null,
-    etatCivil: null,
-    centreEtatCivil: null,
-    situationMatrimoniale: null
-  });
+  const [commande, setCommande] = useState<CreerExtraitDecesCommande>(new CreerExtraitDecesCommande(new Date().getFullYear()));
 
-  const [modifierCommande, setModifierCommande] = useState<ModifierExtraitDecesCommande>({
-    id: null,
-    annee: null,
-    numeroRegistre: null,
-    dateRegistre: null,
-    dateDeces: null,
-    nom: null,
-    prenoms: null,
-    dateNaissance: null,
-    etatCivil: null,
-    centreEtatCivil: null,
-    situationMatrimoniale: null
-  });
+  const [modifierCommande, setModifierCommande] = useState<ModifierExtraitDecesCommande>(new ModifierExtraitDecesCommande(new Date().getFullYear()));
 
   const [isReponseApiOpen, setIsReponseApiOpen] = useState<boolean>(false)
   const [messageReponseApi, setMessageReponseApi] = useState<string>("")
@@ -101,7 +78,7 @@ export default function EditerExtraitDecesModal(
             etatCivil: reponse.etatCivil,
             centreEtatCivil: reponse.centreEtatCivil,
             registreN: reponse.registreN,
-            situationMatrimoniale: reponse.situationMatrimoniale.toUpperCase(),
+            situationMatrimoniale: reponse.situationMatrimoniale!.toUpperCase(),
             pere: reponse.pere,
             mere: reponse.mere
           } as ModifierExtraitDecesCommande));
@@ -191,8 +168,8 @@ export default function EditerExtraitDecesModal(
     setErrorCentreEtatCivil(null);
     setErrorSituationMatrimoniale(null);
 
-    setCommande(null);
-    setModifierCommande(null);
+    setCommande(new CreerExtraitDecesCommande(new Date().getFullYear()));
+    setModifierCommande(new ModifierExtraitDecesCommande(new Date().getFullYear()));
 
     const annee = new Date().getFullYear();
     setModifierCommande((prev) => ({
@@ -337,12 +314,12 @@ export default function EditerExtraitDecesModal(
                         if (id) {
                           setModifierCommande((prev) => ({
                             ...prev,
-                            annee: value
+                            annee: value !== "" ? Number(value) : null
                           } as ModifierExtraitDecesCommande));
                         } else {
                           setCommande((prev) => ({
                             ...prev,
-                            annee: value
+                            annee: value !== "" ? Number(value) : null
                           } as CreerExtraitDecesCommande));
                         }
                         if (value.trim()) setErrorAnnee(null);

@@ -1,11 +1,8 @@
-import {Table, TableBody, TableCell, TableHeader, TableRow,} from "../../../components/ui/Table";
+import {Table, TableBody, TableCell, TableHeader, TableRow,} from "../../../components/ui/table";
 import LigneActionExtraitDecesTable from "./LigneActionExtraitMariageTable.tsx";
 import {
   ExtraitMariageEssentielVM
 } from "../../../models/ExtraitsMariages/extrait-mariage-essentiel.model.ts";
-import {
-  ExtraitDecesEssentielVM
-} from "../../../models/ExtraitsDeces/extrait-deces-essentiel.model.ts";
 
 interface Props {
   extraits: ExtraitMariageEssentielVM[];
@@ -71,7 +68,7 @@ export default function ListeExtraitsMariagesTable(
 
             {/* Table Body */}
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-              {extraits?.map((extrait) => (
+              {extraits?.map((extrait: ExtraitMariageEssentielVM) => (
                   <TableRow key={extrait.id}>
                     <TableCell
                         className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
@@ -85,11 +82,11 @@ export default function ListeExtraitsMariagesTable(
                     </TableCell>
                     <TableCell
                         className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {extrait.epoux.nomPrenoms}
+                      {extrait.epoux?.nomPrenoms}
                     </TableCell>
                     <TableCell
                         className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {extrait.epouse.nomPrenoms}
+                      {extrait.epouse?.nomPrenoms}
                     </TableCell>
                     <TableCell
                         className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">

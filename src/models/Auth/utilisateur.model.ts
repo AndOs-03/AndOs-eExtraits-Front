@@ -1,8 +1,8 @@
 export class UtilisateurVM {
 
-  id: string;
-  nom: string;
-  prenom: string;
-  nomUtilisateur: string;
-  email: string;
+  readonly id!: number | null;
+  readonly nom!: string | null;
+  readonly prenom!: string | null;
+  readonly nomUtilisateur!: string | null;
+  readonly email!: string | null;
 }

@@ -41,11 +41,11 @@ export default function LigneActionExtraitMariageTable(
   const handleDelete = async () => {
     try {
       setLoaderStatus("loading", "Suppression en cours...");
-      const reponse = await supprimerExtraitsMariages(extrait.id)
+      const reponse = await supprimerExtraitsMariages(extrait.id!)
       if ("message" in reponse) {
         setLoaderStatus("error", reponse.message || "Erreur lors de la suppression");
       } else {
-        setExtraits(prev => prev.filter(c => c.id !== extrait.id));
+        setExtraits((prev: ExtraitMariageEssentielVM[]) => prev.filter((c: ExtraitMariageEssentielVM) => c.id !== extrait.id));
         setLoaderStatus("success", "Suppression terminée");
       }
     } catch (err: any) {
@@ -113,12 +113,12 @@ export default function LigneActionExtraitMariageTable(
         {/* 👉 Modal */}
         {showModal && (
             <EditerExtraitMariageModal
-                id={extrait.id}
+                id={extrait.id!}
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
                 setElementAdded={(updated) => {
-                  setExtraits(prev =>
-                      prev.map(i => (i.id === updated?.id ? updated : i))
+                  setExtraits((prev: ExtraitMariageEssentielVM[]) =>
+                      prev.map((i: ExtraitMariageEssentielVM) => (i.id === updated?.id ? updated : i))
                   );
                 }}
             />

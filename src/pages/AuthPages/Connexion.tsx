@@ -47,7 +47,7 @@ export default function Connexion() {
         setMessageReponseApi(reponse.message);
         setTypeReponseApi("error");
       } else {
-        setAccessToken(reponse.token);
+        setAccessToken(reponse.token ?? "");
         navigate("/");
       }
     } catch (err: any) {

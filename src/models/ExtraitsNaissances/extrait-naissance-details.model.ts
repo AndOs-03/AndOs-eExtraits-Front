@@ -3,19 +3,19 @@ import {Centre} from "../../pages/Centres/types.ts";
 
 export class ExtraitNaissanceDetailsVM {
 
-  readonly id: number;
-  readonly annee: number;
-  readonly numeroRegistre: string;
-  readonly dateRegistre: string;
-  readonly registre: string;
-  readonly numeroJugementSupletif: string;
-  readonly dateJugementSupletif: string;
-  readonly tribunalJugementSupletif: string;
-  readonly extraitTypeTPI: boolean;
-  readonly etatCivil: string;
-  readonly centreEtatCivil: string;
-  readonly registreN: string;
-  readonly nouveauModel: boolean;
-  readonly centre: Centre;
-  readonly personne: PersonneExtraitNaissance;
+  readonly id!: number | null;
+  readonly annee!: number | null;
+  readonly numeroRegistre!: string | null;
+  readonly dateRegistre!: string | null;
+  readonly registre!: string | null;
+  readonly numeroJugementSupletif!: string | null;
+  readonly dateJugementSupletif!: string | null;
+  readonly tribunalJugementSupletif!: string | null;
+  readonly extraitTypeTPI!: boolean | null;
+  readonly etatCivil!: string | null;
+  readonly centreEtatCivil!: string | null;
+  readonly registreN!: string | null;
+  readonly nouveauModel!: boolean | null;
+  readonly centre!: Centre | null;
+  readonly personne!: PersonneExtraitNaissance | null;
 }

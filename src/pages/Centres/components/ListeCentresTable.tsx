@@ -1,4 +1,4 @@
-import {Table, TableBody, TableCell, TableHeader, TableRow,} from "../../../components/ui/Table";
+import {Table, TableBody, TableCell, TableHeader, TableRow,} from "../../../components/ui/table";
 import LigneActionCentreTable from "./LigneActionCentreTable.tsx";
 import {Centre} from "../types.ts";
 import {useEffect, useState} from "react";

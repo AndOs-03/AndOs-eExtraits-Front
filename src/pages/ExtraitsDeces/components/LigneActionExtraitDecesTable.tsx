@@ -41,11 +41,11 @@ export default function LigneActionExtraitDecesTable(
   const handleDelete = async () => {
     try {
       setLoaderStatus("loading", "Suppression en cours...");
-      const reponse = await supprimerExtraitsDeces(extrait.id)
+      const reponse = await supprimerExtraitsDeces(extrait.id!)
       if ("message" in reponse) {
         setLoaderStatus("error", reponse.message || "Erreur lors de la suppression");
       } else {
-        setExtraits(prev => prev.filter(c => c.id !== extrait.id));
+        setExtraits((prev: ExtraitDecesEssentielVM[]) => prev.filter((c: ExtraitDecesEssentielVM) => c.id !== extrait.id));
         setLoaderStatus("success", "Suppression terminée");
       }
     } catch (err: any) {
@@ -113,13 +113,12 @@ export default function LigneActionExtraitDecesTable(
         {/* 👉 Modal */}
         {showModal && (
             <EditerExtraitDecesModal
-                id={extrait.id}
+                id={extrait.id!}
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
-                setLoaderStatus={setLoaderStatus}
                 setElementAdded={(updated) => {
-                  setExtraits(prev =>
-                      prev.map(i => (i.id === updated?.id ? updated : i))
+                  setExtraits((prev: ExtraitDecesEssentielVM[]) =>
+                      prev.map((i: ExtraitDecesEssentielVM) => (i.id === updated?.id ? updated : i))
                   );
                 }}
             />
