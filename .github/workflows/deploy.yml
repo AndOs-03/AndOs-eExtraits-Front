@@ -41,7 +41,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             # Définir le tag de l'image à utiliser
-            IMAGE_TAG=${{ secrets.DOCKER_USERNAME }}/andos-eextraits-front:latest
+            IMAGE_TAG=andos-eextraits-front:latest
 
             # Tirer (pull) la nouvelle image depuis Docker Hub
             docker pull $IMAGE_TAG
