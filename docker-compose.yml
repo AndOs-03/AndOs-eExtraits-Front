@@ -2,11 +2,11 @@ services:
 
   andos-eextraits-front:
     #build: . # Le chemin vers le Dockerfile de React JS
-    image: andos03/andos-eextraits-front:latest
+    image: ${DOCKER_USERNAME}/andos-eextraits-front:latest
     container_name: andos-eextraits-front
     restart: always
     environment:
-      - VITE_BASE_URL=http://andos-eextraits-back:8080
+      - VITE_BASE_URL=${VITE_BASE_URL}
     ports:
       - "3000:80" # Changez le port si nécessaire, le port 80 est le port par défaut de Nginx
     networks:
