@@ -2,7 +2,7 @@ services:
 
   andos-eextraits-front:
     #build: . # Le chemin vers le Dockerfile de React JS
-    image: andos-eextraits-front
+    image: ${DOCKER_USERNAME}/andos-eextraits-front:latest
     container_name: andos-eextraits-front
     restart: always
     environment:
