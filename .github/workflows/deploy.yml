@@ -45,5 +45,3 @@ jobs:
             docker-compose build --build-arg VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} andos-eextraits-front
             docker-compose -f docker-compose.yml up -d --force-recreate andos-eextraits-front
             docker image prune -f
-            
-            rm -rf Dockerfile docker-compose.yml nginx.conf package.json package-lock.json vite.config.js src public
