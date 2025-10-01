@@ -5,8 +5,6 @@ services:
     image: ${DOCKER_USERNAME}/andos-eextraits-front:latest
     container_name: andos-eextraits-front
     restart: always
-    environment:
-      - VITE_BASE_URL=${VITE_BASE_URL}
     ports:
       - "3000:80" # Changez le port si nécessaire, le port 80 est le port par défaut de Nginx
     networks:
