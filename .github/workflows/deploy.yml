@@ -45,5 +45,13 @@ jobs:
 
             # Tirer (pull) la nouvelle image depuis Docker Hub
             docker pull $IMAGE_TAG
-            docker-compose -f docker-compose.yml up -d --force-recreate andos-eextraits-front
-            docker image prune -f
+            
+            # Arrêter et supprimer l'ancien conteneur s'il existe
+            docker stop andos-eextraits-front || true
+            docker rm andos-eextraits-front || true
+
+            # Lancer un nouveau conteneur en utilisant la nouvelle image
+            docker run -d \
+            --name andos-eextraits-front \
+            -p 80:80 \
+            $IMAGE_TAG
