@@ -59,7 +59,7 @@ jobs:
 
             IMAGE_TAG=${{ secrets.DOCKER_USERNAME }}/andos-eextraits-front:latest
             docker pull $IMAGE_TAG
-            docker-compose up -d --force-recreate andos-eextraits-front
+            docker-compose -f docker-compose.yml up -d --force-recreate andos-eextraits-front
             docker image prune -f
             
             find . ! -name "." ! -name "docker-compose.yml" ! -name ".env" -exec rm -rf {} \;
