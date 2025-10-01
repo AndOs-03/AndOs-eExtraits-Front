@@ -39,7 +39,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          source: "Dockerfile,docker-compose.yml"
+          source: "docker-compose.yml"
           target: "/root/andos_eextraits_front"
 
       - name: Deploy to server
@@ -49,8 +49,17 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /root/andos_eextraits_front
+            TARGET_DIR="/root/andos_eextraits_front"
+
+            if [ ! -d "$TARGET_DIR" ]; then
+              echo "Error: Directory $TARGET_DIR does not exist."
+              exit 1
+            fi
+            cd $TARGET_DIR
+
             IMAGE_TAG=${{ secrets.DOCKER_USERNAME }}/andos-eextraits-front:latest
             docker pull $IMAGE_TAG
-            docker-compose -f docker-compose.yml up -d --force-recreate andos-eextraits-front
+            docker-compose up -d --force-recreate andos-eextraits-front
             docker image prune -f
+            
+            find . ! -name "." ! -name "docker-compose.yml" ! -name ".env" -exec rm -rf {} \;
