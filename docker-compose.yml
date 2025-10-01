@@ -9,8 +9,5 @@ services:
       - VITE_BASE_URL=http://andos-eextraits-back:8080
     ports:
       - "3000:80" # Changez le port si nécessaire, le port 80 est le port par défaut de Nginx
-
-networks:
-  andos-eextraits-applications-network:
-    external: true
-    name: andos-eextraits-applications-network
+    networks:
+      - andos-eextraits-applications-network
