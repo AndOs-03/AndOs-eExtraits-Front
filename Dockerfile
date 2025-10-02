@@ -1,5 +1,5 @@
 # Stage 1: Build the React application
-FROM node:18-alpine as build-stage
+FROM node:20-alpine as build-stage
 WORKDIR /app
 
 COPY package*.json ./
@@ -11,5 +11,5 @@ FROM nginx:stable-alpine as production-stage
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE 82
 CMD ["nginx", "-g", "daemon off;"]
