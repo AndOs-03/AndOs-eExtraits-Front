@@ -49,4 +49,8 @@ export const ENDPOINTS = {
     genererExtrait: (id: number, institutionId: number) => `/api/extraits-naissances/${id}/generer-fichier-extrait?institutionId=${institutionId}`,
     delete: (id: number) => `/api/extraits-naissances/${id}`,
   },
+
+  tableauBord: {
+    tableauBordExtraits: (institutionId: number | null) => `/api/extraits/tableau-bord/${institutionId}/tableau-bord-extraits`,
+  },
 };

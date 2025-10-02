@@ -1,4 +1,42 @@
+import {useEffect, useState} from "react";
+import {tableauBordExtraits as apiTableauBordExtraits} from "../services/tableau-bord.service.ts";
+import {recupererCentreActif} from "../services/centre-actif.service.ts";
+import {TableauBordExtraitsVM} from "../models/tableau-bord-extraits.model.ts";
+
 export default function Accueil() {
+
+  const [tableauBordExtrait, setTableauBordExtrait] = useState<TableauBordExtraitsVM>(
+      new TableauBordExtraitsVM(0, 0, 0)
+  );
+
+  const tableauBordExtraits = async () => {
+    try {
+      const centre = recupererCentreActif();
+      let centreId = null;
+      if (centre !== null) {
+        centreId = centre.id;
+      }
+
+      const reponse = await apiTableauBordExtraits(centreId);
+      if (!("message" in reponse)) {
+        setTableauBordExtrait(reponse);
+      } else {
+        console.error(reponse.message);
+      }
+    } catch (err: any) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = () => {
+      tableauBordExtraits().catch((err) => {
+        console.error(err);
+      });
+    };
+
+    fetchData();
+  }, []);
 
   return (
       <>
@@ -13,7 +51,9 @@ export default function Accueil() {
               <div>
                 <span
                     className="text-sm text-gray-500 dark:text-gray-400">Extraits de Naissances</span>
-                <h4 className="mt-2 text-title-sm font-bold text-gray-800 dark:text-white/90">10</h4>
+                <h4 className="mt-2 text-title-sm font-bold text-gray-800 dark:text-white/90">
+                  {tableauBordExtrait.nombreExtraitsNaissance}
+                </h4>
               </div>
             </div>
           </div>
@@ -28,7 +68,9 @@ export default function Accueil() {
               <div>
                 <span
                     className="text-sm text-gray-500 dark:text-gray-400">Extraits de Mariages</span>
-                <h4 className="mt-2 text-title-sm font-bold text-gray-800 dark:text-white/90">27</h4>
+                <h4 className="mt-2 text-title-sm font-bold text-gray-800 dark:text-white/90">
+                  {tableauBordExtrait.nombreExtraitsMariages}
+                </h4>
               </div>
             </div>
           </div>
@@ -42,7 +84,9 @@ export default function Accueil() {
             <div className="mt-5 flex items-end justify-between">
               <div>
                 <span className="text-sm text-gray-500 dark:text-gray-400">Extraits de Décès</span>
-                <h4 className="mt-2 text-title-sm font-bold text-gray-800 dark:text-white/90">08</h4>
+                <h4 className="mt-2 text-title-sm font-bold text-gray-800 dark:text-white/90">
+                  {tableauBordExtrait.nombreExtraitsDeces}
+                </h4>
               </div>
             </div>
           </div>
