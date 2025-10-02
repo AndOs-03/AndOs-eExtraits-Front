@@ -7,6 +7,7 @@ import {InstitutionVM} from "../../models/institution.model.ts";
 import ListeInstitutionsTable from "./components/ListeInstitutionsTable.tsx";
 import EditerInstitutionModal from "./components/EditerInstitutionModal.tsx";
 import ModalRetourAppelApi from "../../components/ui/modal/modal-retour-appel-api.tsx";
+import {useModal} from "../../hooks/useModal.ts";
 
 export default function Institutions() {
 
@@ -20,6 +21,8 @@ export default function Institutions() {
   const [isReponseApiOpen, setIsReponseApiOpen] = useState<boolean>(false)
   const [messageReponseApi, setMessageReponseApi] = useState<string>("")
   const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "">("")
+
+  const { isOpen, openModal, closeModal } = useModal();
 
   const loadInstitutions = async () => {
     try {

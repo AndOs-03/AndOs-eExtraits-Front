@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {updateCentre} from "../../../services/centre.service.ts"; // 👉 à créer si pas encore
 import {Centre} from "../types.ts";
+import {Modal} from "../../../components/ui/modal";
 
 interface Props {
   isOpen: boolean;
@@ -53,37 +54,39 @@ export default function ModifierCentreModal(
   if (!isOpen) return null;
 
   return (
-      <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50">
-        <div className="flex items-center justify-center min-h-screen px-4 py-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md text-left">
-            <h2 className="text-lg font-bold mb-4">Modifier le centre</h2>
-            {error && <p className="text-red-500 mb-2">{error}</p>}
+      <Modal isOpen={isOpen} onClose={onClose} className="max-w-[700px] m-4">
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50">
+          <div className="flex items-center justify-center min-h-screen px-4 py-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md text-left">
+              <h2 className="text-lg font-bold mb-4">Modifier le centre</h2>
+              {error && <p className="text-red-500 mb-2">{error}</p>}
 
-            <input
-                type="text"
-                placeholder="Nom"
-                value={nom}
-                onChange={(e) => setNom(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-4"
-            />
+              <input
+                  type="text"
+                  placeholder="Nom"
+                  value={nom}
+                  onChange={(e) => setNom(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-4"
+              />
 
-            <div className="flex justify-end gap-2">
-              <button
-                  onClick={onClose}
-                  className="px-4 py-2 bg-gray-300 dark:bg-gray-700 rounded hover:bg-gray-400 dark:hover:bg-gray-600"
-              >
-                Annuler
-              </button>
-              <button
-                  onClick={handleSubmit}
-                  disabled={loading}
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-              >
-                {loading ? "Enregistrement..." : "Enregistrer"}
-              </button>
+              <div className="flex justify-end gap-2">
+                <button
+                    onClick={onClose}
+                    className="px-4 py-2 bg-gray-300 dark:bg-gray-700 rounded hover:bg-gray-400 dark:hover:bg-gray-600"
+                >
+                  Annuler
+                </button>
+                <button
+                    onClick={handleSubmit}
+                    disabled={loading}
+                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+                >
+                  {loading ? "Enregistrement..." : "Enregistrer"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </Modal>
   );
 }
