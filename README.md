@@ -10,5 +10,5 @@ Décès`)
 3- Build
     - npm install
     - npm run build
-    - cp -r dist* /var/www/html
+    - cp -r dist/* /var/www/html
     - cd /var/www/html
