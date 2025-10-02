@@ -4,6 +4,7 @@ import {EditerInstitutionCommande} from "../editer-institution.commande.ts";
 import {InstitutionVM} from "../../../models/institution.model.ts";
 import ModalRetourAppelApi from "../../../components/ui/modal/modal-retour-appel-api.tsx";
 import {Spinner} from "../../../icons";
+import {Modal} from "../../../components/ui/modal";
 
 interface Props {
   id: number | null
@@ -174,150 +175,153 @@ export default function EditerInstitutionModal(
   if (!isOpen) return null;
 
   return (
-      <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50">
-        <div className="flex items-center justify-center min-h-screen px-4 py-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md text-left">
-            <h2 className="text-lg font-bold mb-4">
-              {id ? "Modifier l'institution" : "Crée une institution"}
-            </h2>
+      <Modal isOpen={isOpen} onClose={onClose} className="max-w-[700px] m-4">
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50">
+          <div className="flex items-center justify-center min-h-screen px-4 py-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md text-left">
+              <h2 className="text-lg font-bold mb-4">
+                {id ? "Modifier l'institution" : "Crée une institution"}
+              </h2>
 
-            {error && <p className="text-red-500 mb-2 italic">{error}</p>}
+              {error && <p className="text-red-500 mb-2 italic">{error}</p>}
 
-            <label className="block text-sm font-medium text-gray-700">Département</label>
-            {errorDepart && (
-                <p className="text-red-500 italic text-sm">{errorDepart}</p>
-            )}
-            <input
-                type="text"
-                placeholder="Département"
-                value={commande?.departement!}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setCommande((prev) => ({...prev, departement: value}));
-                  if (value.trim()) setErrorDepart(null);
-                }}
-                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-2"
-            />
-
-            <label className="block text-sm font-medium text-gray-700">Centre d'État Civil</label>
-            {errorCentreEtat && (
-                <p className="text-red-500 italic text-sm">{errorCentreEtat}</p>
-            )}
-            <input
-                type="text"
-                placeholder="Centre"
-                value={commande?.centreEtatCivil!}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setCommande((prev) => ({...prev, centreEtatCivil: value}));
-                  if (value.trim()) setErrorCentreEtat(null);
-                }}
-                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-2"
-            />
-
-            <label className="block text-sm font-medium text-gray-700">État Civil</label>
-            {errorEtatCivil && (
-                <p className="text-red-500 italic text-sm">{errorEtatCivil}</p>
-            )}
-            <input
-                type="text"
-                placeholder="État Civil"
-                value={commande?.etatCivil!}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setCommande((prev) => ({...prev, etatCivil: value}));
-                  if (value.trim()) setErrorEtatCivil(null);
-                }}
-                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded mb-2"
-            />
-
-            <label className="block text-sm font-medium text-gray-700">Tribunal d'État Civil</label>
-            {errorTribunal && (
-                <p className="text-red-500 italic text-sm">{errorTribunal}</p>
-            )}
-            <input
-                type="text"
-                placeholder="Tribunal"
-                value={commande?.tribunal!}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setCommande((prev) => ({...prev, tribunal: value}));
-                  if (value.trim()) setErrorTribunal(null);
-                }}
-                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-2"
-            />
-
-            <label className="block text-sm font-medium text-gray-700">Ville</label>
-            {errorVille && (
-                <p className="text-red-500 italic text-sm">{errorVille}</p>
-            )}
-            <input
-                type="text"
-                placeholder="Ville"
-                value={commande?.ville!}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setCommande((prev) => ({...prev, ville: value}));
-                  if (value.trim()) setErrorVille(null);
-                }}
-                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded mb-2"
-            />
-
-            <label className="block text-sm font-medium text-gray-700">Officier</label>
-            <input
-                type="text"
-                placeholder="Officier"
-                value={commande?.officier!}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setCommande((prev) => ({...prev, officier: value}));
-                }}
-                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-4"
-            />
-
-            <label className="block text-sm font-medium text-gray-700">Titre Officier</label>
-            <input
-                type="text"
-                placeholder="Titre Officier"
-                value={commande?.titreOfficier!}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setCommande((prev) => ({...prev, titreOfficier: value}));
-                }}
-                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-2"
-            />
-
-            <div className="flex justify-end gap-2">
-              <button
-                  onClick={() => {
-                    handleOnClose();
-                    onClose();
+              <label className="block text-sm font-medium text-gray-700">Département</label>
+              {errorDepart && (
+                  <p className="text-red-500 italic text-sm">{errorDepart}</p>
+              )}
+              <input
+                  type="text"
+                  placeholder="Département"
+                  value={commande?.departement!}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setCommande((prev) => ({...prev, departement: value}));
+                    if (value.trim()) setErrorDepart(null);
                   }}
-                  className="px-4 py-2 bg-gray-300 dark:bg-gray-700 rounded hover:bg-gray-400 dark:hover:bg-gray-600"
-              >
-                Annuler
-              </button>
-              <button
-                  onClick={handleSubmit}
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-              >
-                Enregistrer
-                {loading && (<Spinner/>)}
-              </button>
+                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-2"
+              />
+
+              <label className="block text-sm font-medium text-gray-700">Centre d'État Civil</label>
+              {errorCentreEtat && (
+                  <p className="text-red-500 italic text-sm">{errorCentreEtat}</p>
+              )}
+              <input
+                  type="text"
+                  placeholder="Centre"
+                  value={commande?.centreEtatCivil!}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setCommande((prev) => ({...prev, centreEtatCivil: value}));
+                    if (value.trim()) setErrorCentreEtat(null);
+                  }}
+                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-2"
+              />
+
+              <label className="block text-sm font-medium text-gray-700">État Civil</label>
+              {errorEtatCivil && (
+                  <p className="text-red-500 italic text-sm">{errorEtatCivil}</p>
+              )}
+              <input
+                  type="text"
+                  placeholder="État Civil"
+                  value={commande?.etatCivil!}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setCommande((prev) => ({...prev, etatCivil: value}));
+                    if (value.trim()) setErrorEtatCivil(null);
+                  }}
+                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded mb-2"
+              />
+
+              <label className="block text-sm font-medium text-gray-700">Tribunal d'État
+                Civil</label>
+              {errorTribunal && (
+                  <p className="text-red-500 italic text-sm">{errorTribunal}</p>
+              )}
+              <input
+                  type="text"
+                  placeholder="Tribunal"
+                  value={commande?.tribunal!}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setCommande((prev) => ({...prev, tribunal: value}));
+                    if (value.trim()) setErrorTribunal(null);
+                  }}
+                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-2"
+              />
+
+              <label className="block text-sm font-medium text-gray-700">Ville</label>
+              {errorVille && (
+                  <p className="text-red-500 italic text-sm">{errorVille}</p>
+              )}
+              <input
+                  type="text"
+                  placeholder="Ville"
+                  value={commande?.ville!}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setCommande((prev) => ({...prev, ville: value}));
+                    if (value.trim()) setErrorVille(null);
+                  }}
+                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded mb-2"
+              />
+
+              <label className="block text-sm font-medium text-gray-700">Officier</label>
+              <input
+                  type="text"
+                  placeholder="Officier"
+                  value={commande?.officier!}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setCommande((prev) => ({...prev, officier: value}));
+                  }}
+                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-4"
+              />
+
+              <label className="block text-sm font-medium text-gray-700">Titre Officier</label>
+              <input
+                  type="text"
+                  placeholder="Titre Officier"
+                  value={commande?.titreOfficier!}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setCommande((prev) => ({...prev, titreOfficier: value}));
+                  }}
+                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-2"
+              />
+
+              <div className="flex justify-end gap-2">
+                <button
+                    onClick={() => {
+                      handleOnClose();
+                      onClose();
+                    }}
+                    className="px-4 py-2 bg-gray-300 dark:bg-gray-700 rounded hover:bg-gray-400 dark:hover:bg-gray-600"
+                >
+                  Annuler
+                </button>
+                <button
+                    onClick={handleSubmit}
+                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+                >
+                  Enregistrer
+                  {loading && (<Spinner/>)}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {
-            isReponseApiOpen && (
-                <ModalRetourAppelApi
-                    onClose={handleModalReponseApiClose}
-                    isOpen={isReponseApiOpen}
-                    message={messageReponseApi}
-                    type={typeReponseApi}
-                />
-            )
-        }
-      </div>
+          {
+              isReponseApiOpen && (
+                  <ModalRetourAppelApi
+                      onClose={handleModalReponseApiClose}
+                      isOpen={isReponseApiOpen}
+                      message={messageReponseApi}
+                      type={typeReponseApi}
+                  />
+              )
+          }
+        </div>
+      </Modal>
   );
 }
