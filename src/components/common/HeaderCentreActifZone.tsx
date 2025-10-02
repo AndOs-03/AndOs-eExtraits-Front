@@ -49,7 +49,7 @@ export default function HeaderCentreActifZone() {
     setIsOpen(!isOpen);
   };
 
-  const handleSelect = (center) => {
+  const handleSelect = (center: Centre) => {
     setSelectedCenter(center);
     if (center.id !== 0) {
       localStorage.setItem("eExtraitCentreActif", JSON.stringify(center));
