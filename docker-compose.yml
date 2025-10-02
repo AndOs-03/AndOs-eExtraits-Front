@@ -7,6 +7,7 @@ services:
     restart: always
     ports:
       - "3000:80" # Changez le port si nécessaire, le port 80 est le port par défaut de Nginx
+    env_file: .env
     networks:
       - andos-eextraits-applications-network
 

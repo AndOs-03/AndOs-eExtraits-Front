@@ -11,9 +11,6 @@ RUN npm install
 #COPY eslint.config.js ./
 #COPY postcss.config.js ./
 COPY . .
-
-ARG VITE_BASE_URL
-ENV VITE_BASE_URL=$VITE_BASE_URL
 RUN npm run build
 
 FROM nginx:stable-alpine as production-stage
