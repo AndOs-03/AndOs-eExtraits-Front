@@ -50,10 +50,10 @@ export default function HeaderInstitutionActifZone() {
     setIsOpen(!isOpen);
   };
 
-  const handleSelect = (center) => {
-    setSelected(center);
-    if (center.id !== 0) {
-      localStorage.setItem("eExtraitInstitutionActif", JSON.stringify(center));
+  const handleSelect = (institution: InstitutionActif) => {
+    setSelected(institution);
+    if (institution.id !== 0) {
+      localStorage.setItem("eExtraitInstitutionActif", JSON.stringify(institution));
       window.location.reload();
     }
     setIsOpen(false);
