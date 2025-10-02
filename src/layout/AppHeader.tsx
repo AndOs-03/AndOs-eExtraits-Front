@@ -4,6 +4,8 @@ import {Link} from "react-router";
 import {useSidebar} from "../context/SidebarContext";
 import {ThemeToggleButton} from "../components/common/ThemeToggleButton";
 import UserDropdown from "../components/header/UserDropdown";
+import HeaderCentreActifZone from "../components/common/HeaderCentreActifZone.tsx";
+import HeaderInstitutionActifZone from "../components/common/HeaderInstitutionActifZone.tsx";
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
@@ -151,6 +153,16 @@ const AppHeader: React.FC = () => {
           {/*</div>*/}
 
         </div>
+
+        {
+          !isApplicationMenuOpen ?
+              <div className="flex-grow w-full flex items-center justify-between">
+                <HeaderCentreActifZone />
+                <HeaderInstitutionActifZone />
+              </div>
+              : null
+        }
+
         <div
           className={`${
             isApplicationMenuOpen ? "flex" : "hidden"
