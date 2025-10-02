@@ -5,6 +5,9 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
+ARG CACHE_BUST
+RUN echo "Cache buster for sources: $CACHE_BUST"
+
 COPY tsconfig*.json ./
 COPY vite.config.ts ./
 COPY . .
