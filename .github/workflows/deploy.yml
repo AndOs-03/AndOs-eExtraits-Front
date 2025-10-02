@@ -46,4 +46,4 @@ jobs:
             docker-compose -f docker-compose.yml up -d --force-recreate andos-eextraits-front
             docker image prune -f
             
-            rm -rf Dockerfile docker-compose.yml nginx.conf package.json package-lock.json vite.config.js src public index.html eslint.config.js postcss.config.js tsconfig.app.json tsconfig.json tsconfig.node.json
+            rm -rf Dockerfile docker-compose.yml nginx.conf package.json package-lock.json vite.config.ts src public index.html eslint.config.js postcss.config.js tsconfig.app.json tsconfig.json tsconfig.node.json
