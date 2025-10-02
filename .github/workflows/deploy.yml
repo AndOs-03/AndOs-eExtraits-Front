@@ -20,9 +20,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          source: "Dockerfile,docker-compose.yml,nginx.conf,package.json,package-lock.json,vite
-          .config.ts,src,public,index.html,eslint.config.js,postcss.config.js,tsconfig.app.json,
-          tsconfig.json,tsconfig.node.json"
+          source: "Dockerfile,docker-compose.yml,nginx.conf,package.json,package-lock.json,vite.config.ts,src,public,index.html,eslint.config.js,postcss.config.js,tsconfig.app.json,tsconfig.json,tsconfig.node.json"
           target: "/root/andos_eextraits_front"
 
       - name: Deploy to server

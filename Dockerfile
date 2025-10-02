@@ -5,11 +5,11 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-COPY tsconfig*.json ./
-COPY vite.config.ts ./
-COPY index.html ./
-COPY eslint.config.js ./
-COPY postcss.config.js ./
+#COPY tsconfig*.json ./
+#COPY vite.config.ts ./
+#COPY index.html ./
+#COPY eslint.config.js ./
+#COPY postcss.config.js ./
 COPY . .
 
 ARG VITE_BASE_URL
