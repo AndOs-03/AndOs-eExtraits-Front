@@ -2,6 +2,9 @@
 FROM node:18-alpine as build-stage
 WORKDIR /app
 
+COPY tsconfig*.json ./
+COPY vite.config.ts ./
+
 COPY package*.json ./
 RUN npm install
 COPY . .
