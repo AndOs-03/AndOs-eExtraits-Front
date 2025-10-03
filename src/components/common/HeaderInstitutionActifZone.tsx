@@ -3,6 +3,7 @@ import {Centre} from "../../pages/Centres/types.ts";
 import {fetchCentres} from "../../services/centre.service.ts";
 import {recupererInstitutionActif} from "../../services/institution-actif.service.ts";
 import {InstitutionActif} from "../../pages/Institutions/types.ts";
+import {fetchInstitutions} from "../../services/institution.service.ts";
 
 export default function HeaderInstitutionActifZone() {
 
@@ -20,12 +21,18 @@ export default function HeaderInstitutionActifZone() {
         setSelected({id: institution.id, nom: institution.nom});
       }
 
-      const reponse = await fetchCentres();
+      const reponse = await fetchInstitutions();
       if (!("message" in reponse)) {
-        setInstitutions(reponse);
         if (reponse.length < 1) {
           setSelected({id: 0, nom: "-- Sélectionnez --"});
           setInstitutions([{id: 0, nom: "-- Sélectionnez --"}]);
+        } else {
+          const institutions: InstitutionActif[] = reponse.map((inst) => ({
+            id: inst.id ?? 0,
+            nom: inst.departement ?? "Inconnu"
+          }));
+
+          setInstitutions(institutions);
         }
       } else {
         console.error(reponse.message);
