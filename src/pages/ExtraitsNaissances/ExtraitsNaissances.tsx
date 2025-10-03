@@ -25,7 +25,7 @@ export default function ExtraitsNaissances() {
 
   const [isReponseApiOpen, setIsReponseApiOpen] = useState<boolean>(false)
   const [messageReponseApi, setMessageReponseApi] = useState<string>("")
-  const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "">("")
+  const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "info" | "">("")
 
   const [isCherche, setIscherche] = useState(false);
   const [extraitsFilter, setExtraitsFilter] = useState<ExtraitNaissanceEssentielVM[]>([]);
@@ -36,6 +36,14 @@ export default function ExtraitsNaissances() {
       setLoaderMessage("Chargement...");
 
       const centre = recupererCentreActif();
+      if (centre === null) {
+        setIsReponseApiOpen(true);
+        setMessageReponseApi("Veillez activer un centre pour continuer !");
+        setTypeReponseApi("info");
+        handleLoaderStatus(loaderStatus, loaderMessage)
+        return;
+      }
+
       const reponse = await listerExtraitsNaissances(centre?.id!);
       if ("message" in reponse) {
         setIsReponseApiOpen(true);

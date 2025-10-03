@@ -31,7 +31,7 @@ export default function PdfPreviewer({extrait, typeExtrait, onClose}: Props) {
 
   const [isReponseApiOpen, setIsReponseApiOpen] = useState<boolean>(false)
   const [messageReponseApi, setMessageReponseApi] = useState<string>("")
-  const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "">("")
+  const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "info" | "">("")
 
   const [messagePrevisualisation, setMessagePrevisualisation] = useState("")
 
@@ -45,21 +45,33 @@ export default function PdfPreviewer({extrait, typeExtrait, onClose}: Props) {
       let reponse: ApiError | Blob | undefined = undefined;
       switch (typeExtrait) {
         case TypeExtrait.DECES: {
-          if (institution?.id && centre?.id) {
-            reponse = await genererExtraitDeces(extrait.id!, institution?.id!, centre?.id!);
+          if (centre === null || institution == null) {
+            setIsReponseApiOpen(true);
+            setMessageReponseApi("Veillez activer un centre et une institution pour continuer !");
+            setTypeReponseApi("info");
+            return;
           }
+          reponse = await genererExtraitDeces(extrait.id!, institution?.id!, centre?.id!);
           break
         }
         case TypeExtrait.MARIAGE: {
-          if (institution?.id && centre?.id) {
-            reponse = await genererExtraitMariage(extrait.id!, institution?.id!, centre?.id!);
+          if (centre === null || institution == null) {
+            setIsReponseApiOpen(true);
+            setMessageReponseApi("Veillez activer un centre et une institution pour continuer !");
+            setTypeReponseApi("info");
+            return;
           }
+          reponse = await genererExtraitMariage(extrait.id!, institution?.id!, centre?.id!);
           break
         }
         case TypeExtrait.NAISSANCE: {
-          if (institution?.id) {
-            reponse = await genererExtraitNaissance(extrait.id!, institution?.id!);
+          if (institution == null) {
+            setIsReponseApiOpen(true);
+            setMessageReponseApi("Veillez activer une institution pour continuer !");
+            setTypeReponseApi("info");
+            return;
           }
+          reponse = await genererExtraitNaissance(extrait.id!, institution?.id!);
           break
         }
       }

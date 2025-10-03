@@ -1,17 +1,43 @@
-import {CheckCircleIcon, XCircle} from "../../../icons";
+import {CheckCircleIcon, InfoOrangeIcon, XCircle} from "../../../icons";
+import {ElementType} from "react";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  type: "success" | "error" | "";
+  type: "success" | "error" | "info" | "";
   message: string;
 }
 
-export default function ModalRetourAppelApi ({isOpen, onClose, type, message}: Props) {
+export default function ModalRetourAppelApi({isOpen, onClose, type, message}: Props) {
 
   if (!isOpen) return null;
   if (type === "") return null;
-  const isSuccess = type === "success";
+
+  let IconComponent: ElementType;
+  let titleText: string;
+  let iconColorClass: string;
+  let buttonBgClasses: string;
+
+  if (type === "success") {
+    IconComponent = CheckCircleIcon;
+    titleText = "Succès !";
+    iconColorClass = "text-green-600";
+    buttonBgClasses = "bg-green-600 hover:bg-green-700";
+  } else if (type === "error") {
+    IconComponent = XCircle;
+    titleText = "Erreur !";
+    iconColorClass = "text-red-600";
+    buttonBgClasses = "bg-red-600 hover:bg-red-700";
+  } else if (type === "info") {
+    IconComponent = InfoOrangeIcon;
+    titleText = "Information";
+    iconColorClass = "text-blue-600";
+    buttonBgClasses = "bg-orange-600 hover:bg-orange-700";
+  } else {
+    return null;
+  }
+
+  const iconSizeClasses = "h-18 w-18";
 
   return (
       <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50">
@@ -26,16 +52,12 @@ export default function ModalRetourAppelApi ({isOpen, onClose, type, message}: P
 
           {/* Icône */}
           <div className="flex justify-center mb-5">
-            {isSuccess ? (
-                <CheckCircleIcon className="h-18 w-18 text-green-600" />
-            ) : (
-                <XCircle className="h-18 w-18 text-red-600" />
-            )}
+            <IconComponent className={`${iconSizeClasses} ${iconColorClass}`} />
           </div>
 
           {/* Titre */}
           <h2 className="text-center text-3xl font-semibold text-black mb-2">
-            {isSuccess ? "Succès !" : "Erreur !"}
+            {titleText}
           </h2>
 
           {/* Message */}
@@ -45,11 +67,7 @@ export default function ModalRetourAppelApi ({isOpen, onClose, type, message}: P
           <div className="flex justify-center">
             <button
                 onClick={onClose}
-                className={`rounded-lg px-6 py-2 font-medium text-white shadow-md ${
-                    isSuccess
-                        ? "bg-green-600 hover:bg-green-700"
-                        : "bg-red-600 hover:bg-red-700"
-                }`}
+                className={`rounded-lg px-6 py-2 font-medium text-white shadow-md ${buttonBgClasses}`}
             >
               OK
             </button>
