@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import {Centre} from "../../pages/Centres/types.ts";
-import {fetchCentres} from "../../services/centre.service.ts";
 import {recupererInstitutionActif} from "../../services/institution-actif.service.ts";
 import {InstitutionActif} from "../../pages/Institutions/types.ts";
 import {fetchInstitutions} from "../../services/institution.service.ts";
