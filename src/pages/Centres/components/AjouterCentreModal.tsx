@@ -1,11 +1,12 @@
 import {useState} from "react";
 import {createCentre} from "../../../services/centre.service.ts";
 import {Modal} from "../../../components/ui/modal";
+import ModalRetourAppelApi from "../../../components/ui/modal/modal-retour-appel-api.tsx";
+import {Spinner} from "../../../icons";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  setLoaderStatus: (status: "idle" | "loading" | "success" | "error", message?: string) => void;
   setElementAdded: () => void;
 }
 
@@ -13,37 +14,53 @@ export default function AjouterCentreModal(
     {
       isOpen,
       onClose,
-      setLoaderStatus,
       setElementAdded
     }: Props) {
   const [nom, setNom] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [isReponseApiOpen, setIsReponseApiOpen] = useState<boolean>(false)
+  const [messageReponseApi, setMessageReponseApi] = useState<string>("")
+  const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "">("")
+
   const handleSubmit = async () => {
     if (!nom.trim()) {
       setError("Le nom est obligatoire");
       return;
     }
+
     setLoading(true);
     setError(null);
-    try {
-      setLoaderStatus("loading", "Enregistrement du centre...");
-      const reponse = await createCentre({nom})
 
+    try {
+      const reponse = await createCentre({nom})
       if ("message" in reponse) {
-        setLoaderStatus("error", reponse.message || "Erreur lors de l'enregistrement");
+        setIsReponseApiOpen(true);
+        setMessageReponseApi(reponse.message);
+        setTypeReponseApi("error");
       } else {
-        setLoaderStatus("success", "Enregistré avec succès ✅");
+        setIsReponseApiOpen(true);
+        setMessageReponseApi("Enregistré avec succès ✅");
+        setTypeReponseApi("success");
+
         setNom("");
         setElementAdded();
       }
-    } catch (err: any) {
-      setError(err.message || "Erreur lors de l'ajout");
-    } finally {
       setLoading(false);
+    } catch (err: any) {
+      setLoading(false);
+      setIsReponseApiOpen(true);
+      setMessageReponseApi(err);
+      setTypeReponseApi("error");
     }
   };
+
+  const handleModalReponseApiClose = () => {
+    setIsReponseApiOpen(false)
+    setMessageReponseApi("")
+    setTypeReponseApi("")
+  }
 
   if (!isOpen) return null;
 
@@ -73,11 +90,23 @@ export default function AjouterCentreModal(
                     disabled={loading}
                     className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
                 >
-                  {loading ? "Enregistrement..." : "Enregistrer"}
+                  Enregistrer
+                  {loading && (<Spinner/>)}
                 </button>
               </div>
             </div>
           </div>
+
+          {
+              isReponseApiOpen && (
+                  <ModalRetourAppelApi
+                      onClose={handleModalReponseApiClose}
+                      isOpen={isReponseApiOpen}
+                      message={messageReponseApi}
+                      type={typeReponseApi}
+                  />
+              )
+          }
         </div>
       </Modal>
   );

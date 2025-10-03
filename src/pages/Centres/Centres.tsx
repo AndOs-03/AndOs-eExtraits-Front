@@ -107,7 +107,6 @@ export default function Centres() {
                     }
                   }
                 }}
-                setLoaderStatus={handleLoaderStatus}
                 setElementAdded={handleElementAdd}
             />
 

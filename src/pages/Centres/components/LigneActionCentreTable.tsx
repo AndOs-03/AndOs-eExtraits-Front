@@ -127,7 +127,6 @@ export default function LigneActionCentreTable(
             <ModifierCentreModal
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
-                setLoaderStatus={setLoaderStatus}
                 setElementAdded={(updatedCentre) => {
                   setCentres((prev: Centre[]) =>
                       prev.map((c: Centre) => (c.id === updatedCentre.id ? updatedCentre : c))

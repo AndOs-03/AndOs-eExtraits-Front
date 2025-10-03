@@ -2,11 +2,12 @@ import {useState} from "react";
 import {updateCentre} from "../../../services/centre.service.ts"; // 👉 à créer si pas encore
 import {Centre} from "../types.ts";
 import {Modal} from "../../../components/ui/modal";
+import {Spinner} from "../../../icons";
+import ModalRetourAppelApi from "../../../components/ui/modal/modal-retour-appel-api.tsx";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  setLoaderStatus: (status: "idle" | "loading" | "success" | "error", message?: string) => void;
   setElementAdded: (centre: Centre) => void; // permet de recharger la liste
   centre: Centre;
 }
@@ -15,7 +16,6 @@ export default function ModifierCentreModal(
     {
       isOpen,
       onClose,
-      setLoaderStatus,
       setElementAdded,
       centre
     }: Props) {
@@ -24,32 +24,48 @@ export default function ModifierCentreModal(
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [isReponseApiOpen, setIsReponseApiOpen] = useState<boolean>(false)
+  const [messageReponseApi, setMessageReponseApi] = useState<string>("")
+  const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "">("")
+
   const handleSubmit = async () => {
     if (!nom.trim()) {
       setError("Le nom est obligatoire");
       return;
     }
+
     setLoading(true);
     setError(null);
 
     try {
-      setLoaderStatus("loading", "Modification du centre...");
       const reponse = await updateCentre({id: centre.id, nom: nom});
-
       if ("message" in reponse) {
-        setLoaderStatus("error", reponse.message || "Erreur lors de la modification");
+        setIsReponseApiOpen(true);
+        setMessageReponseApi(reponse.message);
+        setTypeReponseApi("error");
       } else {
-        setLoaderStatus("success", "Modifié avec succès ✅");
+        setIsReponseApiOpen(true);
+        setMessageReponseApi("Modifié avec succès ✅");
+        setTypeReponseApi("success");
+
         const updatedCentre: Centre = {...centre, ...{id: centre.id, nom: nom}};
-        onClose();
         setElementAdded(updatedCentre);
       }
-    } catch (err: any) {
-      setError(err.message || "Erreur lors de la modification");
-    } finally {
       setLoading(false);
+    } catch (err: any) {
+      setLoading(false);
+      setIsReponseApiOpen(true);
+      setMessageReponseApi(err);
+      setTypeReponseApi("error");
     }
   };
+
+  const handleModalReponseApiClose = () => {
+    setIsReponseApiOpen(false);
+    setMessageReponseApi("");
+    setTypeReponseApi("");
+    onClose();
+  }
 
   if (!isOpen) return null;
 
@@ -81,11 +97,23 @@ export default function ModifierCentreModal(
                     disabled={loading}
                     className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
                 >
-                  {loading ? "Enregistrement..." : "Enregistrer"}
+                  Enregistrer
+                  {loading && (<Spinner/>)}
                 </button>
               </div>
             </div>
           </div>
+
+          {
+              isReponseApiOpen && (
+                  <ModalRetourAppelApi
+                      onClose={handleModalReponseApiClose}
+                      isOpen={isReponseApiOpen}
+                      message={messageReponseApi}
+                      type={typeReponseApi}
+                  />
+              )
+          }
         </div>
       </Modal>
   );
