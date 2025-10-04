@@ -32,7 +32,7 @@ async function request<T>(
       return {message: "Unauthorized", status: 401};
     }
 
-    if ("status" in res && res.status === 401) {
+    if ("statut" in res && res.status === 401) {
       clearAccessToken();
       window.location.href = "/login";
     }
