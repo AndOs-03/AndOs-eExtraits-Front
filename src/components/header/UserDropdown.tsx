@@ -1,14 +1,21 @@
 import {useEffect, useState} from "react";
 import {DropdownItem} from "../ui/dropdown/DropdownItem";
 import {Dropdown} from "../ui/dropdown/Dropdown";
-import {Link} from "react-router";
-import {recupererParNomUtilisateur} from "../../services/auth.service.ts";
-import {jwtDecode} from "jwt-decode";
+import {Link, useNavigate} from "react-router";
+import {recupererParUtilisateurId} from "../../services/auth.service.ts";
+import {jwtDecode, JwtPayload} from "jwt-decode";
 import {UtilisateurVM} from "../../models/Auth/utilisateur.model.ts";
+import ModalRetourAppelApi from "../ui/modal/modal-retour-appel-api.tsx";
 
 export default function UserDropdown() {
+
   const [isOpen, setIsOpen] = useState(false);
   const [utilisateur, setUtilisateur] = useState<UtilisateurVM | null>(null);
+  const navigate = useNavigate();
+
+  const [isReponseApiOpen, setIsReponseApiOpen] = useState<boolean>(false)
+  const [messageReponseApi, setMessageReponseApi] = useState<string>("")
+  const [typeReponseApi, setTypeReponseApi] = useState<"success" | "error" | "info" | "">("")
 
   function toggleDropdown() {
     setIsOpen(!isOpen);
@@ -23,9 +30,16 @@ export default function UserDropdown() {
       const token = localStorage.getItem("eExtraitToken");
       if (token) {
         const decoded = jwtDecode(token);
-        const reponse = await recupererParNomUtilisateur(decoded.sub!);
-        if (!("message" in reponse)) {
-          setUtilisateur(reponse as UtilisateurVM);
+        if (tokenExpire(decoded)) {
+          setIsReponseApiOpen(true);
+          setMessageReponseApi("Votre cession a expiré !");
+          setTypeReponseApi("info");
+        } else {
+          const utilisateurId: number = Number(decoded.sub);
+          const reponse = await recupererParUtilisateurId(utilisateurId);
+          if (!("message" in reponse)) {
+            setUtilisateur(reponse as UtilisateurVM);
+          }
         }
       }
     } catch (e) {
@@ -42,6 +56,21 @@ export default function UserDropdown() {
 
     fetchData();
   }, []);
+
+  const handleModalReponseApiClose = () => {
+    setIsReponseApiOpen(false);
+    setMessageReponseApi("");
+    setTypeReponseApi("");
+    navigate("/login");
+  }
+
+  const tokenExpire = (decoded: JwtPayload): boolean => {
+    if (decoded && decoded.exp) {
+      const now = Date.now() / 1000;
+      return decoded.exp < now;
+    }
+    return false;
+  }
 
   return (
       <div className="relative">
@@ -195,6 +224,17 @@ export default function UserDropdown() {
             Déconnexion
           </Link>
         </Dropdown>
+
+        {
+            isReponseApiOpen && (
+                <ModalRetourAppelApi
+                    onClose={handleModalReponseApiClose}
+                    isOpen={isReponseApiOpen}
+                    message={messageReponseApi}
+                    type={typeReponseApi}
+                />
+            )
+        }
       </div>
   );
 }

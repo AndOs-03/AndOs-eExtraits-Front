@@ -17,3 +17,7 @@ export const register = async (commande: CreerUtilisateurCommande): Promise<ApiE
 export const recupererParNomUtilisateur = async (nomUtilisateur: string): Promise<ApiError | UtilisateurVM> => {
   return await apiMethodes.get<UtilisateurVM>(ENDPOINTS.auth.getByUsername(nomUtilisateur));
 };
+
+export const recupererParUtilisateurId = async (utilisateurId: number): Promise<ApiError | UtilisateurVM> => {
+  return await apiMethodes.get<UtilisateurVM>(ENDPOINTS.auth.getByUserId(utilisateurId));
+};
