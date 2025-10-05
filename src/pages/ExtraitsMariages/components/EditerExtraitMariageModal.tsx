@@ -10,7 +10,7 @@ import {ParentExtrait} from "../../../models/parents-extrait.model.ts";
 import {
   ExtraitMariageDetailsVM
 } from "../../../models/ExtraitsMariages/extrait-mariage-details.model.ts";
-import {estDateValide} from "../../../services/common.service.ts";
+import {estDateValide, supprimerEspacesVides} from "../../../services/common.service.ts";
 import ModalRetourAppelApi from "../../../components/ui/modal/modal-retour-appel-api.tsx";
 import {Spinner} from "../../../icons";
 import {Modal} from "../../../components/ui/modal";
@@ -123,8 +123,10 @@ export default function EditerExtraitMariageModal(
     try {
       let reponse;
       if (id) {
+        supprimerEspacesVides(modifierCommande);
         reponse = await modifierExtraitsMariages(modifierCommande)
       } else {
+        supprimerEspacesVides(commande);
         reponse = await creerExtraitsMariages(commande)
       }
 

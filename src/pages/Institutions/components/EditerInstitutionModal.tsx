@@ -5,6 +5,7 @@ import {InstitutionVM} from "../../../models/institution.model.ts";
 import ModalRetourAppelApi from "../../../components/ui/modal/modal-retour-appel-api.tsx";
 import {Spinner} from "../../../icons";
 import {Modal} from "../../../components/ui/modal";
+import {supprimerEspacesVides} from "../../../services/common.service";
 
 interface Props {
   id: number | null
@@ -94,6 +95,7 @@ export default function EditerInstitutionModal(
     setErrorVille(null);
 
     try {
+      supprimerEspacesVides(commande);
       const reponse = await editeInstitutions(commande!)
       if ("message" in reponse) {
         setIsReponseApiOpen(true);

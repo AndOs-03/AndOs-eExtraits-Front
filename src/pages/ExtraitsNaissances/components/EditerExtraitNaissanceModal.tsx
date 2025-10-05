@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {estDateValide} from "../../../services/common.service.ts";
+import {estDateValide, supprimerEspacesVides} from "../../../services/common.service.ts";
 import {
   ExtraitNaissanceDetailsVM
 } from "../../../models/ExtraitsNaissances/extrait-naissance-details.model.ts";
@@ -169,8 +169,10 @@ export default function EditerExtraitNaissanceModal(
     try {
       let reponse;
       if (id) {
+        supprimerEspacesVides(modifierCommande);
         reponse = await modifierExtraitsNaissances(modifierCommande)
       } else {
+        supprimerEspacesVides(commande);
         commande.centreId = centreActif?.id!;
         reponse = await creerExtraitsNaissances(commande)
       }

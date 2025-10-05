@@ -1,7 +1,8 @@
 import {SituationMatrimoniale} from "../../models/situation-matrimoniale.ts";
 import {ParentExtrait} from "../../models/parents-extrait.model.ts";
+import {BaseCommande} from "../../models/base-commande";
 
-export class CreerExtraitDecesCommande {
+export class CreerExtraitDecesCommande extends BaseCommande  {
 
   annee!: number | null;
   numeroRegistre!: string | null;
@@ -23,6 +24,7 @@ export class CreerExtraitDecesCommande {
   mere!: ParentExtrait | null;
 
   constructor(annee: number) {
+    super();
     this.annee = annee;
   }
 }

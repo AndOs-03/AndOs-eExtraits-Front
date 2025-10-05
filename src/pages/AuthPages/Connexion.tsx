@@ -40,7 +40,7 @@ export default function Connexion() {
     setErrorMotPasse(null);
 
     try {
-      const reponse = await login(new ConnexionCommande(nomUtilisateur, motPasse));
+      const reponse = await login(new ConnexionCommande(nomUtilisateur.trim(), motPasse));
       if ("message" in reponse) {
         setLoading(false);
         setIsReponseApiOpen(true);
@@ -62,12 +62,12 @@ export default function Connexion() {
     let isValid = true;
 
     if (!nomUtilisateur.trim()) {
-      setErrorUsername("Le nom d'utilisateur est obligatoire !");
+      setErrorUsername("Le nom d'utilisateur invalide !");
       isValid = false;
     }
 
-    if (!motPasse.trim()) {
-      setErrorMotPasse("Le mot de passe est obligatoire !");
+    if (motPasse == "") {
+      setErrorMotPasse("Le mot de passe invalide !");
       isValid = false;
     }
 

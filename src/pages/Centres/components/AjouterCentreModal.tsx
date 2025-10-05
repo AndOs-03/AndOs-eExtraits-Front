@@ -26,7 +26,7 @@ export default function AjouterCentreModal(
 
   const handleSubmit = async () => {
     if (!nom.trim()) {
-      setError("Le nom est obligatoire");
+      setError("Le nom est obligatoire !");
       return;
     }
 
@@ -34,7 +34,7 @@ export default function AjouterCentreModal(
     setError(null);
 
     try {
-      const reponse = await createCentre({nom})
+      const reponse = await createCentre({nom: nom.trim()})
       if ("message" in reponse) {
         setIsReponseApiOpen(true);
         setMessageReponseApi(reponse.message);

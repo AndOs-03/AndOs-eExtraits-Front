@@ -13,6 +13,7 @@ import {SituationMatrimoniale} from "../../../models/situation-matrimoniale.ts";
 import ModalRetourAppelApi from "../../../components/ui/modal/modal-retour-appel-api.tsx";
 import {Spinner} from "../../../icons";
 import {Modal} from "../../../components/ui/modal";
+import {supprimerEspacesVides} from "../../../services/common.service";
 
 interface Props {
   id: number | undefined
@@ -124,8 +125,10 @@ export default function EditerExtraitDecesModal(
     try {
       let reponse;
       if (id) {
+        supprimerEspacesVides(modifierCommande);
         reponse = await modifierExtraitsDeces(modifierCommande)
       } else {
+        supprimerEspacesVides(commande);
         reponse = await creerExtraitsDeces(commande)
       }
 
