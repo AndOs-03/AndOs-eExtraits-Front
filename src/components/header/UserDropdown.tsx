@@ -41,6 +41,10 @@ export default function UserDropdown() {
             setUtilisateur(reponse as UtilisateurVM);
           }
         }
+      } else {
+        setIsReponseApiOpen(true);
+        setMessageReponseApi("Veillez vous connecter !");
+        setTypeReponseApi("info");
       }
     } catch (e) {
       console.log(e);
