@@ -62,12 +62,12 @@ export default function Connexion() {
     let isValid = true;
 
     if (!nomUtilisateur.trim()) {
-      setErrorUsername("Le nom d'utilisateur est obligatoire !");
+      setErrorUsername("Le nom d'utilisateur invalide !");
       isValid = false;
     }
 
     if (!motPasse.trim()) {
-      setErrorMotPasse("Le mot de passe est obligatoire !");
+      setErrorMotPasse("Le mot de passe invalide !");
       isValid = false;
     }
 
@@ -115,7 +115,7 @@ export default function Connexion() {
                       value={nomUtilisateur}
                       onChange={(e) => {
                         const value = e.target.value;
-                        setNomUtilisateur(value);
+                        setNomUtilisateur(value.trim());
                         if (value.trim()) setErrorMotPasse(null);
                       }}
                       placeholder="Entrer votre nom d'utilisateur"
@@ -134,7 +134,7 @@ export default function Connexion() {
                         value={motPasse}
                         onChange={(e) => {
                           const value = e.target.value;
-                          setMotPasse(value);
+                          setMotPasse(value.trim());
                           if (value.trim()) setErrorMotPasse(null);
                         }}
                         type={showPassword ? "text" : "password"}

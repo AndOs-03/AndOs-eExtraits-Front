@@ -149,7 +149,7 @@ export default function CreerCompteUtilisateur() {
                         value={nom}
                         onChange={(e) => {
                           const value = e.target.value;
-                          setNom(value);
+                          setNom(value.trim());
                           if (value.trim()) setErrorNom(null);
                         }}
                         type="text"
@@ -170,7 +170,7 @@ export default function CreerCompteUtilisateur() {
                         value={prenom}
                         onChange={(e) => {
                           const value = e.target.value;
-                          setPrenom(value);
+                          setPrenom(value.trim());
                           if (value.trim()) setErrorPrenom(null);
                         }}
                         type="text"
@@ -192,7 +192,7 @@ export default function CreerCompteUtilisateur() {
                       value={email}
                       onChange={(e) => {
                         const value = e.target.value;
-                        setEmail(value);
+                        setEmail(value.trim());
                         if (value !== "" && validateEmail(value)) setErrorEmail(null);
                       }}
                       type="email"
@@ -213,7 +213,7 @@ export default function CreerCompteUtilisateur() {
                       value={nomUtilisateur}
                       onChange={(e) => {
                         const value = e.target.value;
-                        setNomUtilisateur(value);
+                        setNomUtilisateur(value.trim());
                         if (value.trim()) setErrorUsername(null);
                       }}
                       placeholder="Entrer votre nom d'utilisateur"
@@ -232,7 +232,7 @@ export default function CreerCompteUtilisateur() {
                         value={motPasse}
                         onChange={(e) => {
                           const value = e.target.value;
-                          setMotPasse(value);
+                          setMotPasse(value.trim());
                           if (value.trim()) setErrorMotPasse(null);
                         }}
                         type={showPassword ? "text" : "password"}

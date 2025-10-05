@@ -81,7 +81,7 @@ export default function ModifierCentreModal(
                   type="text"
                   placeholder="Nom"
                   value={nom}
-                  onChange={(e) => setNom(e.target.value)}
+                  onChange={(e) => setNom(e.target.value.trim())}
                   className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-4"
               />
 
