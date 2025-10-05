@@ -10,7 +10,7 @@ import {ParentExtrait} from "../../../models/parents-extrait.model.ts";
 import {
   ExtraitMariageDetailsVM
 } from "../../../models/ExtraitsMariages/extrait-mariage-details.model.ts";
-import {estDateValide} from "../../../services/common.service.ts";
+import {estDateValide, supprimerEspacesVides} from "../../../services/common.service.ts";
 import ModalRetourAppelApi from "../../../components/ui/modal/modal-retour-appel-api.tsx";
 import {Spinner} from "../../../icons";
 import {Modal} from "../../../components/ui/modal";
@@ -123,8 +123,10 @@ export default function EditerExtraitMariageModal(
     try {
       let reponse;
       if (id) {
+        supprimerEspacesVides(modifierCommande);
         reponse = await modifierExtraitsMariages(modifierCommande)
       } else {
+        supprimerEspacesVides(commande);
         reponse = await creerExtraitsMariages(commande)
       }
 
@@ -285,7 +287,7 @@ export default function EditerExtraitMariageModal(
                         placeholder="Registre"
                         value={id ? modifierCommande?.registreN ?? "" : commande?.registreN ?? ""}
                         onChange={(e) => {
-                          const value = e.target.value.trim();
+                          const value = e.target.value;
                           if (id) {
                             setModifierCommande((prev) => ({
                               ...prev,
@@ -310,7 +312,7 @@ export default function EditerExtraitMariageModal(
                         min="1"
                         value={id ? modifierCommande?.annee ?? "" : commande?.annee ?? ""}
                         onChange={(e) => {
-                          const value = e.target.value.trim();
+                          const value = e.target.value;
                           if (id) {
                             setModifierCommande((prev) => ({
                               ...prev,
@@ -338,7 +340,7 @@ export default function EditerExtraitMariageModal(
                         placeholder="Nº Acte"
                         value={id ? modifierCommande?.numeroRegistre ?? "" : commande?.numeroRegistre ?? ""}
                         onChange={(e) => {
-                          const value = e.target.value.trim();
+                          const value = e.target.value;
                           if (id) {
                             setModifierCommande((prev) => ({
                               ...prev,
@@ -399,7 +401,7 @@ export default function EditerExtraitMariageModal(
                         placeholder="État Civil"
                         value={id ? modifierCommande?.etatCivil ?? "" : commande?.etatCivil ?? ""}
                         onChange={(e) => {
-                          const value = e.target.value.trim();
+                          const value = e.target.value;
                           if (id) {
                             setModifierCommande((prev) => ({
                               ...prev,
@@ -428,7 +430,7 @@ export default function EditerExtraitMariageModal(
                         placeholder="Centre"
                         value={id ? modifierCommande?.centreEtatCivil ?? "" : commande?.centreEtatCivil ?? ""}
                         onChange={(e) => {
-                          const value = e.target.value.trim();
+                          const value = e.target.value;
                           if (id) {
                             setModifierCommande((prev) => ({
                               ...prev,
@@ -500,7 +502,7 @@ export default function EditerExtraitMariageModal(
                           placeholder="Nom et prénoms"
                           value={id ? modifierCommande?.epoux?.nomPrenoms ?? "" : commande?.epoux?.nomPrenoms ?? ""}
                           onChange={(e) => {
-                            const value = e.target.value.trim();
+                            const value = e.target.value;
                             if (id) {
                               setModifierCommande((prev) => ({
                                 ...prev,
@@ -572,7 +574,7 @@ export default function EditerExtraitMariageModal(
                           placeholder="Lieu de naissance"
                           value={id ? modifierCommande?.epoux?.lieuNaissance ?? "" : commande?.epoux?.lieuNaissance ?? ""}
                           onChange={(e) => {
-                            const value = e.target.value.trim();
+                            const value = e.target.value;
                             if (id) {
                               setModifierCommande((prev) => ({
                                 ...prev,
@@ -607,7 +609,7 @@ export default function EditerExtraitMariageModal(
                           placeholder="Domicile"
                           value={id ? modifierCommande?.epoux?.domicile ?? "" : commande?.epoux?.domicile ?? ""}
                           onChange={(e) => {
-                            const value = e.target.value.trim();
+                            const value = e.target.value;
                             if (id) {
                               setModifierCommande((prev) => ({
                                 ...prev,
@@ -637,7 +639,7 @@ export default function EditerExtraitMariageModal(
                           placeholder="Père"
                           value={id ? modifierCommande?.epoux?.pere?.nomPrenoms ?? "" : commande?.epoux?.pere?.nomPrenoms ?? ""}
                           onChange={(e) => {
-                            const value = e.target.value.trim();
+                            const value = e.target.value;
                             const pere = new ParentExtrait(value)
                             if (id) {
                               setModifierCommande((prev) => ({
@@ -668,7 +670,7 @@ export default function EditerExtraitMariageModal(
                           placeholder="Mère"
                           value={id ? modifierCommande?.epoux?.mere?.nomPrenoms ?? "" : commande?.epoux?.mere?.nomPrenoms ?? ""}
                           onChange={(e) => {
-                            const value = e.target.value.trim();
+                            const value = e.target.value;
                             const mere = new ParentExtrait(value)
                             if (id) {
                               setModifierCommande((prev) => ({
@@ -709,7 +711,7 @@ export default function EditerExtraitMariageModal(
                           placeholder="Nom et prénoms"
                           value={id ? modifierCommande?.epouse?.nomPrenoms ?? "" : commande?.epouse?.nomPrenoms ?? ""}
                           onChange={(e) => {
-                            const value = e.target.value.trim();
+                            const value = e.target.value;
                             if (id) {
                               setModifierCommande((prev) => ({
                                 ...prev,
@@ -781,7 +783,7 @@ export default function EditerExtraitMariageModal(
                           placeholder="Lieu de naissance"
                           value={id ? modifierCommande?.epouse?.lieuNaissance ?? "" : commande?.epouse?.lieuNaissance ?? ""}
                           onChange={(e) => {
-                            const value = e.target.value.trim();
+                            const value = e.target.value;
                             if (id) {
                               setModifierCommande((prev) => ({
                                 ...prev,
@@ -816,7 +818,7 @@ export default function EditerExtraitMariageModal(
                           placeholder="Domicile"
                           value={id ? modifierCommande?.epouse?.domicile ?? "" : commande?.epouse?.domicile ?? ""}
                           onChange={(e) => {
-                            const value = e.target.value.trim();
+                            const value = e.target.value;
                             if (id) {
                               setModifierCommande((prev) => ({
                                 ...prev,
@@ -846,7 +848,7 @@ export default function EditerExtraitMariageModal(
                           placeholder="Père"
                           value={id ? modifierCommande?.epouse?.pere?.nomPrenoms ?? "" : commande?.epouse?.pere?.nomPrenoms ?? ""}
                           onChange={(e) => {
-                            const value = e.target.value.trim();
+                            const value = e.target.value;
                             const pere = new ParentExtrait(value)
                             if (id) {
                               setModifierCommande((prev) => ({
@@ -877,7 +879,7 @@ export default function EditerExtraitMariageModal(
                           placeholder="Mère"
                           value={id ? modifierCommande?.epouse?.mere?.nomPrenoms ?? "" : commande?.epouse?.mere?.nomPrenoms ?? ""}
                           onChange={(e) => {
-                            const value = e.target.value.trim();
+                            const value = e.target.value;
                             const mere = new ParentExtrait(value)
                             if (id) {
                               setModifierCommande((prev) => ({

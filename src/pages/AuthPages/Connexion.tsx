@@ -40,7 +40,7 @@ export default function Connexion() {
     setErrorMotPasse(null);
 
     try {
-      const reponse = await login(new ConnexionCommande(nomUtilisateur, motPasse));
+      const reponse = await login(new ConnexionCommande(nomUtilisateur.trim(), motPasse));
       if ("message" in reponse) {
         setLoading(false);
         setIsReponseApiOpen(true);
@@ -66,7 +66,7 @@ export default function Connexion() {
       isValid = false;
     }
 
-    if (!motPasse.trim()) {
+    if (motPasse == "") {
       setErrorMotPasse("Le mot de passe invalide !");
       isValid = false;
     }
@@ -115,7 +115,7 @@ export default function Connexion() {
                       value={nomUtilisateur}
                       onChange={(e) => {
                         const value = e.target.value;
-                        setNomUtilisateur(value.trim());
+                        setNomUtilisateur(value);
                         if (value.trim()) setErrorMotPasse(null);
                       }}
                       placeholder="Entrer votre nom d'utilisateur"
@@ -134,7 +134,7 @@ export default function Connexion() {
                         value={motPasse}
                         onChange={(e) => {
                           const value = e.target.value;
-                          setMotPasse(value.trim());
+                          setMotPasse(value);
                           if (value.trim()) setErrorMotPasse(null);
                         }}
                         type={showPassword ? "text" : "password"}

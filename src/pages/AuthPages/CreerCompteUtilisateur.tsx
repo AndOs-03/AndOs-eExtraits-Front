@@ -7,6 +7,7 @@ import Button from "../../components/ui/button/Button.tsx";
 import {register} from "../../services/auth.service.ts";
 import {CreerUtilisateurCommande} from "./creer-compte-utilisateur.commande.ts";
 import ModalRetourAppelApi from "../../components/ui/modal/modal-retour-appel-api.tsx";
+import {validateEmail} from "../../services/common.service";
 
 export default function CreerCompteUtilisateur() {
 
@@ -43,7 +44,7 @@ export default function CreerCompteUtilisateur() {
     setErrorMotPasse(null);
 
     try {
-      const commande = new CreerUtilisateurCommande(nom, prenom, nomUtilisateur, motPasse);
+      const commande = new CreerUtilisateurCommande(nom.trim(), prenom.trim(), nomUtilisateur.trim(), motPasse);
       commande.email = email;
       const reponse = await register(commande);
       if ("message" in reponse) {
@@ -74,12 +75,12 @@ export default function CreerCompteUtilisateur() {
   const validationDuFormulaire = (): boolean => {
     let isValid = true;
 
-    if (!nom.trim() || nom.length < 3) {
+    if (!nom.trim() || nom.trim().length < 3) {
       setErrorNom("Nom invalide !");
       isValid = false;
     }
 
-    if (!prenom.trim() || prenom.length < 3) {
+    if (!prenom.trim() || prenom.trim().length < 3) {
       setErrorPrenom("Prénom invalide !");
       isValid = false;
     }
@@ -89,23 +90,40 @@ export default function CreerCompteUtilisateur() {
       isValid = false;
     }
 
-    if (!nomUtilisateur.trim() || nomUtilisateur.length < 4) {
+    if (!nomUtilisateur.trim() || nomUtilisateur.trim().length < 4) {
       setErrorUsername("Nom d'utilisateur invalide (minimum 4 caractères) !");
       isValid = false;
     }
 
-    if (!motPasse.trim() || motPasse.length < 6) {
-      setErrorMotPasse("Mot de passe invalide (minimum 6 caractères) !");
+    if (!validatePassword(motPasse)) {
       isValid = false;
     }
 
     return isValid;
   }
 
-  const validateEmail = (value: string) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(value);
-  };
+  const validatePassword = (value: string) => {
+    const hasMinimumLength = value.length >= 6;
+    const hasNumber = /\d/.test(value);
+    const hasLetter = /[a-zA-Z]/.test(value);
+
+    if (!hasMinimumLength) {
+      setErrorMotPasse("Mot de passe trop court (minimum 6 caractère) !");
+      return false;
+    }
+
+    if (!hasNumber) {
+      setErrorMotPasse("Mot de passe invalide (au moins un chiffre) !");
+      return false;
+    }
+
+    if (!hasLetter) {
+      setErrorMotPasse("Mot de passe invalide (au moins une lettre) !");
+      return false;
+    }
+
+    return true;
+  }
 
   const handleModalReponseApiClose = () => {
     setIsReponseApiOpen(false)
@@ -149,7 +167,7 @@ export default function CreerCompteUtilisateur() {
                         value={nom}
                         onChange={(e) => {
                           const value = e.target.value;
-                          setNom(value.trim());
+                          setNom(value);
                           if (value.trim()) setErrorNom(null);
                         }}
                         type="text"
@@ -170,7 +188,7 @@ export default function CreerCompteUtilisateur() {
                         value={prenom}
                         onChange={(e) => {
                           const value = e.target.value;
-                          setPrenom(value.trim());
+                          setPrenom(value);
                           if (value.trim()) setErrorPrenom(null);
                         }}
                         type="text"
@@ -192,7 +210,7 @@ export default function CreerCompteUtilisateur() {
                       value={email}
                       onChange={(e) => {
                         const value = e.target.value;
-                        setEmail(value.trim());
+                        setEmail(value);
                         if (value !== "" && validateEmail(value)) setErrorEmail(null);
                       }}
                       type="email"
@@ -213,7 +231,7 @@ export default function CreerCompteUtilisateur() {
                       value={nomUtilisateur}
                       onChange={(e) => {
                         const value = e.target.value;
-                        setNomUtilisateur(value.trim());
+                        setNomUtilisateur(value);
                         if (value.trim()) setErrorUsername(null);
                       }}
                       placeholder="Entrer votre nom d'utilisateur"
@@ -232,8 +250,8 @@ export default function CreerCompteUtilisateur() {
                         value={motPasse}
                         onChange={(e) => {
                           const value = e.target.value;
-                          setMotPasse(value.trim());
-                          if (value.trim()) setErrorMotPasse(null);
+                          setMotPasse(value);
+                          if (value !== "" && validatePassword(value)) setErrorMotPasse(null);
                         }}
                         type={showPassword ? "text" : "password"}
                         placeholder="Entrer votre mode de passe"

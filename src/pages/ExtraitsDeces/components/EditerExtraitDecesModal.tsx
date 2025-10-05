@@ -13,6 +13,7 @@ import {SituationMatrimoniale} from "../../../models/situation-matrimoniale.ts";
 import ModalRetourAppelApi from "../../../components/ui/modal/modal-retour-appel-api.tsx";
 import {Spinner} from "../../../icons";
 import {Modal} from "../../../components/ui/modal";
+import {supprimerEspacesVides} from "../../../services/common.service";
 
 interface Props {
   id: number | undefined
@@ -124,8 +125,10 @@ export default function EditerExtraitDecesModal(
     try {
       let reponse;
       if (id) {
+        supprimerEspacesVides(modifierCommande);
         reponse = await modifierExtraitsDeces(modifierCommande)
       } else {
+        supprimerEspacesVides(commande);
         reponse = await creerExtraitsDeces(commande)
       }
 
@@ -287,7 +290,7 @@ export default function EditerExtraitDecesModal(
                         placeholder="Registre"
                         value={id ? modifierCommande?.registreN ?? "" : commande?.registreN ?? ""}
                         onChange={(e) => {
-                          const value = e.target.value.trim();
+                          const value = e.target.value;
                           if (id) {
                             setModifierCommande((prev) => ({
                               ...prev,
@@ -312,7 +315,7 @@ export default function EditerExtraitDecesModal(
                         min="1"
                         value={id ? modifierCommande?.annee ?? "" : commande?.annee ?? ""}
                         onChange={(e) => {
-                          const value = e.target.value.trim();
+                          const value = e.target.value;
                           if (id) {
                             setModifierCommande((prev) => ({
                               ...prev,
@@ -340,7 +343,7 @@ export default function EditerExtraitDecesModal(
                         placeholder="Nº Acte"
                         value={id ? modifierCommande?.numeroRegistre ?? "" : commande?.numeroRegistre ?? ""}
                         onChange={(e) => {
-                          const value = e.target.value.trim();
+                          const value = e.target.value;
                           if (id) {
                             setModifierCommande((prev) => ({
                               ...prev,
@@ -401,7 +404,7 @@ export default function EditerExtraitDecesModal(
                         placeholder="État Civil"
                         value={id ? modifierCommande?.etatCivil ?? "" : commande?.etatCivil ?? ""}
                         onChange={(e) => {
-                          const value = e.target.value.trim();
+                          const value = e.target.value;
                           if (id) {
                             setModifierCommande((prev) => ({
                               ...prev,
@@ -430,7 +433,7 @@ export default function EditerExtraitDecesModal(
                         placeholder="Centre"
                         value={id ? modifierCommande?.centreEtatCivil ?? "" : commande?.centreEtatCivil ?? ""}
                         onChange={(e) => {
-                          const value = e.target.value.trim();
+                          const value = e.target.value;
                           if (id) {
                             setModifierCommande((prev) => ({
                               ...prev,
@@ -492,7 +495,7 @@ export default function EditerExtraitDecesModal(
                         placeholder="Lieu de Décès"
                         value={id ? modifierCommande?.lieuDeces ?? "" : commande?.lieuDeces ?? ""}
                         onChange={(e) => {
-                          const value = e.target.value.trim();
+                          const value = e.target.value;
                           if (id) {
                             setModifierCommande((prev) => ({
                               ...prev,
@@ -526,7 +529,7 @@ export default function EditerExtraitDecesModal(
                         placeholder="Nom"
                         value={id ? modifierCommande?.nom ?? "" : commande?.nom ?? ""}
                         onChange={(e) => {
-                          const value = e.target.value.trim();
+                          const value = e.target.value;
                           if (id) {
                             setModifierCommande((prev) => ({
                               ...prev,
@@ -554,7 +557,7 @@ export default function EditerExtraitDecesModal(
                         placeholder="Prénoms"
                         value={id ? modifierCommande?.prenoms ?? "" : commande?.prenoms ?? ""}
                         onChange={(e) => {
-                          const value = e.target.value.trim();
+                          const value = e.target.value;
                           if (id) {
                             setModifierCommande((prev) => ({
                               ...prev,
@@ -614,7 +617,7 @@ export default function EditerExtraitDecesModal(
                         placeholder="Lieu de Naissance"
                         value={id ? modifierCommande?.lieuNaissance ?? "" : commande?.lieuNaissance ?? ""}
                         onChange={(e) => {
-                          const value = e.target.value.trim();
+                          const value = e.target.value;
                           if (id) {
                             setModifierCommande((prev) => ({
                               ...prev,
@@ -638,7 +641,7 @@ export default function EditerExtraitDecesModal(
                         placeholder="Profession"
                         value={id ? modifierCommande?.profession ?? "" : commande?.profession ?? ""}
                         onChange={(e) => {
-                          const value = e.target.value.trim();
+                          const value = e.target.value;
                           if (id) {
                             setModifierCommande((prev) => ({
                               ...prev,
@@ -663,7 +666,7 @@ export default function EditerExtraitDecesModal(
                         placeholder="Domicile"
                         value={id ? modifierCommande?.domicile ?? "" : commande?.domicile ?? ""}
                         onChange={(e) => {
-                          const value = e.target.value.trim();
+                          const value = e.target.value;
                           if (id) {
                             setModifierCommande((prev) => ({
                               ...prev,
@@ -688,7 +691,7 @@ export default function EditerExtraitDecesModal(
                         placeholder="Nationalité"
                         value={id ? modifierCommande?.nationalite ?? "" : commande?.nationalite ?? ""}
                         onChange={(e) => {
-                          const value = e.target.value.trim();
+                          const value = e.target.value;
                           if (id) {
                             setModifierCommande((prev) => ({
                               ...prev,
@@ -750,7 +753,7 @@ export default function EditerExtraitDecesModal(
                         placeholder="Nom Prénoms du Père"
                         value={id ? modifierCommande?.pere?.nomPrenoms ?? "" : commande?.pere?.nomPrenoms ?? ""}
                         onChange={(e) => {
-                          const value = e.target.value.trim();
+                          const value = e.target.value;
                           const pere = new ParentExtrait(value)
                           if (id) {
                             setModifierCommande((prev) => ({
@@ -774,7 +777,7 @@ export default function EditerExtraitDecesModal(
                         placeholder="Nom Prénoms de la Mère"
                         value={id ? modifierCommande?.mere?.nomPrenoms ?? "" : commande?.mere?.nomPrenoms ?? ""}
                         onChange={(e) => {
-                          const value = e.target.value.trim();
+                          const value = e.target.value;
                           const mere = new ParentExtrait(value)
                           if (id) {
                             setModifierCommande((prev) => ({

@@ -5,6 +5,7 @@ import {InstitutionVM} from "../../../models/institution.model.ts";
 import ModalRetourAppelApi from "../../../components/ui/modal/modal-retour-appel-api.tsx";
 import {Spinner} from "../../../icons";
 import {Modal} from "../../../components/ui/modal";
+import {supprimerEspacesVides} from "../../../services/common.service";
 
 interface Props {
   id: number | null
@@ -94,6 +95,7 @@ export default function EditerInstitutionModal(
     setErrorVille(null);
 
     try {
+      supprimerEspacesVides(commande);
       const reponse = await editeInstitutions(commande!)
       if ("message" in reponse) {
         setIsReponseApiOpen(true);
@@ -194,7 +196,7 @@ export default function EditerInstitutionModal(
                   placeholder="Département"
                   value={commande?.departement!}
                   onChange={(e) => {
-                    const value = e.target.value.trim();
+                    const value = e.target.value;
                     setCommande((prev) => ({...prev, departement: value}));
                     if (value.trim()) setErrorDepart(null);
                   }}
@@ -210,7 +212,7 @@ export default function EditerInstitutionModal(
                   placeholder="Centre"
                   value={commande?.centreEtatCivil!}
                   onChange={(e) => {
-                    const value = e.target.value.trim();
+                    const value = e.target.value;
                     setCommande((prev) => ({...prev, centreEtatCivil: value}));
                     if (value.trim()) setErrorCentreEtat(null);
                   }}
@@ -226,7 +228,7 @@ export default function EditerInstitutionModal(
                   placeholder="État Civil"
                   value={commande?.etatCivil!}
                   onChange={(e) => {
-                    const value = e.target.value.trim();
+                    const value = e.target.value;
                     setCommande((prev) => ({...prev, etatCivil: value}));
                     if (value.trim()) setErrorEtatCivil(null);
                   }}
@@ -243,7 +245,7 @@ export default function EditerInstitutionModal(
                   placeholder="Tribunal"
                   value={commande?.tribunal!}
                   onChange={(e) => {
-                    const value = e.target.value.trim();
+                    const value = e.target.value;
                     setCommande((prev) => ({...prev, tribunal: value}));
                     if (value.trim()) setErrorTribunal(null);
                   }}
@@ -259,7 +261,7 @@ export default function EditerInstitutionModal(
                   placeholder="Ville"
                   value={commande?.ville!}
                   onChange={(e) => {
-                    const value = e.target.value.trim();
+                    const value = e.target.value;
                     setCommande((prev) => ({...prev, ville: value}));
                     if (value.trim()) setErrorVille(null);
                   }}
@@ -272,7 +274,7 @@ export default function EditerInstitutionModal(
                   placeholder="Officier"
                   value={commande?.officier!}
                   onChange={(e) => {
-                    const value = e.target.value.trim();
+                    const value = e.target.value;
                     setCommande((prev) => ({...prev, officier: value}));
                   }}
                   className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-4"
@@ -284,7 +286,7 @@ export default function EditerInstitutionModal(
                   placeholder="Titre Officier"
                   value={commande?.titreOfficier!}
                   onChange={(e) => {
-                    const value = e.target.value.trim();
+                    const value = e.target.value;
                     setCommande((prev) => ({...prev, titreOfficier: value}));
                   }}
                   className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-2"

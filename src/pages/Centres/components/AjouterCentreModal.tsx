@@ -26,7 +26,7 @@ export default function AjouterCentreModal(
 
   const handleSubmit = async () => {
     if (!nom.trim()) {
-      setError("Le nom est obligatoire");
+      setError("Le nom est obligatoire !");
       return;
     }
 
@@ -34,7 +34,7 @@ export default function AjouterCentreModal(
     setError(null);
 
     try {
-      const reponse = await createCentre({nom})
+      const reponse = await createCentre({nom: nom.trim()})
       if ("message" in reponse) {
         setIsReponseApiOpen(true);
         setMessageReponseApi(reponse.message);
@@ -75,7 +75,7 @@ export default function AjouterCentreModal(
                   type="text"
                   placeholder="Nom"
                   value={nom}
-                  onChange={(e) => setNom(e.target.value.trim())}
+                  onChange={(e) => setNom(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-4"
               />
               <div className="flex justify-end gap-2">
